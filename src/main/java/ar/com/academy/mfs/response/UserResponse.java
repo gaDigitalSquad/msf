@@ -8,12 +8,14 @@ public class UserResponse {
 	private String password;
 	private String firstname;
 	private String lastname;
-	private int role;
-	private String email;
+	private int role_id;
 	private int phoneNumber;
 	private String documentType;
 	private int documentNumber;
-	private String address;
+	private String address;	
+	private int zone_id;
+	private String turn;
+
 	
 	public UserResponse() {
 	}
@@ -24,28 +26,31 @@ public class UserResponse {
 		this.password = user.getPassword();
 		this.firstname = user.getFirstname();
 		this.lastname = user.getLastname();
-		this.role = user.getRole_id();
-		this.email = user.getEmail();
+		this.role_id = user.getRole_id();
 		this.phoneNumber = user.getPhoneNumber();
 		this.documentType = user.getDocumentType();
 		this.documentNumber = user.getDocumentNumber();
-		this.address = user.getAddress();
+		this.turn = user.getTurn();
+		this.zone_id = user.getZone_id();
 	}
 
 	
-	public UserResponse(String username, String password, String firstname, String lastname, int role, String email,
-			int phoneNumber, String documentType, int documentNumber, String address) {
+
+
+	public UserResponse(String username, String password, String firstname, String lastname, int role_id,
+			int phoneNumber, String documentType, int documentNumber, String address, int zone_id, String turn) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.role = role;
-		this.email = email;
+		this.role_id = role_id;
 		this.phoneNumber = phoneNumber;
 		this.documentType = documentType;
 		this.documentNumber = documentNumber;
 		this.address = address;
+		this.zone_id = zone_id;
+		this.turn = turn;
 	}
 
 	public String getUsername() {
@@ -81,19 +86,11 @@ public class UserResponse {
 	}
 
 	public int getRole_id() {
-		return role;
+		return role_id;
 	}
 
 	public void setRole_id(int role) {
-		this.role = role;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+		this.role_id = role;
 	}
 
 	public int getPhoneNumber() {
@@ -127,4 +124,14 @@ public class UserResponse {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	public int getZone_id() {
+		return zone_id;
+	}
+
+	public void setZone_id(int zone_id) {
+		this.zone_id = zone_id;
+	}
+
+	
 }

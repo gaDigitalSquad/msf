@@ -36,9 +36,6 @@ public class UserService {
     	
     }
 
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -68,17 +65,11 @@ public class UserService {
 	
 	public User updateUser(long user_id, User updateUser) {
 		User toUpdateUser = getUserById(user_id);
-		if(updateUser.getAddress()!=null) {
-			toUpdateUser.setAddress(updateUser.getAddress());
-		}
 		if(updateUser.getDocumentNumber()>0) {
 			toUpdateUser.setDocumentNumber(updateUser.getDocumentNumber());
 		}
 		if(updateUser.getDocumentType()!=null){
 			toUpdateUser.setDocumentType(updateUser.getDocumentType());
-		}
-		if(updateUser.getEmail()!=null) {
-			toUpdateUser.setEmail(updateUser.getEmail());
 		}
 		if(updateUser.getFirstname()!=null) {
 			toUpdateUser.setFirstname(updateUser.getFirstname());

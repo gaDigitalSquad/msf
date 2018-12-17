@@ -45,8 +45,8 @@ public class User implements Serializable {
 	@Column (name="role_id")
 	private int role_id;
 	
-	@Column (name = "email")
-	private String email;
+	@Column (name="zone_id")
+	private int zone_id;
 	
 	@Column (name = "phone_number")
 	private int phoneNumber;
@@ -57,11 +57,11 @@ public class User implements Serializable {
 	@Column (name = "document_number")
 	private int documentNumber;
 	
-	@Column (name = "address")
-	private String address;
-	
 	@Column (name = "active")
 	private boolean active;
+	
+	@Column (name="turn")
+	private String turn;
 
 	public long getUser_id() {
 		return user_id;
@@ -81,20 +81,29 @@ public class User implements Serializable {
 	public void setRole_id(int role_id) {
 		this.role_id = role_id;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	
-	
+	public int getZone_id() {
+		return zone_id;
+	}
+	public void setZone_id(int zone_id) {
+		this.zone_id = zone_id;
+	}
 	public int getPhoneNumber() {
 		return phoneNumber;
 	}
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
+	
+	
+	public String getTurn() {
+		return turn;
+	}
+	public void setTurn(String turn) {
+		this.turn = turn;
+	}
+	
 	public String getDocumentType() {
 		return documentType;
 	}
@@ -106,12 +115,6 @@ public class User implements Serializable {
 	}
 	public void setDocumentNumber(int documentNumber) {
 		this.documentNumber = documentNumber;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
 	}
 	public boolean isActive() {
 		return active;
@@ -146,18 +149,17 @@ public class User implements Serializable {
 	public String toString() {
 		return this.lastname+' '+this.firstname;
 	}
-	public User(String username, String firstname, String lastname, int role,
-			String email, int phoneNumber, String documentType, int documentNumber, String address) {
+	public User(String username, String firstname, String lastname, int role, int zone,
+			String email, int phoneNumber, String documentType, int documentNumber) {
 		super();
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.role_id = role;
-		this.email = email;
+		this.zone_id = zone; 
 		this.phoneNumber = phoneNumber;
 		this.documentType = documentType;
 		this.documentNumber = documentNumber;
-		this.address = address;
 		this.active = true;
 	}
 	public User() {
@@ -170,12 +172,11 @@ public class User implements Serializable {
 		this.firstname =ur.getFirstname();
 		this.lastname = ur.getLastname();
 		this.role_id = ur.getRole_id();
-		this.email = ur.getEmail();
 		this.phoneNumber = ur.getPhoneNumber();
 		this.documentType = ur.getDocumentType();
 		this.documentNumber = ur.getDocumentNumber();
-		this.address = ur.getAddress();
 		this.active = true;
+		this.zone_id = ur.getZone_id();
 	}
 
 	

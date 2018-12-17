@@ -1,39 +1,25 @@
 package ar.com.academy.mfs.request;
 
-import ar.com.academy.mfs.model.Role;
 
 public class UserRequest {
 	private String username;
 	private String password;
 	private String firstname;
 	private String lastname;
-	private Role role;
 	private String email;
 	private int phoneNumber;
 	private String documentType;
 	private int documentNumber;
 	private String address;
 	int role_id;
+	int zone_id;
+	private String turn;
 	
 	public UserRequest() {
 		
 	}
 	
-	public UserRequest(String username, String password, String firstname, String lastname, Role role, String email,
-			int phoneNumber, String documentType, int documentNumber, String address) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.role = role;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.documentType = documentType;
-		this.documentNumber = documentNumber;
-		this.address = address;
-	}
-
+	
 	public String getUsername() {
 		return username;
 	}
@@ -66,12 +52,14 @@ public class UserRequest {
 		this.lastname = lastname;
 	}
 
-	public Role getRole() {
-		return role;
+
+
+	public void setRole_id(int role_id) {
+		this.role_id = role_id;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setZone_id(int zone_id) {
+		this.zone_id = zone_id;
 	}
 
 	public String getEmail() {
@@ -117,4 +105,19 @@ public class UserRequest {
 	public int getRole_id() {
 		return role_id;
 	}
+
+	public int getZone_id() {
+		return zone_id;
+	}
+
+	public String getTurn() {
+		return turn;
+	}
+
+	public void setTurn(String turn) {
+		this.turn = turn;
+	}
+	
+	
+	
 }
