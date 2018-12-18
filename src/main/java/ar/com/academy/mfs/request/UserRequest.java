@@ -11,9 +11,10 @@ public class UserRequest {
 	private String documentType;
 	private int documentNumber;
 	private String address;
-	int role_id;
-	int zone_id;
+	long role_id;
+	long zone_id;
 	private String turn;
+	long user_state_id;
 	
 	public UserRequest() {
 		
@@ -102,11 +103,11 @@ public class UserRequest {
 		this.address = address;
 	}
 
-	public int getRole_id() {
+	public long getRole_id() {
 		return role_id;
 	}
 
-	public int getZone_id() {
+	public long getZone_id() {
 		return zone_id;
 	}
 
@@ -117,6 +118,12 @@ public class UserRequest {
 	public void setTurn(String turn) {
 		this.turn = turn;
 	}
+
+
+	public long getUser_state_id(){
+		return this.user_state_id;
+	}
+	
 	
 	
 	

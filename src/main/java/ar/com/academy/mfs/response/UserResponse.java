@@ -8,12 +8,12 @@ public class UserResponse {
 	private String password;
 	private String firstname;
 	private String lastname;
-	private int role_id;
+	private long role_id;
 	private int phoneNumber;
 	private String documentType;
 	private int documentNumber;
 	private String address;	
-	private int zone_id;
+	private long zone_id;
 	private String turn;
 
 	
@@ -37,8 +37,8 @@ public class UserResponse {
 	
 
 
-	public UserResponse(String username, String password, String firstname, String lastname, int role_id,
-			int phoneNumber, String documentType, int documentNumber, String address, int zone_id, String turn) {
+	public UserResponse(String username, String password, String firstname, String lastname, long role_id,
+			int phoneNumber, String documentType, int documentNumber, String address, long zone_id, String turn) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -48,7 +48,6 @@ public class UserResponse {
 		this.phoneNumber = phoneNumber;
 		this.documentType = documentType;
 		this.documentNumber = documentNumber;
-		this.address = address;
 		this.zone_id = zone_id;
 		this.turn = turn;
 	}
@@ -85,7 +84,7 @@ public class UserResponse {
 		this.lastname = lastname;
 	}
 
-	public int getRole_id() {
+	public long getRole_id() {
 		return role_id;
 	}
 
@@ -117,15 +116,8 @@ public class UserResponse {
 		this.documentNumber = documentNumber;
 	}
 
-	public String getAddress() {
-		return address;
-	}
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public int getZone_id() {
+	public long getZone_id() {
 		return zone_id;
 	}
 

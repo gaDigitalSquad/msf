@@ -43,10 +43,10 @@ public class User implements Serializable {
 	//@ManyToOne
 	//@JoinTable(name = "role")
 	@Column (name="role_id")
-	private int role_id;
+	private long role_id;
 	
 	@Column (name="zone_id")
-	private int zone_id;
+	private long zone_id;
 	
 	@Column (name = "phone_number")
 	private int phoneNumber;
@@ -62,6 +62,9 @@ public class User implements Serializable {
 	
 	@Column (name="turn")
 	private String turn;
+	
+	@Column (name="user_state_id")
+	private long user_state_id;
 
 	public long getUser_id() {
 		return user_id;
@@ -75,16 +78,17 @@ public class User implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	public int getRole_id() {
+	public long getRole_id() {
 		return this.role_id;
 	}
-	public void setRole_id(int role_id) {
+	public void setRole_id(long role_id) {
 		this.role_id = role_id;
 	}
 	
-	public int getZone_id() {
+	public long getZone_id() {
 		return zone_id;
 	}
+	
 	public void setZone_id(int zone_id) {
 		this.zone_id = zone_id;
 	}
@@ -95,8 +99,12 @@ public class User implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	
-	
+	public long getUser_state_id() {
+		return user_state_id;
+	}
+	public void setUser_state_id(long user_state_id) {
+		this.user_state_id = user_state_id;
+	}
 	public String getTurn() {
 		return turn;
 	}
@@ -149,23 +157,30 @@ public class User implements Serializable {
 	public String toString() {
 		return this.lastname+' '+this.firstname;
 	}
-	public User(String username, String firstname, String lastname, int role, int zone,
-			String email, int phoneNumber, String documentType, int documentNumber) {
-		super();
-		this.username = username;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.role_id = role;
-		this.zone_id = zone; 
-		this.phoneNumber = phoneNumber;
-		this.documentType = documentType;
-		this.documentNumber = documentNumber;
-		this.active = true;
-	}
+	
 	public User() {
 		
 	}
 	
+	
+	
+	
+	public User(String username, String password, String firstname, String lastname, int role_id, int zone_id,
+			int phoneNumber, String documentType, int documentNumber, boolean active, String turn, long user_state_id) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.role_id = role_id;
+		this.zone_id = zone_id;
+		this.phoneNumber = phoneNumber;
+		this.documentType = documentType;
+		this.documentNumber = documentNumber;
+		this.active = active;
+		this.turn = turn;
+		this.user_state_id = user_state_id;
+	}
 	public User(UserRequest ur) {
 		super();
 		this.username= ur.getUsername();
@@ -177,6 +192,7 @@ public class User implements Serializable {
 		this.documentNumber = ur.getDocumentNumber();
 		this.active = true;
 		this.zone_id = ur.getZone_id();
+		this.user_state_id = ur.getUser_state_id();
 	}
 
 	
