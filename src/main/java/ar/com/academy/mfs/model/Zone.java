@@ -1,6 +1,5 @@
 package ar.com.academy.mfs.model;
 
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,22 +20,16 @@ public class Zone {
 	@Column( name = "zone_name" )
 	private String zoneName;
 	
-	@Column
-	private Date from_date;
-	
-
-	@Column
-	private Date to_date;
+	@Column(name="target_id")
+	private long targetId;
 	
 	public Zone() {
 	}
 
-
-	public Zone(String zoneName, Date from_date, Date to_date) {
+	public Zone(String zoneName, long targetId) {
 		super();
 		this.zoneName = zoneName;
-		this.from_date = from_date;
-		this.to_date = to_date;
+		this.targetId = targetId;
 	}
 
 	public String getZoneName() {
@@ -52,26 +45,19 @@ public class Zone {
 	public long getZoneId() {
 		return zoneId;
 	}
+
+
+	public long getTargetId() {
+		return targetId;
+	}
+
+
+	public void setTargetId(long targetId) {
+		this.targetId = targetId;
+	}
 	
-	public Date getFrom_date() {
-		return from_date;
-	}
-
-
-	public void setFrom_date(Date from_date) {
-		this.from_date = from_date;
-	}
-
-
-	public Date getTo_date() {
-		return to_date;
-	}
-
-
-	public void setTo_date(Date to_date) {
-		this.to_date = to_date;
-	}
-
+	
+	
 	
 	
 }

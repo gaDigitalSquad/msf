@@ -3,8 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
-		<groupId>ar.com.academy</groupId>
+	<groupId>ar.com.academy</groupId>
 	<artifactId>mfs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -96,18 +95,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-			  <groupId>com.heroku.sdk</groupId>
-			  <artifactId>heroku-maven-plugin</artifactId>
-			  <configuration>
-			  <appName>msf-backend</appName>
-	                <jdkVersion>1.8</jdkVersion>
-	          <processTypes>
-	              <web>java -jar target/mfs-0.0.1-SNAPSHOT.jar</web>
-	          </processTypes>
-				  </configuration>
-				</plugin>
-			</plugins>
+		</plugins>
 	</build>
 
 

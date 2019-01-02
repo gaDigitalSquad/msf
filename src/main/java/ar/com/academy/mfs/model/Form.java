@@ -84,8 +84,8 @@ public class Form implements Serializable{
 	@Column(name = "did_you_know_msf")
 	private boolean did_you_know_msf;
 	
-	@Column(name = "card_type")
-	private String card_type;
+	@Column(name = "card_type_id")
+	private long card_type_id;
 	
 	@Column(name = "card_number")
 	private String card_number;
@@ -115,7 +115,7 @@ public class Form implements Serializable{
 	public Form(long completed_by_user_id, long zone_id, String member_type, String firstname, String lastname,
 			Date birthdate, String address_street, int address_number, int address_floor, String address_apartment,
 			String postcode, String city, String province, String cuil_cuit, int dni, String telephone_number,
-			String mobile_number, String email, boolean did_you_know_msf, String card_type, String card_number,
+			String mobile_number, String email, boolean did_you_know_msf, long card_type_id, String card_number,
 			Date card_expiration_date, String cbu, float monthly_amount_contribution, Date form_date,
 			String observations, boolean completed) {
 		super();
@@ -138,7 +138,7 @@ public class Form implements Serializable{
 		this.mobile_number = mobile_number;
 		this.email = email;
 		this.did_you_know_msf = did_you_know_msf;
-		this.card_type = card_type;
+		this.card_type_id = card_type_id;
 		this.card_number = card_number;
 		this.card_expiration_date = card_expiration_date;
 		this.cbu = cbu;
@@ -303,12 +303,12 @@ public class Form implements Serializable{
 		this.did_you_know_msf = did_you_know_msf;
 	}
 
-	public String getCard_type() {
-		return card_type;
+	public long getCard_type_id() {
+		return card_type_id;
 	}
 
-	public void setCard_type(String card_type) {
-		this.card_type = card_type;
+	public void setCard_type_id(long card_type_id) {
+		this.card_type_id = card_type_id;
 	}
 
 	public String getCard_number() {

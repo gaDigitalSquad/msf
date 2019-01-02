@@ -9,9 +9,9 @@ import static ar.com.academy.mfs.security.Constants.TOKEN_EXPIRATION_TIME;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.FileHandler;
+/*import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.SimpleFormatter;*/
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,19 +24,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-@CrossOrigin(origins="https://msf-backend.herokuapp.com")
+@CrossOrigin(origins="http://localhost:4200")
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
 	
-	Logger logger = Logger.getLogger("MyLog");  
-    FileHandler fh;  
+	/*Logger logger = Logger.getLogger("MyLog");  
+    FileHandler fh;*/  
 	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
@@ -70,7 +71,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + " " + token);
 		response.addHeader("access-control-expose-headers", "Authorization");
 		
-		try {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		
+		/*try {
 			// This block configure the logger with handler and formatter  
 			fh = new FileHandler("C:/Users/capacitacion/projects/msf/msf-backend/Logs/LogFile.log");
 			logger.addHandler(fh);
@@ -83,7 +87,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		        e.printStackTrace();  
 		} catch (IOException e) {  
 		        e.printStackTrace();  
-		}  
+		}*/  
 	}
 	
 	public String createToken(String username) {

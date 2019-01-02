@@ -4,15 +4,18 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import ar.com.academy.mfs.request.UserRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import ar.com.academy.mfs.model.UserState;
+import ar.com.academy.mfs.model.Role;
 
 @Entity
 @Table(name="user",schema="msf")
@@ -37,16 +40,10 @@ public class User implements Serializable {
 	@Column (name = "lastname")
 	private String lastname;
 	
-	/*//hacer join tables?
-	private Login login;*/
-	
-	//@ManyToOne
-	//@JoinTable(name = "role")
-	@Column (name="role_id")
-	private long role_id;
-	
-	@Column (name="zone_id")
-	private long zone_id;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false)
+	@JsonIgnore
+	private Role role;
 	
 	@Column (name = "phone_number")
 	private int phoneNumber;
@@ -58,14 +55,15 @@ public class User implements Serializable {
 	private int documentNumber;
 	
 	@Column (name = "active")
-	private boolean active;
+	private boolean active = true;
 	
-	@Column (name="turn")
-	private String turn;
-	
-	@Column (name="user_state_id")
-	private long user_state_id;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_state_id")
+	@JsonIgnore
+	private UserState userState;
 
+	
+	
 	public long getUser_id() {
 		return user_id;
 	}
@@ -78,19 +76,12 @@ public class User implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	public long getRole_id() {
-		return this.role_id;
-	}
-	public void setRole_id(long role_id) {
-		this.role_id = role_id;
-	}
 	
-	public long getZone_id() {
-		return zone_id;
+	public Role getRole() {
+		return role;
 	}
-	
-	public void setZone_id(int zone_id) {
-		this.zone_id = zone_id;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	public int getPhoneNumber() {
 		return phoneNumber;
@@ -99,19 +90,12 @@ public class User implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public long getUser_state_id() {
-		return user_state_id;
+	public UserState getUserState() {
+		return userState;
 	}
-	public void setUser_state_id(long user_state_id) {
-		this.user_state_id = user_state_id;
+	public void setUserState(UserState userState) {
+		this.userState = userState;
 	}
-	public String getTurn() {
-		return turn;
-	}
-	public void setTurn(String turn) {
-		this.turn = turn;
-	}
-	
 	public String getDocumentType() {
 		return documentType;
 	}
@@ -130,12 +114,6 @@ public class User implements Serializable {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	/*public Login getLogin() {
-		return login;
-	}
-	public void setLogin(Login login) {
-		this.login = login;
-	}*/
 	
 	public String getUsername() {
 		return username;
@@ -165,35 +143,30 @@ public class User implements Serializable {
 	
 	
 	
-	public User(String username, String password, String firstname, String lastname, int role_id, int zone_id,
-			int phoneNumber, String documentType, int documentNumber, boolean active, String turn, long user_state_id) {
+	public User(String username, String password, String firstname, String lastname, Role role, int phoneNumber,
+			String documentType, int documentNumber) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.role_id = role_id;
-		this.zone_id = zone_id;
+		this.role = role;
 		this.phoneNumber = phoneNumber;
 		this.documentType = documentType;
 		this.documentNumber = documentNumber;
-		this.active = active;
-		this.turn = turn;
-		this.user_state_id = user_state_id;
 	}
-	public User(UserRequest ur) {
-		super();
-		this.username= ur.getUsername();
-		this.firstname =ur.getFirstname();
-		this.lastname = ur.getLastname();
-		this.role_id = ur.getRole_id();
-		this.phoneNumber = ur.getPhoneNumber();
-		this.documentType = ur.getDocumentType();
-		this.documentNumber = ur.getDocumentNumber();
-		this.active = true;
-		this.zone_id = ur.getZone_id();
-		this.user_state_id = ur.getUser_state_id();
-	}
+//	public User(UserRequest ur) {
+//		super();
+//		this.username= ur.getUsername();
+//		this.firstname =ur.getFirstname();
+//		this.lastname = ur.getLastname();
+//		this.role = ur.getRole();
+//		this.phoneNumber = ur.getPhoneNumber();
+//		this.documentType = ur.getDocumentType();
+//		this.documentNumber = ur.getDocumentNumber();
+//		this.active = true;
+//		this.user_state_id = ur.getUser_state_id();
+//	}
 
 	
 	

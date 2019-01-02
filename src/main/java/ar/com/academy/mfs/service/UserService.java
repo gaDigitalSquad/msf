@@ -40,20 +40,20 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
     
-    public User createUser(UserRequest ur) {
-		User user = new User(ur);
-		User userCreate = userRepository.save(user);
-		return userCreate;
-	}
+//    public User createUser(UserRequest ur) {
+//		User user = new User(ur);
+//		User userCreate = userRepository.save(user);
+//		return userCreate;
+//	}
 
-    public User saveUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(true);
-        int userRole = 1;
-        user.setRole_id(userRole);
-        userRepository.save(user);
-        return user;
-    }
+//    public User saveUser(User user) {
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        user.setActive(true);
+//        int userRole = 1;
+//        user.setRole_id(userRole);
+//        userRepository.save(user);
+//        return user;
+//    }
 
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
@@ -63,35 +63,35 @@ public class UserService {
 		return userRepository.findById(id).get();
 	}
 	
-	public User updateUser(long user_id, User updateUser) {
-		User toUpdateUser = getUserById(user_id);
-		if(updateUser.getDocumentNumber()>0) {
-			toUpdateUser.setDocumentNumber(updateUser.getDocumentNumber());
-		}
-		if(updateUser.getDocumentType()!=null){
-			toUpdateUser.setDocumentType(updateUser.getDocumentType());
-		}
-		if(updateUser.getFirstname()!=null) {
-			toUpdateUser.setFirstname(updateUser.getFirstname());
-		}
-		if(updateUser.getLastname()!=null) {
-			toUpdateUser.setLastname(updateUser.getLastname());
-		}
-		if(updateUser.getPassword()!=null) {
-			toUpdateUser.setPassword(updateUser.getPassword());
-		}
-		if(updateUser.getPhoneNumber()>0) {
-			toUpdateUser.setPhoneNumber(updateUser.getPhoneNumber());
-		}
-		if(updateUser.getRole_id()>0) {
-			toUpdateUser.setRole_id(updateUser.getRole_id());
-		}
-		if(updateUser.getUsername()!=null) {
-			toUpdateUser.setUsername(updateUser.getUsername());
-		}
-		return toUpdateUser;
-	}
-	
+//	public User updateUser(long user_id, User updateUser) {
+//		User toUpdateUser = getUserById(user_id);
+//		if(updateUser.getDocumentNumber()>0) {
+//			toUpdateUser.setDocumentNumber(updateUser.getDocumentNumber());
+//		}
+//		if(updateUser.getDocumentType()!=null){
+//			toUpdateUser.setDocumentType(updateUser.getDocumentType());
+//		}
+//		if(updateUser.getFirstname()!=null) {
+//			toUpdateUser.setFirstname(updateUser.getFirstname());
+//		}
+//		if(updateUser.getLastname()!=null) {
+//			toUpdateUser.setLastname(updateUser.getLastname());
+//		}
+//		if(updateUser.getPassword()!=null) {
+//			toUpdateUser.setPassword(updateUser.getPassword());
+//		}
+//		if(updateUser.getPhoneNumber()>0) {
+//			toUpdateUser.setPhoneNumber(updateUser.getPhoneNumber());
+//		}
+//		if(updateUser.getRole_id()>0) {
+//			toUpdateUser.setRole_id(updateUser.getRole_id());
+//		}
+//		if(updateUser.getUsername()!=null) {
+//			toUpdateUser.setUsername(updateUser.getUsername());
+//		}
+//		return toUpdateUser;
+//	}
+//	
 	public long deleteLogicUser(long user_id) {
 		long toReturn = 0 ;
 		User toDeleteUser = userRepository.findById(user_id).get();

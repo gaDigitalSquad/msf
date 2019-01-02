@@ -1,0 +1,145 @@
+package ar.com.academy.mfs.model;
+
+import java.sql.Date;
+import java.sql.Time;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "working_day", schema = "msf")
+public class WorkingDay {
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column( name = "working_day_id")
+	private int workingDayId;
+	@Column(name = "supervisor_id")
+	private User supervisor;
+	@Column(name = "user_id")
+	private User user;
+	@Column(name = "is_present")
+	private boolean isPresent;
+	@Column(name = "working_date")
+	private Date workingDate;
+	@Column(name="from_hour")
+	private Time from_hour;
+	@Column(name="to_hour")
+	private Time to_hour;
+	@Column(name = "zone_id")
+	private int zone;
+	@Column(name = "amount_of_new_partners")
+	private int amountOfNewPartners;
+	@Column(name = "total_amount")
+	private float totalAmount;
+	@Column(name = "observations")
+	private String observations;
+	@Column(name = "completed")
+	private boolean completed;
+	
+	
+	
+	public WorkingDay() {}
+	
+
+
+
+
+	public WorkingDay(User supervisor, User user, boolean isPresent, Date workingDate, Time from_hour, Time to_hour,
+			int zone, int amountOfNewPartners, float totalAmount, String observations, boolean completed) {
+		super();
+		this.supervisor = supervisor;
+		this.user = user;
+		this.isPresent = isPresent;
+		this.workingDate = workingDate;
+		this.from_hour = from_hour;
+		this.to_hour = to_hour;
+		this.zone = zone;
+		this.amountOfNewPartners = amountOfNewPartners;
+		this.totalAmount = totalAmount;
+		this.observations = observations;
+		this.completed = completed;
+	}
+
+
+
+
+
+	public User getSupervisor() {
+		return supervisor;
+	}
+	public void setSupervisor(User supervisor) {
+		this.supervisor = supervisor;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public boolean isPresent() {
+		return isPresent;
+	}
+	public void setPresent(boolean isPresent) {
+		this.isPresent = isPresent;
+	}
+	public Date getWorkingDate() {
+		return workingDate;
+	}
+	public void setWorkingDate(Date workingDate) {
+		this.workingDate = workingDate;
+	}
+
+	public int getZone() {
+		return zone;
+	}
+	public void setZone(int zone) {
+		this.zone = zone;
+	}
+	public int getAmountOfNewPartners() {
+		return amountOfNewPartners;
+	}
+	public void setAmountOfNewPartners(int amountOfNewPartners) {
+		this.amountOfNewPartners = amountOfNewPartners;
+	}
+	public float getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(float totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public String getObservations() {
+		return observations;
+	}
+	public void setObservations(String observations) {
+		this.observations = observations;
+	}
+	public int getWorkingDayId() {
+		return workingDayId;
+	}
+	public Time getFrom_hour() {
+		return from_hour;
+	}
+	public void setFrom_hour(Time from_hour) {
+		this.from_hour = from_hour;
+	}
+	public Time getTo_hour() {
+		return to_hour;
+	}
+	public void setTo_hour(Time to_hour) {
+		this.to_hour = to_hour;
+	}
+	public boolean isCompleted() {
+		return completed;
+	}
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+	
+	
+}
