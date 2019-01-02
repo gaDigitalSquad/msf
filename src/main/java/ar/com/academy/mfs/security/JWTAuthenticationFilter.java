@@ -73,6 +73,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(token);
 		
 		/*try {
 			// This block configure the logger with handler and formatter  
