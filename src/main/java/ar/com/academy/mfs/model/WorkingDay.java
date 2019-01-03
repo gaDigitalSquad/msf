@@ -18,40 +18,48 @@ public class WorkingDay {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column( name = "working_day_id")
-	private int workingDayId;
+	private long workingDayId;
+	
 	@Column(name = "supervisor_id")
-	private User supervisor;
+	private long supervisor;
+	
 	@Column(name = "user_id")
-	private User user;
+	private long user;
+	
 	@Column(name = "is_present")
 	private boolean isPresent;
+	
 	@Column(name = "working_date")
 	private Date workingDate;
+	
 	@Column(name="from_hour")
 	private Time from_hour;
+	
 	@Column(name="to_hour")
 	private Time to_hour;
+	
 	@Column(name = "zone_id")
 	private int zone;
+	
+	@Column(name = "area_id")
+	private int area;
+	
 	@Column(name = "amount_of_new_partners")
 	private int amountOfNewPartners;
+	
 	@Column(name = "total_amount")
 	private float totalAmount;
+	
 	@Column(name = "observations")
 	private String observations;
+	
 	@Column(name = "completed")
 	private boolean completed;
 	
-	
-	
 	public WorkingDay() {}
 	
-
-
-
-
-	public WorkingDay(User supervisor, User user, boolean isPresent, Date workingDate, Time from_hour, Time to_hour,
-			int zone, int amountOfNewPartners, float totalAmount, String observations, boolean completed) {
+	public WorkingDay(long supervisor, long user, boolean isPresent, Date workingDate, Time from_hour, Time to_hour,
+			int zone, int area, int amountOfNewPartners, float totalAmount, String observations) {
 		super();
 		this.supervisor = supervisor;
 		this.user = user;
@@ -60,28 +68,33 @@ public class WorkingDay {
 		this.from_hour = from_hour;
 		this.to_hour = to_hour;
 		this.zone = zone;
+		this.area = area;
 		this.amountOfNewPartners = amountOfNewPartners;
 		this.totalAmount = totalAmount;
 		this.observations = observations;
-		this.completed = completed;
+		this.completed = true;
 	}
 
-
-
-
-
-	public User getSupervisor() {
+	public long getSupervisor() {
 		return supervisor;
 	}
-	public void setSupervisor(User supervisor) {
+
+	public void setSupervisor(long supervisor) {
 		this.supervisor = supervisor;
 	}
-	public User getUser() {
+
+	public long getUser() {
 		return user;
 	}
-	public void setUser(User user) {
+
+	public void setUser(long user) {
 		this.user = user;
 	}
+
+	public void setWorkingDayId(long workingDayId) {
+		this.workingDayId = workingDayId;
+	}
+
 	public boolean isPresent() {
 		return isPresent;
 	}
@@ -119,7 +132,7 @@ public class WorkingDay {
 	public void setObservations(String observations) {
 		this.observations = observations;
 	}
-	public int getWorkingDayId() {
+	public float getWorkingDayId() {
 		return workingDayId;
 	}
 	public Time getFrom_hour() {
@@ -140,6 +153,13 @@ public class WorkingDay {
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
-	
+
+	public int getArea_id() {
+		return area;
+	}
+
+	public void setArea_id(int area) {
+		this.area = area;
+	}
 	
 }

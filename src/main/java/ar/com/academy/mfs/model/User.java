@@ -40,10 +40,8 @@ public class User implements Serializable {
 	@Column (name = "lastname")
 	private String lastname;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-	@JsonIgnore
-	private Role role;
+	@Column (name = "role_id")
+	private int role_id;
 	
 	@Column (name = "phone_number")
 	private int phoneNumber;
@@ -77,11 +75,11 @@ public class User implements Serializable {
 		this.lastname = lastname;
 	}
 	
-	public Role getRole() {
-		return role;
+	public int getRole_id() {
+		return role_id;
 	}
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRole_id(int role_id) {
+		this.role_id = role_id;
 	}
 	public int getPhoneNumber() {
 		return phoneNumber;
@@ -143,14 +141,14 @@ public class User implements Serializable {
 	
 	
 	
-	public User(String username, String password, String firstname, String lastname, Role role, int phoneNumber,
+	public User(String username, String password, String firstname, String lastname, int role_id, int phoneNumber,
 			String documentType, int documentNumber) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.role = role;
+		this.role_id = role_id;
 		this.phoneNumber = phoneNumber;
 		this.documentType = documentType;
 		this.documentNumber = documentNumber;

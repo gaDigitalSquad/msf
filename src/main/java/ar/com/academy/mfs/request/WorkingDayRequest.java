@@ -6,38 +6,37 @@ import java.sql.Time;
 public class WorkingDayRequest {
 
 
-	private long supervisor;
-	private long user;
+	private int supervisor;
+	private int user;
 	private boolean isPresent;
 	private Date workingDate;
 	private Time from_hour;
 	private Time to_hour;
 	private int zone;
+	private int area;
 	private int amountOfNewPartners;
-	private float totalAmount;
+	private int totalAmount;
 	private String observations;
 	private boolean completed;
 	
 	
 	public WorkingDayRequest() {}
 
-
-	public long getSupervisor() {
+	public int getSupervisor() {
 		return supervisor;
 	}
 
-
-	public void setSupervisor(long supervisor) {
+	public void setSupervisor(int supervisor) {
 		this.supervisor = supervisor;
 	}
 
 
-	public long getUser() {
+	public int getUser() {
 		return user;
 	}
 
 
-	public void setUser(long user) {
+	public void setUser(int user) {
 		this.user = user;
 	}
 
@@ -102,12 +101,12 @@ public class WorkingDayRequest {
 	}
 
 
-	public float getTotalAmount() {
+	public int getTotalAmount() {
 		return totalAmount;
 	}
 
 
-	public void setTotalAmount(float totalAmount) {
+	public void setTotalAmount(int totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
@@ -126,11 +125,16 @@ public class WorkingDayRequest {
 		return completed;
 	}
 
-
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
-	
 
+	public int getArea() {
+		return area;
+	}
+
+	public void setArea(int area) {
+		this.area = area;
+	}
 	
 }

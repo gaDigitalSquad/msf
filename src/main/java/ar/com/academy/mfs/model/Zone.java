@@ -15,18 +15,18 @@ public class Zone {
 	@Id
 	@Column( name = "zone_id")
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
-	private long zoneId;
+	private int zoneId;
 	
 	@Column( name = "zone_name" )
 	private String zoneName;
 	
 	@Column(name="target_id")
-	private long targetId;
+	private int targetId;
 	
 	public Zone() {
 	}
 
-	public Zone(String zoneName, long targetId) {
+	public Zone(String zoneName, int targetId) {
 		super();
 		this.zoneName = zoneName;
 		this.targetId = targetId;
@@ -36,28 +36,21 @@ public class Zone {
 		return zoneName;
 	}
 
-
 	public void setZoneName(String zoneName) {
 		this.zoneName = zoneName;
 	}
 
 
-	public long getZoneId() {
+	public int getZoneId() {
 		return zoneId;
 	}
 
-
-	public long getTargetId() {
+	public int getTargetId() {
 		return targetId;
 	}
 
-
-	public void setTargetId(long targetId) {
+	public void setTargetId(int targetId) {
 		this.targetId = targetId;
 	}
-	
-	
-	
-	
 	
 }

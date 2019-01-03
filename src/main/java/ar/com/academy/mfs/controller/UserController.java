@@ -1,11 +1,14 @@
 package ar.com.academy.mfs.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,7 +57,7 @@ public class UserController {
 							userRequest.getPassword(), 
 							userRequest.getFirstname(), 
 							userRequest.getLastname(), 
-							role, 
+							role.getRoleId(), 
 							userRequest.getPhoneNumber(), 
 							userRequest.getDocumentType(), 
 							userRequest.getDocumentNumber());
@@ -88,5 +92,14 @@ public class UserController {
 //			User userToReturn = user_service.updateUser(user_id, userToUpdate);
 //			user_service.save(userToReturn);
 //			return userToReturn;
+//	}
+	
+	
+//	@RequestMapping(value = "/rol/{username}", method = RequestMethod.GET, produces = "application/json")
+//	@ResponseBody 
+//	public Map findRoleByUsername(@PathVariable String username) {
+//		User user = user_service.findByUsername(username);
+//		String role = user.getRole().getRoleName();
+//		return Collections.singletonMap("role", role);
 //	}
 }

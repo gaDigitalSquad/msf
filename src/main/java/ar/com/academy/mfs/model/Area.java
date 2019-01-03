@@ -22,7 +22,7 @@ public class Area implements Serializable {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name = "area_id")
-	private long area_id;
+	private int area_id;
 	
 	@Column(name = "description")
 	private String description;
@@ -37,7 +37,7 @@ public class Area implements Serializable {
 		
 	}
 	
-	public Area(String description, long type_of_area_id, long zone_id) {
+	public Area(String description, int type_of_area_id, long zone_id) {
 		super();
 		this.description = description;
 		this.typeOfAreaId = type_of_area_id;
@@ -68,7 +68,7 @@ public class Area implements Serializable {
 		this.zoneId = zone_id;
 	}
 
-	public long getArea_id() {
+	public int getArea_id() {
 		return area_id;
 	}
 	

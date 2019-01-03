@@ -2,13 +2,23 @@ package ar.com.academy.mfs.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.com.academy.mfs.model.CardType;
 import ar.com.academy.mfs.model.Form;
+import ar.com.academy.mfs.model.User;
+import ar.com.academy.mfs.model.Zone;
+import ar.com.academy.mfs.repository.CardTypeRepository;
+import ar.com.academy.mfs.repository.UserRepository;
+import ar.com.academy.mfs.repository.ZoneRepository;
+import ar.com.academy.mfs.request.FormRequest;
 import ar.com.academy.mfs.service.FormService;
 
 @RestController
@@ -16,15 +26,45 @@ public class FormController {
 	@Autowired
 	FormService formService;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private ZoneRepository zoneRepository;
+	
+	@Autowired
+	private CardTypeRepository cardTypeRepository;
+	
 	@PostMapping("/form")
-	public Form createForm(@RequestBody Form inputForm) {
-		Form form = formService.createForm(inputForm);
-		return form;
+	public ResponseEntity<?> createForm(@RequestBody FormRequest inputForm) {
+		System.out.println("\n\n\nHasta el tipo de carta llega 1\n\n\n");
+		User user = userRepository.findByUsername(inputForm.getCompletedByUser());
+		if(user == null) 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
+		System.out.println("\n\n\nHasta el tipo de carta llega 2\n\n\n");
+		Zone zone = zoneRepository.findByZoneName(inputForm.getZone());
+		if(zone == null) 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid zone");
+		System.out.println("\n\n\nHasta el tipo de carta llega 3\n\n\n");
+		CardType cardType = cardTypeRepository.findByCode(inputForm.getCardType());
+		if(cardType == null) 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
+		System.out.println("\n\n\nHasta el tipo de carta llega 4\n\n\n");
+		Form form = formService.createForm(inputForm, user.getUser_id(), zone.getZoneId(), cardType.getCardTypeId());
+		return new ResponseEntity<Form>(form, HttpStatus.ACCEPTED);
 	}
 	
 	
 	@GetMapping("/form/{dni}")
 	public Form getFormByDni(@PathVariable int dni) {
-		return formService.getFormByDni(dni);
+		Form formToReturn = formService.getFormByDni(dni);
+		//return new ResponseEntity<Form>(formToReturn, HttpStatus.ACCEPTED);
+		return formToReturn;
+	}
+	
+	@PutMapping("/form/{dni}")
+	public ResponseEntity<?> updateFormByDni(@PathVariable int dni, @RequestBody Form form){
+		Form formUpdated = formService.updateFormDni(dni, form);
+		return new ResponseEntity<Form>(formUpdated, HttpStatus.ACCEPTED);
 	}
 }

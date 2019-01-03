@@ -9,4 +9,6 @@ import ar.com.academy.mfs.model.Role;
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 	
 	Role findByRoleName(String roleName);
+
+	
 }

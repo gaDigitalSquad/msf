@@ -21,13 +21,13 @@ public class WorkingDayService {
 	@Autowired
 	UserRepository userRepository;
 	
-	public ResponseEntity createWorkingDay(WorkingDayRequest workingDayRequest) {
-		Optional<User> supervisor = userRepository.findById(workingDayRequest.getSupervisor());
-		Optional<User> user = userRepository.findById(workingDayRequest.getUser());
-		if(supervisor == null || user == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuarios no validos");
-		WorkingDay workingDay = new WorkingDay(supervisor.get(), user.get(), workingDayRequest.isPresent(), workingDayRequest.getWorkingDate(), workingDayRequest.getFrom_hour(), workingDayRequest.getTo_hour(), workingDayRequest.getZone(), workingDayRequest.getAmountOfNewPartners(), workingDayRequest.getTotalAmount(), workingDayRequest.getObservations(), workingDayRequest.isCompleted());
-		workingDayRepository.save(workingDay);
-		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
-	}
+//	public ResponseEntity createWorkingDay(WorkingDayRequest workingDayRequest) {
+//		Optional<User> supervisor = userRepository.findById(workingDayRequest.getSupervisor());
+//		Optional<User> user = userRepository.findById(workingDayRequest.getUser());
+//		if(supervisor == null || user == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuarios no validos");
+//		WorkingDay workingDay = new WorkingDay(supervisor.get(), user.get(), workingDayRequest.isPresent(), workingDayRequest.getWorkingDate(), workingDayRequest.getFrom_hour(), workingDayRequest.getTo_hour(), workingDayRequest.getZone(), workingDayRequest.getAmountOfNewPartners(), workingDayRequest.getTotalAmount(), workingDayRequest.getObservations(), workingDayRequest.isCompleted());
+//		workingDayRepository.save(workingDay);
+//		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
+//	}
 
 }
