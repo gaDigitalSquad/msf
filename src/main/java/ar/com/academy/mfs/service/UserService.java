@@ -1,5 +1,6 @@
 package ar.com.academy.mfs.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.model.User;
+import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.request.UserRequest;
@@ -21,6 +23,10 @@ public class UserService {
 	
 	@Autowired
     private RoleRepository roleRepository;
+	
+	@Autowired
+	private GroupRepository groupRepository;
+	
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -59,7 +65,7 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
-	public User getUserById(long id) {
+	public User getUserById(int id) {
 		return userRepository.findById(id).get();
 	}
 	
@@ -92,7 +98,7 @@ public class UserService {
 //		return toUpdateUser;
 //	}
 //	
-	public long deleteLogicUser(long user_id) {
+	public long deleteLogicUser(int user_id) {
 		long toReturn = 0 ;
 		User toDeleteUser = userRepository.findById(user_id).get();
 		if(!toDeleteUser.isActive()) {
@@ -103,7 +109,7 @@ public class UserService {
 		return toReturn;
 	}
 	
-	public long deletePhysicalUser(long user_id) {
+	public long deletePhysicalUser(int user_id) {
 		long toReturn=0;
 		if(userRepository.existsById(user_id)) {
 			userRepository.deleteById(user_id);
@@ -126,6 +132,40 @@ public class UserService {
 
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
-	}	
+	}
+
+	// Role_id = 3 => LIDER
+	public List<User> getLeadersWithoutGroup() {
+		List<User> leadersWithoutGroup = new ArrayList<User>();
+		List<User> users = userRepository.findAll();
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getGroup_number() == null && users.get(i).getRole_id() == 3) {
+				leadersWithoutGroup.add(users.get(i));
+			}
+		}
+		return leadersWithoutGroup;
+	}
+	
+	// Role_id = 2 => SENSIBILIZADOR
+	public List<User> getSensWithoutGroup() {
+		List<User> sensWithoutGroup = new ArrayList<User>();
+		List<User> users = userRepository.findAll();
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getGroup_number() == null && users.get(i).getRole_id() == 2) {
+				sensWithoutGroup.add(users.get(i));
+			}
+		}
+		return sensWithoutGroup;
+	}
+	
+	public List<User> getMySens(int supervisor_id) {
+		List<User> mySens = new ArrayList<User>(); 
+		List<Integer> sensId = groupRepository.findMySens(supervisor_id);
+		for (int i = 0; i < sensId.size(); i++) {
+			User u = userRepository.findById(sensId.get(i)).get();
+			mySens.add(u);
+		}
+		return mySens;
+	}
 
 }

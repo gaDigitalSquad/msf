@@ -17,14 +17,14 @@ public class AreaController {
 	AreaService areaService;
 	
 	
-	@GetMapping("/area/{zone_id}")
+	@GetMapping("/areas/{zone_id}")
 	public List<Area> getAllAreasByZoneId(@PathVariable long zone_id){
 		return areaService.findByZone_id(zone_id);
 	}
 	
 	
 	@GetMapping("/area/{type_of_area_id}")
-	public Area getAreaByTypeOfAreaId(@PathVariable long type_of_area_id){
+	public Area getAreaByTypeOfAreaId(@PathVariable int type_of_area_id){
 		return areaService.findByType_of_area_id(type_of_area_id);
 	}
 	

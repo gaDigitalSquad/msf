@@ -24,5 +24,13 @@ public class GroupService {
 		return groupRepository.findBySupervisor(supervisor_id);
 	}
 
+	public Group getGroupByGroupNumber(int group_number) {
+		return groupRepository.findByGroupNumber(group_number);
+	}
+	
+	public Group findGroup(int supervisor_id) {
+		return groupRepository.findUserGroup(supervisor_id);
+	}
+
 	
 }

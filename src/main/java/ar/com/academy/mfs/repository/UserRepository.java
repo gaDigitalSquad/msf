@@ -8,8 +8,8 @@ import ar.com.academy.mfs.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 	List<User> findByLastname(String lastname);
 	User findByUsername(String username);
-	// User findByUser_id(int id);
+	
 }

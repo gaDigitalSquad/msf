@@ -18,7 +18,7 @@ public class AreaService {
 		return areaRepository.findByZoneId(zone_id);
 	}
 	
-	public Area findByType_of_area_id(long type_of_area_id) {
+	public Area findByType_of_area_id(int type_of_area_id) {
 		return areaRepository.findByTypeOfAreaId(type_of_area_id);
 	}
 	

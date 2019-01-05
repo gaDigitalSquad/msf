@@ -24,32 +24,45 @@ public class Group implements Serializable {
 	@Column(name = "group_id")
 	private long group_id;
 	
-	@Column(name = "supervisor_id") //LIDER
+ 	@Column(name = "supervisor_id") //LIDER
 	private long supervisor;
 	
-	@Column(name="supervised_id") //SENSIBILIZADOR
+	@Column(name="supervised_id") // SENSIBILIZADOR
 	private long supervised;
 	
 	@Column(name="zone_id")
-	private long zone_id;
+	private int zone_id;
+	
+	@Column(name = "area_id")
+	private int area_id;
 	
 	@Column(name="from_date")
 	private Date from_date;
 	
 	@Column(name="to_date")
 	private Date to_date;
+	
+	@Column(name = "group_number")
+	private int group_number;
 
 	public Group() {
 		
 	}
 	
-	public Group(long supervisor_id, long supervised_id, long zone_id, Date from_date, Date to_date) {
+	public Group(int zone_id, long supervisor_id, long supervised_id) {
 		super();
+		this.zone_id = zone_id;
 		this.supervisor = supervisor_id;
 		this.supervised = supervised_id;
+	}
+	
+	public Group(int zone_id, long supervisor_id, long supervised_id, int group_number, int area_id) {
+		super();
 		this.zone_id = zone_id;
-		this.from_date = from_date;
-		this.to_date = to_date;
+		this.supervisor = supervisor_id;
+		this.supervised = supervised_id;
+		this.group_number = group_number;
+		this.area_id = area_id;
 	}
 
 	public long getSupervisor() {
@@ -68,11 +81,11 @@ public class Group implements Serializable {
 		this.supervised = supervised_id;
 	}
 
-	public long getZone_id() {
+	public int getZone_id() {
 		return zone_id;
 	}
 
-	public void setZone_id(long zone_id) {
+	public void setZone_id(int zone_id) {
 		this.zone_id = zone_id;
 	}
 
@@ -95,6 +108,21 @@ public class Group implements Serializable {
 	public long getGroup_id() {
 		return group_id;
 	}
-	
+
+	public int getGroup_number() {
+		return group_number;
+	}
+
+	public void setGroup_number(int group_number) {
+		this.group_number = group_number;
+	}
+
+	public int getArea_id() {
+		return area_id;
+	}
+
+	public void setArea_id(int area_id) {
+		this.area_id = area_id;
+	}
 
 }

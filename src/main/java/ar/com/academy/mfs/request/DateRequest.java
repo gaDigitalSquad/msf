@@ -6,6 +6,7 @@ public class DateRequest {
 
 	private Date from;
 	private Date to;
+	
 	public Date getFrom() {
 		return from;
 	}

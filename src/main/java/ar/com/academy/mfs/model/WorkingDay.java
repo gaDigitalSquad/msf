@@ -1,7 +1,7 @@
 package ar.com.academy.mfs.model;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +18,13 @@ public class WorkingDay {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column( name = "working_day_id")
-	private long workingDayId;
+	private int workingDayId;
 	
 	@Column(name = "supervisor_id")
-	private long supervisor;
+	private int supervisor;
 	
 	@Column(name = "user_id")
-	private long user;
+	private int user;
 	
 	@Column(name = "is_present")
 	private boolean isPresent;
@@ -56,9 +56,7 @@ public class WorkingDay {
 	@Column(name = "completed")
 	private boolean completed;
 	
-	public WorkingDay() {}
-	
-	public WorkingDay(long supervisor, long user, boolean isPresent, Date workingDate, Time from_hour, Time to_hour,
+	public WorkingDay(int supervisor, int user, boolean isPresent, Date workingDate, Time from_hour, Time to_hour,
 			int zone, int area, int amountOfNewPartners, float totalAmount, String observations) {
 		super();
 		this.supervisor = supervisor;
@@ -74,24 +72,24 @@ public class WorkingDay {
 		this.observations = observations;
 		this.completed = true;
 	}
-
-	public long getSupervisor() {
+	
+	public int getSupervisor() {
 		return supervisor;
 	}
 
-	public void setSupervisor(long supervisor) {
+	public void setSupervisor(int supervisor) {
 		this.supervisor = supervisor;
 	}
 
-	public long getUser() {
+	public int getUser() {
 		return user;
 	}
 
-	public void setUser(long user) {
+	public void setUser(int user) {
 		this.user = user;
 	}
 
-	public void setWorkingDayId(long workingDayId) {
+	public void setWorkingDayId(int workingDayId) {
 		this.workingDayId = workingDayId;
 	}
 

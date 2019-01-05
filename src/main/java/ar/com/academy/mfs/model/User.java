@@ -15,7 +15,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ar.com.academy.mfs.model.UserState;
-import ar.com.academy.mfs.model.Role;
 
 @Entity
 @Table(name="user",schema="msf")
@@ -26,7 +25,7 @@ public class User implements Serializable {
 	@Id
 	@Column( name = "user_id")
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
-	private long user_id;
+	private int user_id;
 	
 	@Column(name = "username")
 	private String username;
@@ -55,6 +54,9 @@ public class User implements Serializable {
 	@Column (name = "active")
 	private boolean active = true;
 	
+	@Column (name = "group_number")
+	private Integer group_number = null;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_state_id")
 	@JsonIgnore
@@ -62,7 +64,7 @@ public class User implements Serializable {
 
 	
 	
-	public long getUser_id() {
+	public int getUser_id() {
 		return user_id;
 	}
 	public String getFirstname() {
@@ -129,6 +131,13 @@ public class User implements Serializable {
 		this.firstname = firstname;
 	}
 	
+	public Integer getGroup_number() {
+		return group_number;
+	}
+	public void setGroup_number(Integer group_number) {
+		this.group_number = group_number;
+	}
+	
 	@Override
 	public String toString() {
 		return this.lastname+' '+this.firstname;
@@ -137,9 +146,6 @@ public class User implements Serializable {
 	public User() {
 		
 	}
-	
-	
-	
 	
 	public User(String username, String password, String firstname, String lastname, int role_id, int phoneNumber,
 			String documentType, int documentNumber) {

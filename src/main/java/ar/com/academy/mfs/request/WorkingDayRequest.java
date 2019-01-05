@@ -1,10 +1,10 @@
 package ar.com.academy.mfs.request;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.util.Date;
+
 
 public class WorkingDayRequest {
-
 
 	private int supervisor;
 	private int user;
@@ -12,15 +12,10 @@ public class WorkingDayRequest {
 	private Date workingDate;
 	private Time from_hour;
 	private Time to_hour;
-	private int zone;
-	private int area;
 	private int amountOfNewPartners;
 	private int totalAmount;
 	private String observations;
 	private boolean completed;
-	
-	
-	public WorkingDayRequest() {}
 
 	public int getSupervisor() {
 		return supervisor;
@@ -80,17 +75,6 @@ public class WorkingDayRequest {
 		this.to_hour = to_hour;
 	}
 
-
-	public int getZone() {
-		return zone;
-	}
-
-
-	public void setZone(int zone) {
-		this.zone = zone;
-	}
-
-
 	public int getAmountOfNewPartners() {
 		return amountOfNewPartners;
 	}
@@ -127,14 +111,6 @@ public class WorkingDayRequest {
 
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
-	}
-
-	public int getArea() {
-		return area;
-	}
-
-	public void setArea(int area) {
-		this.area = area;
 	}
 	
 }
