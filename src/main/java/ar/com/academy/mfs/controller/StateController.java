@@ -1,5 +1,7 @@
 package ar.com.academy.mfs.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,12 @@ import ar.com.academy.mfs.service.StateService;
 public class StateController {
 	@Autowired
 	StateService stateService;
+	
+	// Obtener todas las licencias
+	@GetMapping("/states")
+	public List<State> getAllStates() {
+		return stateService.getAllStates();
+	}
 	
 	@GetMapping("/state/id/{state_id}")
 	public State getStateByStateId(@PathVariable long state_id) {

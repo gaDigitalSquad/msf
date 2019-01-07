@@ -23,5 +23,7 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 
 	@Query(value = "select * from msf.group where supervisor_id = ?1 limit 1", nativeQuery = true)
 	Group findUserGroup(int supervisor_id);
+	
+	
 
 }

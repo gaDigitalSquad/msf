@@ -14,9 +14,6 @@ import javax.persistence.Table;
 @Table(name="target",schema="msf")
 public class Target implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3084303829038597812L;
 	
 	@Id
@@ -39,8 +36,6 @@ public class Target implements Serializable{
 	public Target() {
 		
 	}
-	
-	
 
 	public Target(float partner_hour, float amount, Date from_date, Date to_date) {
 		super();
@@ -49,8 +44,6 @@ public class Target implements Serializable{
 		this.from_date = from_date;
 		this.to_date = to_date;
 	}
-
-
 
 	public float getPartner_hour() {
 		return partner_hour;
@@ -88,7 +81,4 @@ public class Target implements Serializable{
 		return targetId;
 	}	
 	
-	
-	
-
 }

@@ -1,5 +1,7 @@
 package ar.com.academy.mfs.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,10 @@ StateRepository stateRepository;
 	
 	public State getStateByDescription(String description) {
 		return stateRepository.findByDescription(description);
+	}
+
+	public List<State> getAllStates() {
+		return stateRepository.findAll();
 	}
 	
 }

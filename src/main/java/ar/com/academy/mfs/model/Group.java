@@ -25,10 +25,10 @@ public class Group implements Serializable {
 	private long group_id;
 	
  	@Column(name = "supervisor_id") //LIDER
-	private long supervisor;
+	private int supervisor;
 	
 	@Column(name="supervised_id") // SENSIBILIZADOR
-	private long supervised;
+	private int supervised;
 	
 	@Column(name="zone_id")
 	private int zone_id;
@@ -49,14 +49,14 @@ public class Group implements Serializable {
 		
 	}
 	
-	public Group(int zone_id, long supervisor_id, long supervised_id) {
+	public Group(int zone_id, int supervisor_id, int supervised_id) {
 		super();
 		this.zone_id = zone_id;
 		this.supervisor = supervisor_id;
 		this.supervised = supervised_id;
 	}
 	
-	public Group(int zone_id, long supervisor_id, long supervised_id, int group_number, int area_id) {
+	public Group(int zone_id, int supervisor_id, int supervised_id, int group_number, int area_id) {
 		super();
 		this.zone_id = zone_id;
 		this.supervisor = supervisor_id;
@@ -65,19 +65,19 @@ public class Group implements Serializable {
 		this.area_id = area_id;
 	}
 
-	public long getSupervisor() {
+	public int getSupervisor() {
 		return supervisor;
 	}
 
-	public void setSupervisor(long supervisor_id) {
+	public void setSupervisor(int supervisor_id) {
 		this.supervisor = supervisor_id;
 	}
 
-	public long getSupervised() {
+	public int getSupervised() {
 		return supervised;
 	}
 
-	public void setSupervised(long supervised_id) {
+	public void setSupervised(int supervised_id) {
 		this.supervised = supervised_id;
 	}
 

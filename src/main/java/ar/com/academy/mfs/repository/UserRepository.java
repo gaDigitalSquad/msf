@@ -11,5 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	List<User> findByLastname(String lastname);
 	User findByUsername(String username);
+	User findByDocumentTypeAndDocumentNumber(String documentType, int documentNumber);
 	
 }

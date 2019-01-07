@@ -18,4 +18,5 @@ public class TargetController {
 	public Target getTargetByTarget_id(@PathVariable long target_id) {
 		return targetService.getTargetByTarget_id(target_id);
 	}
+	
 }

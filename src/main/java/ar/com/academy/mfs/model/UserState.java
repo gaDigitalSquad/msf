@@ -25,7 +25,7 @@ public class UserState implements Serializable {
 	@Id
 	@Column( name = "user_state_id")
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
-	private long userStateId;
+	private int userStateId;
 	
 
 	@Column (name="from_date")
@@ -36,22 +36,18 @@ public class UserState implements Serializable {
 	private Date toDate;
 	
 	@Column (name="state_id")
-	private long stateId;
+	private int stateId;
 	
 	public UserState() {
 		
 	}
-	
-	
 
-	public UserState(Date from_date, Date to_date, long state_id) {
+	public UserState(Date from_date, Date to_date, int state_id) {
 		super();
 		this.fromDate = from_date;
 		this.toDate = to_date;
 		this.stateId = state_id;
 	}
-
-
 
 	public Date getFromDate() {
 		return fromDate;
@@ -69,20 +65,16 @@ public class UserState implements Serializable {
 		this.toDate = to_date;
 	}
 
-	public long getStateId() {
+	public int getStateId() {
 		return stateId;
 	}
 
-	public void setStateId(long state_id) {
+	public void setStateId(int state_id) {
 		this.stateId = state_id;
 	}
 
-	public long getUserStateId() {
+	public int getUserStateId() {
 		return userStateId;
 	}
-	
-	
-	
-	
 	
 }

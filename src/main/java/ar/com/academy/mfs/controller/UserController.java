@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,6 +24,7 @@ import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.security.JWTAuthenticationFilter;
 import ar.com.academy.mfs.service.UserService;
+import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
 import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.request.UserRequest;
 
@@ -42,7 +44,7 @@ public class UserController {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
-	@PostMapping("/users") //para guardar nuevos usuarios 
+	@PostMapping("/users") // para guardar nuevos usuarios 
 	@ResponseBody ResponseEntity postUser(@Valid @RequestBody UserRequest userRequest) {
 		if(user_repository.findByUsername(userRequest.getUsername()) != null)
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists!");
@@ -128,5 +130,23 @@ public class UserController {
 			return true;
 		}
 		return false;
+	}
+	
+	@PostMapping("/findUser")
+	@ResponseBody ResponseEntity<?> getUser(@RequestBody DocumentTypeAndNumberRequest documentTypeAndNumber) {
+		User user = findByDocumentTypeAndDocumentNumber(documentTypeAndNumber.getDocumentType(), documentTypeAndNumber.getDocumentNumber());
+		if (user == null ) return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario no encontrado");
+		return ResponseEntity.status(HttpStatus.OK).body(user);
+	}
+	private User findByDocumentTypeAndDocumentNumber(String documentType, int documentNumber) {
+		return user_repository.findByDocumentTypeAndDocumentNumber(documentType, documentNumber);
+	}
+	
+	@PostMapping("/changePassword")
+	public String changePassword(@RequestBody String password) {
+		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		User user =  user_repository.findByUsername((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		user_service.changeUserPassword(user, password);
+		return "Password change succesful";
 	}
 }

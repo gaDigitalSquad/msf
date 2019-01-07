@@ -1,5 +1,7 @@
 package ar.com.academy.mfs.controller;
 
+import java.sql.Time;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,7 +65,13 @@ public class WorkingDayController {
 		Area area = areaRepository.findById(group.getArea_id()).get();
 		if(area == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Area no valida");
 		
-		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(), 
+		DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
+		long diff = workingDayRequest.getTo_hour().getTime() - workingDayRequest.getFrom_hour().getTime();
+		
+		int hoursWorked = (int) (diff / (60 * 60 * 1000));
+		System.out.println("difference between hours: " + crunchifyFormatter.format(hoursWorked));
+		
+		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(),
 												user.getUser_id(), 
 												workingDayRequest.isPresent(), 
 												workingDayRequest.getWorkingDate(), 
@@ -73,7 +81,8 @@ public class WorkingDayController {
 												area.getArea_id(),
 												workingDayRequest.getAmountOfNewPartners(), 
 												(float)workingDayRequest.getTotalAmount(), 
-												workingDayRequest.getObservations());
+												workingDayRequest.getObservations(),
+												hoursWorked);
 		
 		workingDayRepository.save(workingDay);
 		
@@ -81,7 +90,7 @@ public class WorkingDayController {
 	}
 	
 	// Con el ID del usuario vamos a buscar todos los socios que consiguio en cierto periodo de tiempo
-	@GetMapping("/workingDay/{user_id}")
+	@PostMapping("/workingDay/{user_id}")
 	@ResponseBody ResponseEntity<?> getMetricasUsuario(@PathVariable int user_id, @RequestBody DateRequest dateRequest) {
 	
 		User user = userRepository.findById(user_id).get();
@@ -89,15 +98,20 @@ public class WorkingDayController {
 		
 		List<WorkingDay> workingDays = workingDayRepository.findByWorkingDateBetweenAndUser(user.getUser_id(), dateRequest.getFrom(), dateRequest.getTo());
 		
-		int cant = 0;
 		float socios = 0;
-
+		float monto = 0;
+		float horas = 0;
+		float sociosHora = 0;
+		
 		for(WorkingDay wk: workingDays) {
-			cant = cant + wk.getAmountOfNewPartners();
-			socios = socios + wk.getTotalAmount();
+			socios = socios + wk.getAmountOfNewPartners();
+			monto = monto + wk.getTotalAmount();
+			horas = horas + wk.getHours_worked();
 		}
 		
-		Metricas m = new Metricas(cant,socios);
+		sociosHora = socios / horas;
+
+		Metricas m = new Metricas(socios, monto, horas, sociosHora);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(m);
 	}
