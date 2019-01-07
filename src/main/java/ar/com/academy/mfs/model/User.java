@@ -57,8 +57,7 @@ public class User implements Serializable {
 	@Column (name = "group_number")
 	private Integer group_number = null;
 	
-	@Column (name = "user_state_id")
-	private int user_state_id;
+
 	
 	public int getUser_id() {
 		return user_id;
@@ -86,13 +85,7 @@ public class User implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public int getUser_state_id() {
-		return user_state_id;
-	}
-	public void setUser_state_id(int user_state_id) {
-		this.user_state_id = user_state_id;
-	}
-
+	
 	public String getDocumentType() {
 		return documentType;
 	}

@@ -40,7 +40,7 @@ public class UserStateController {
 		userStateRepository.save(userState);
 		System.out.println(userState.getUserStateId());
 		User user = userService.getUserById(userStateRequest.getLicenseTo());
-		user.setUser_state_id(userState.getUserStateId());
+		//user.setUser_state_id(userState.getUserStateId());
 		return ResponseEntity.status(HttpStatus.OK).body(userState);	
 	}
 	
