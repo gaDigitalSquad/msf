@@ -161,6 +161,10 @@ public class Form implements Serializable{
 		this.mobile_number = mobileNumber;
 		this.email = email;
 		this.monthly_amount_contribution = monthlyAmountContribution;
+		this.cuil_cuit = "algo";
+		this.form_date = new Date(2018,01,01);
+		this.zone_id = 1;
+		this.card_type_id = 1;
 	}
 
 
