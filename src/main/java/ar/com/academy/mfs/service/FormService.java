@@ -1,6 +1,7 @@
 package ar.com.academy.mfs.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,11 +63,13 @@ public class FormService {
 	}
 
 	public Form getFormByDni(int dni) {
-		return formRepository.findByDni(dni);
+		Optional<Form> form = formRepository.findByDni(dni);
+		return form.get();
 	}
 
 	public Form updateFormDni(int dni, Form form) {
-		Form formActual = formRepository.findByDni(dni);
+		Optional<Form> formToUpdate = formRepository.findByDni(dni);
+		Form formActual = formToUpdate.get();
 		if(form.getFirstname() != null)
 			formActual.setFirstname(form.getFirstname());
 		if(form.getLastname() != null)

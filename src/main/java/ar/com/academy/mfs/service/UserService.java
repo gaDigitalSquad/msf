@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import ar.com.academy.mfs.model.PasswordResetToken;
 import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.model.User;
+
 import ar.com.academy.mfs.repository.GroupRepository;
+
+import ar.com.academy.mfs.repository.PasswordResetTokenRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.request.UserRequest;
@@ -28,6 +31,10 @@ public class UserService {
 	private GroupRepository groupRepository;
 	
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    
+    @Autowired
+    private PasswordResetTokenRepository passwordTokenRepository;
+    
 
     @Autowired
     public UserService(UserRepository userRepository,
@@ -167,6 +174,11 @@ public class UserService {
 			mySens.add(u);
 		}
 		return mySens;
+	}
+	
+	public void createPasswordResetTokenForUser(int user_id, String token) {
+	    PasswordResetToken myToken = new PasswordResetToken(token, user_id);
+	    passwordTokenRepository.save(myToken);
 	}
 
 	public void changeUserPassword(User user, String password) {

@@ -1,13 +1,26 @@
 package ar.com.academy.mfs.controller;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.mail.Message;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import java.util.Properties;
+
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,20 +36,31 @@ import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.security.JWTAuthenticationFilter;
+import ar.com.academy.mfs.security.SecurityService;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
 import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.request.UserRequest;
+import ar.com.academy.mfs.response.GenericResponse;
 
 @RestController
 public class UserController {
 	@Autowired
-	UserRepository user_repository;
+	private UserRepository user_repository;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
-	UserService user_service;
+	private UserService user_service;
 	@Autowired
-	RoleRepository role_repository;
+	private RoleRepository role_repository;
+	
+	@Autowired
+	private JavaMailSender mailSender;
+	
+	@Autowired
+	private MessageSource messages;
+	
+	@Autowired
+	private SecurityService securityService;
 	
 	
 	public UserController(UserRepository user_repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -142,11 +166,68 @@ public class UserController {
 		return user_repository.findByDocumentTypeAndDocumentNumber(documentType, documentNumber);
 	}
 	
-	@PostMapping("/changePassword")
+	@PostMapping("/changeManualPassword")
 	public String changePassword(@RequestBody String password) {
 		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		User user =  user_repository.findByUsername((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		user_service.changeUserPassword(user, password);
 		return "Password change succesful";
+	}
+//	@RequestMapping(value = "/rol/{username}", method = RequestMethod.GET, produces = "application/json")
+//	@ResponseBody 
+//	public Map findRoleByUsername(@PathVariable String username) {
+//		User user = user_service.findByUsername(username);
+//		String role = user.getRole().getRoleName();
+//		return Collections.singletonMap("role", role);
+//	}
+	
+	
+	@PostMapping("/user/resetPassword")
+	//@ResponseBody
+	public String resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
+		User user = user_service.findUserByUsername(userEmail);
+		if (user == null) {
+		    return "user not found";
+		}
+		String token = UUID.randomUUID().toString();
+		user_service.createPasswordResetTokenForUser(user.getUser_id(), token);
+		mailSender.send(constructResetTokenEmail("http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath(), request.getLocale(), token, user));
+		//return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
+		return "mail mandado";
+	}
+	
+	private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
+		String url = contextPath + "/user/changePassword?id=" + user.getUser_id() + "&token=" + token;
+	    String message = "Reset Password";
+	    return constructEmail("Reset Password", message + " \r\n" + url, user);
+	}
+			 
+	private SimpleMailMessage constructEmail(String subject, String body, User user) {
+	    SimpleMailMessage email = new SimpleMailMessage();
+	    email.setSubject(subject);
+	    email.setText(body);
+	    email.setTo(user.getUsername());
+	    email.setFrom("teijiz.matias@gmail.com");
+	    return email;
+	}
+	
+	@RequestMapping(value = "/user/changePassword", method = RequestMethod.GET)
+	public String showChangePasswordPage(Locale locale, Model model,@RequestParam("id") long id, @RequestParam("token") String token) {
+	    String result = securityService.validatePasswordResetToken(id, token);
+	    if (result != null) {
+	        model.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
+	        return "redirect:/login";
+	    }
+	    return "redirect:/updatePassword.html";
+	}
+	
+	@RequestMapping(value = "/user/savePassword", method = RequestMethod.POST)
+	@ResponseBody
+	public GenericResponse savePassword(Locale locale, String newPassword) {//problema que tengo es que no puedo recuperar el usuario que quiere recuperar la contraseña
+		System.out.println("\n\n\n" + SecurityContextHolder.getContext().getAuthentication().getName() + "\n\n\n");
+	    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	   // String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		user_service.changeUserPassword(user, newPassword);
+	    return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
 	}
 }

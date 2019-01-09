@@ -44,7 +44,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.cors().and()
 			.csrf().disable()
-			.authorizeRequests().antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
+			.authorizeRequests().antMatchers(LOGIN_URL, "/user/resetPassword*","/user/changePassword*", "/user/savePassword*").permitAll()
 			.anyRequest().authenticated().and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()));
@@ -55,7 +55,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		// Se define la clase que recupera los usuarios y el algoritmo para procesar las passwords
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
-
+	
+	/*@Override
+	public void configure(org.springframework.security.config.annotation.web.builders.WebSecurity web) throws Exception {
+		web
+			.ignoring().antMatchers("/user/resetPassword").antMatchers("/user/changePassword");
+	}*/
+	
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

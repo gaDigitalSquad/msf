@@ -1,6 +1,7 @@
 package ar.com.academy.mfs.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +24,12 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 
 	@Query(value = "select * from msf.group where supervisor_id = ?1 limit 1", nativeQuery = true)
 	Group findUserGroup(int supervisor_id);
+	
+	@Query(value = "select group_number from msf.group where zone_id = ?1", nativeQuery = true)
+	Set<Integer> findAllbyZoneId(int zone_id);
+
+	@Query(value = "select zone_id from msf.group", nativeQuery = true)
+	Set<Integer> findAllZones();
 	
 	
 

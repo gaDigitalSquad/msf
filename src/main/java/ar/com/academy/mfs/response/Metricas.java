@@ -6,6 +6,7 @@ public class Metricas {
 	private float monto;
 	private float horasTrabajadas;
 	private float sociosHora;
+	private float montoPromedio;
 	
 	public Metricas(float cantidadSocios, float monto, float horasTrabajadas, float sociosHora) {
 		super();
@@ -13,6 +14,7 @@ public class Metricas {
 		this.monto = monto;
 		this.horasTrabajadas = horasTrabajadas;
 		this.sociosHora = sociosHora;
+		this.montoPromedio = monto/horasTrabajadas;
 	}
 	public float getCantidadSocios() {
 		return cantidadSocios;
@@ -37,6 +39,12 @@ public class Metricas {
 	}
 	public void setSociosHora(float sociosHora) {
 		this.sociosHora = sociosHora;
+	}
+	public float getMontopromedio() {
+		return montoPromedio;
+	}
+	public void setMontopromedio(float montopromedio) {
+		this.montoPromedio = montopromedio;
 	}
 	
 }
