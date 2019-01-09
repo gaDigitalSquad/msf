@@ -25,7 +25,7 @@ public class FormRequest {
 	private String mobileNumber;
 	private String email;
 	private boolean didYouKnowMsf;
-	private String cardType;
+	private int cardType;
 	private String cardNumber;
 	private Date cardExpirationDate;
 	private String cbu;
@@ -186,11 +186,11 @@ public class FormRequest {
 		this.didYouKnowMsf = didYouKnowMsf;
 	}
 
-	public String getCardType() {
+	public int getCardType() {
 		return cardType;
 	}
 
-	public void setCardType(String cardType) {
+	public void setCardType(int cardType) {
 		this.cardType = cardType;
 	}
 

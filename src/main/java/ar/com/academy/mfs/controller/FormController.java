@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.academy.mfs.model.CardType;
@@ -24,6 +25,7 @@ import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.request.FormRequest;
+import ar.com.academy.mfs.request.FormRequestMobile;
 import ar.com.academy.mfs.service.FormService;
 
 @RestController
@@ -43,7 +45,7 @@ public class FormController {
 	@Autowired
 	private CardTypeRepository cardTypeRepository;
 	
-	@PostMapping("/form")
+	@PostMapping("/formBack")
 	public ResponseEntity<?> createForm(@RequestBody ArrayList<FormRequest> listOfForm) {
 		List<Form> formsSaved = new ArrayList<>();
 		for(FormRequest inputForm: listOfForm) {
@@ -56,7 +58,10 @@ public class FormController {
 			if(zone == null) 
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid zone");
 			//System.out.println("\n\n\nHasta el tipo de carta llega 3\n\n\n");
-			CardType cardType = cardTypeRepository.findByCode(inputForm.getCardType());
+			//CardType cardType = cardTypeRepository.findByCode(inputForm.getCardType());
+			//if(cardType == null) 
+				//return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
+			CardType cardType = cardTypeRepository.findByCardTypeId(inputForm.getCardType());
 			if(cardType == null) 
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
 			//System.out.println("\n\n\nHasta el tipo de carta llega 4\n\n\n");
@@ -66,6 +71,18 @@ public class FormController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
 	}
 	
+	@PostMapping("/form")
+	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm){
+		List<Form> formsSaved = new ArrayList<>();
+		for(FormRequestMobile inputForm: listOfForm) {
+			User user = userRepository.findByUsername(inputForm.getCompletedByUser());
+			if(user == null) 
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
+			Form form = formService.createForm(inputForm, user.getUser_id());
+			formsSaved.add(form);
+		}
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
+	}
 	
 	@GetMapping("/form/{dni}")
 	public Form getFormByDni(@PathVariable int dni) {

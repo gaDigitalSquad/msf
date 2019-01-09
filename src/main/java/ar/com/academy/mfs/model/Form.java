@@ -151,6 +151,20 @@ public class Form implements Serializable{
 
 
 
+	public Form(int user_id, String firstname, String lastname, int dni, String mobileNumber, String email,
+			float monthlyAmountContribution) {
+		super();
+		this.completed_by_user_id = user_id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.dni = dni;
+		this.mobile_number = mobileNumber;
+		this.email = email;
+		this.monthly_amount_contribution = monthlyAmountContribution;
+	}
+
+
+
 	public long getCompleted_by_user_id() {
 		return completed_by_user_id;
 	}

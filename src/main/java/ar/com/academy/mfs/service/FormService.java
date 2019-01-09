@@ -12,6 +12,7 @@ import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.request.FormRequest;
+import ar.com.academy.mfs.request.FormRequestMobile;
 
 @Service("formService")
 public class FormService {
@@ -101,6 +102,19 @@ public class FormService {
 		if(form.getCard_expiration_date()!=null)
 			formActual.setCard_expiration_date(form.getCard_expiration_date());
 		Form formSaved = formRepository.save(formActual);
+		return formSaved;
+	}
+
+	public Form createForm(FormRequestMobile inputForm, int user_id) {
+		Form formToSave = new Form(user_id, 
+				inputForm.getFirstname(), 
+				inputForm.getLastname(), 
+				inputForm.getDni(), 
+				inputForm.getMobileNumber(), 
+				inputForm.getEmail(), 
+				inputForm.getMonthlyAmountContribution());
+		
+		Form formSaved = formRepository.save(formToSave);
 		return formSaved;
 	}
 	
