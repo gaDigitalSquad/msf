@@ -71,10 +71,6 @@ public class WorkingDayController {
 		Zone zone = zoneRepository.findById(group.getZone_id()).get();
 		if(zone == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Zona no valida");
 		
-		//System.out.println(group.getArea_id());
-		Area area = areaRepository.findById(group.getArea_id()).get();
-		if(area == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Area no valida");
-		
 		DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
 		long diff = workingDayRequest.getTo_hour().getTime() - workingDayRequest.getFrom_hour().getTime();
 		
@@ -88,7 +84,6 @@ public class WorkingDayController {
 												workingDayRequest.getFrom_hour(), 
 												workingDayRequest.getTo_hour(), 
 												zone.getZoneId(),
-												area.getArea_id(),
 												workingDayRequest.getAmountOfNewPartners(), 
 												(float)workingDayRequest.getTotalAmount(), 
 												workingDayRequest.getObservations(),
@@ -221,4 +216,25 @@ public class WorkingDayController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
 	}
+	
+	@GetMapping("/workingDay/group/{lider_id}")
+	public ResponseEntity<?> getGroupWorkingDay(@PathVariable int lider_id, @RequestBody Date dateRequest){
+	   Optional<User> user = userRepository.findById(lider_id);
+	   if(!user.isPresent())
+	      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El lider solicitado no existe");
+	   else if(user.get().getRole_id() != 3)
+	      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario solicitado no es un lider");
+	   else {
+	      User lider = user.get();
+	      List<User> sensibilizadores = userService.getMySens(lider.getUser_id());
+	      sensibilizadores.add(lider);
+	      List<WorkingDay> workingDaysGroup = new ArrayList<>();
+	      for (User userToGet: sensibilizadores){
+	         WorkingDay userWorkDay = workingDayService.getWorkingDay(userToGet.getUser_id(), dateRequest);
+	         workingDaysGroup.add(userWorkDay);
+	      }
+	      return ResponseEntity.status(HttpStatus.OK).body(workingDaysGroup);
+	   }
+	}
+
 }

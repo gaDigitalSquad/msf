@@ -41,9 +41,6 @@ public class WorkingDay {
 	@Column(name = "zone_id")
 	private int zone;
 	
-	@Column(name = "area_id")
-	private int area;
-	
 	@Column(name = "amount_of_new_partners")
 	private int amountOfNewPartners;
 	
@@ -63,7 +60,7 @@ public class WorkingDay {
 	}
 	
 	public WorkingDay(int supervisor, int user, boolean isPresent, Date workingDate, Time from_hour, Time to_hour,
-			int zone, int area, int amountOfNewPartners, float totalAmount, String observations, int hours_worked) {
+			int zone, int amountOfNewPartners, float totalAmount, String observations, int hours_worked) {
 		super();
 		this.supervisor = supervisor;
 		this.user = user;
@@ -72,7 +69,6 @@ public class WorkingDay {
 		this.from_hour = from_hour;
 		this.to_hour = to_hour;
 		this.zone = zone;
-		this.area = area;
 		this.amountOfNewPartners = amountOfNewPartners;
 		this.totalAmount = totalAmount;
 		this.observations = observations;
@@ -157,14 +153,6 @@ public class WorkingDay {
 	}
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
-	}
-
-	public int getArea_id() {
-		return area;
-	}
-
-	public void setArea_id(int area) {
-		this.area = area;
 	}
 
 	public int getHours_worked() {

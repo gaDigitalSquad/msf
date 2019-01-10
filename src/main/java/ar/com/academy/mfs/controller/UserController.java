@@ -52,16 +52,12 @@ public class UserController {
 	private UserService user_service;
 	@Autowired
 	private RoleRepository role_repository;
-	
 	@Autowired
 	private JavaMailSender mailSender;
-	
 	@Autowired
 	private MessageSource messages;
-	
 	@Autowired
 	private SecurityService securityService;
-	
 	
 	public UserController(UserRepository user_repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.user_repository = user_repository;

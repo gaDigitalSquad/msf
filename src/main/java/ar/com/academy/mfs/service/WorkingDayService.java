@@ -1,5 +1,6 @@
 package ar.com.academy.mfs.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,5 +60,9 @@ public class WorkingDayService {
 		
 		return m;
 	}
+	
+	public WorkingDay getWorkingDay(int user_id, Date date){
+		   return workingDayRepository.findByWorkingDateAndUser(user_id, date);
+		}
 
 }

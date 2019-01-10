@@ -1,8 +1,6 @@
 package ar.com.academy.mfs.controller;
 
 import java.util.List;
-import java.util.Set;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +59,7 @@ public class GroupController {
 		List<Integer> sens = groupRequest.getSens();
 		for (int i = 0; i < sens.size(); i++) {
 			User sensibilizador = userRepository.findById(sens.get(i)).get();
-			Group g = new Group(zone.getZoneId(), supervisor.getUser_id(), sensibilizador.getUser_id(), numberGroup, area.getArea_id());
+			Group g = new Group(zone.getZoneId(), supervisor.getUser_id(), sensibilizador.getUser_id(), numberGroup);
 			sensibilizador.setGroup_number(g.getGroup_number());
 			supervisor.setGroup_number(g.getGroup_number());
 			groupRepository.save(g);
@@ -75,8 +73,8 @@ public class GroupController {
 	}
 	
 	@GetMapping("/groups/{zone_id}")
-	public Set<?> getGroupsByZone(@PathVariable int zone_id) {
-		return groupService.getGroupsByZone(zone_id);
+	public List<Group> getGroupsByZone(@PathVariable int zone_id) {
+		 return groupService.getGroupsByZone(zone_id);
 	}
 	
 //	@GetMapping("/group/{supervisor_id}")

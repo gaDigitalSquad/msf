@@ -25,16 +25,13 @@ public class Group implements Serializable {
 	private long group_id;
 	
  	@Column(name = "supervisor_id") //LIDER
-	private int supervisor;
+	private int supervisor_id;
 	
 	@Column(name="supervised_id") // SENSIBILIZADOR
-	private int supervised;
+	private int supervised_id;
 	
 	@Column(name="zone_id")
 	private int zone_id;
-	
-	@Column(name = "area_id")
-	private int area_id;
 	
 	@Column(name="from_date")
 	private Date from_date;
@@ -44,6 +41,9 @@ public class Group implements Serializable {
 	
 	@Column(name = "group_number")
 	private int group_number;
+	
+	@Column(name = "turn")
+	private String turn;
 
 	public Group() {
 		
@@ -52,33 +52,32 @@ public class Group implements Serializable {
 	public Group(int zone_id, int supervisor_id, int supervised_id) {
 		super();
 		this.zone_id = zone_id;
-		this.supervisor = supervisor_id;
-		this.supervised = supervised_id;
+		this.supervisor_id = supervisor_id;
+		this.supervised_id = supervised_id;
 	}
 	
-	public Group(int zone_id, int supervisor_id, int supervised_id, int group_number, int area_id) {
+	public Group(int zone_id, int supervisor_id, int supervised_id, int group_number) {
 		super();
 		this.zone_id = zone_id;
-		this.supervisor = supervisor_id;
-		this.supervised = supervised_id;
+		this.supervisor_id = supervisor_id;
+		this.supervised_id = supervised_id;
 		this.group_number = group_number;
-		this.area_id = area_id;
 	}
 
 	public int getSupervisor() {
-		return supervisor;
+		return supervisor_id;
 	}
 
 	public void setSupervisor(int supervisor_id) {
-		this.supervisor = supervisor_id;
+		this.supervisor_id = supervisor_id;
 	}
 
 	public int getSupervised() {
-		return supervised;
+		return supervised_id;
 	}
 
 	public void setSupervised(int supervised_id) {
-		this.supervised = supervised_id;
+		this.supervised_id = supervised_id;
 	}
 
 	public int getZone_id() {
@@ -117,12 +116,12 @@ public class Group implements Serializable {
 		this.group_number = group_number;
 	}
 
-	public int getArea_id() {
-		return area_id;
+	public String getTurn() {
+		return turn;
 	}
 
-	public void setArea_id(int area_id) {
-		this.area_id = area_id;
+	public void setTurn(String turn) {
+		this.turn = turn;
 	}
 
 }

@@ -30,7 +30,7 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 	@Query(value = "select zone_id from msf.group", nativeQuery = true)
 	Set<Integer> findAllZones();
 
-	@Query(value = "select distinct on (group_number) group_number, zone_id, group_id, turn from msf.group where zone_id = 1", nativeQuery = true)
-	Set<?> findByZone(int zone_id);
+	@Query(value = "select distinct on (group_number) group_id, supervisor_id, supervised_id, zone_id, from_date, to_date, group_number, turn from msf.group where zone_id = ?1", nativeQuery = true)
+	List<Group> findByZone(int zone_id);
 
 }

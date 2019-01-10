@@ -23,7 +23,7 @@ public class ZoneService {
 		return zoneRepository.findByZoneName(zone_name);
 	}
 
-	public Zone getZoneByZone_id(long zone_id) {
+	public Zone getZoneByZone_id(int zone_id) {
 		return zoneRepository.findByZoneId(zone_id);
 	}
 
