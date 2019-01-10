@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import ar.com.academy.mfs.error.NotUserFoundException;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.WorkingDay;
 import ar.com.academy.mfs.repository.UserRepository;
@@ -36,11 +35,10 @@ public class WorkingDayService {
 //		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
 //	}
 	
-	public Metricas getMetricasUsuario(int user_id, DateRequest dateRequest) throws NotUserFoundException {
+	public Metricas getMetricasUsuario(int user_id, DateRequest dateRequest) {
 		
 		User user = userRepository.findById(user_id).get();
-		//if(user == null) 
-		//	throw new NotUserFoundException();
+		
 		
 		List<WorkingDay> workingDays = workingDayRepository.findByWorkingDateBetweenAndUser(user.getUser_id(), dateRequest.getFrom(), dateRequest.getTo());
 		

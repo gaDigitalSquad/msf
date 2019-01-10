@@ -1,6 +1,7 @@
 package ar.com.academy.mfs.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -29,7 +30,6 @@ import ar.com.academy.mfs.request.GroupRequest;
 public class GroupController {
 	@Autowired
 	GroupService groupService;
-	
 	@Autowired
 	GroupRepository groupRepository;
 	@Autowired
@@ -72,6 +72,11 @@ public class GroupController {
 	@GetMapping("/group/{group_number}")
 	public Group getGroupByGroupNumber(@PathVariable int group_number) {
 		return groupService.getGroupByGroupNumber(group_number);
+	}
+	
+	@GetMapping("/groups/{zone_id}")
+	public Set<?> getGroupsByZone(@PathVariable int zone_id) {
+		return groupService.getGroupsByZone(zone_id);
 	}
 	
 //	@GetMapping("/group/{supervisor_id}")

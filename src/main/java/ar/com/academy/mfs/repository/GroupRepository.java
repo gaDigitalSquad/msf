@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import ar.com.academy.mfs.model.Group;
-import ar.com.academy.mfs.model.User;
 
 public interface GroupRepository extends JpaRepository<Group, Integer> {
 	
@@ -30,7 +29,8 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 
 	@Query(value = "select zone_id from msf.group", nativeQuery = true)
 	Set<Integer> findAllZones();
-	
-	
+
+	@Query(value = "select distinct on (group_number) group_number, zone_id, group_id, turn from msf.group where zone_id = 1", nativeQuery = true)
+	Set<?> findByZone(int zone_id);
 
 }

@@ -2,6 +2,7 @@ package ar.com.academy.mfs.service;
 
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,10 @@ public class GroupService {
 	
 	public Group findGroup(int supervisor_id) {
 		return groupRepository.findUserGroup(supervisor_id);
+	}
+
+	public Set<?> getGroupsByZone(int zone_id) {
+		return groupRepository.findByZone(zone_id);
 	}
 
 	

@@ -1,5 +1,6 @@
 package ar.com.academy.mfs.controller;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,9 +26,6 @@ import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.request.WorkingDayRequest;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.service.WorkingDayService;
-import ar.com.academy.mfs.error.NotGroupFoundException;
-import ar.com.academy.mfs.error.NotLiderException;
-import ar.com.academy.mfs.error.NotUserFoundException;
 import ar.com.academy.mfs.model.Area;
 import ar.com.academy.mfs.model.Group;
 import ar.com.academy.mfs.model.User;
@@ -101,6 +99,13 @@ public class WorkingDayController {
 		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
 	}
 	
+	@GetMapping("/workingDay/{user_id}")
+	@ResponseBody
+	public ResponseEntity<?> getWorkingDay(@PathVariable int user_id, @RequestBody Date date){
+		WorkingDay day = workingDayRepository.findByWorkingDateAndUser(user_id, date);
+		return ResponseEntity.status(HttpStatus.OK).body(day);
+	}
+	
 	// Con el ID del usuario vamos a buscar todos los socios que consiguio en cierto periodo de tiempo
 	@PostMapping("/workingDay/{user_id}")
 	@ResponseBody ResponseEntity<?> getMetricasUsuario(@PathVariable int user_id, @RequestBody DateRequest dateRequest) {
@@ -130,7 +135,7 @@ public class WorkingDayController {
 	
 	@PostMapping("/workingDay/lider/{user_id}")
 	@ResponseBody
-	public ResponseEntity<?> getMetricasDeMisSensibilizadores(@PathVariable int user_id, @RequestBody DateRequest dateRequest) throws NotUserFoundException, NotLiderException{
+	public ResponseEntity<?> getMetricasDeMisSensibilizadores(@PathVariable int user_id, @RequestBody DateRequest dateRequest) {
 		Optional<User> user = userRepository.findById(user_id);
 		if(!user.isPresent())
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El lider solicitado no existe");
@@ -151,7 +156,7 @@ public class WorkingDayController {
 	
 	@PostMapping("/workingDay/group/{group_number}")
 	@ResponseBody
-	public ResponseEntity<?> getMetricasGroup(@PathVariable int group_number, @RequestBody DateRequest dateRequest) throws NotGroupFoundException, NotUserFoundException{
+	public ResponseEntity<?> getMetricasGroup(@PathVariable int group_number, @RequestBody DateRequest dateRequest) {
 		Group group = groupRepository.findByGroupNumber(group_number);
 		if(group==null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El grupo no existe");
@@ -171,7 +176,7 @@ public class WorkingDayController {
 	
 	@PostMapping("/workingDay/zone/{zone_id}")
 	@ResponseBody
-	public ResponseEntity<?> getMetricasZone(@PathVariable int zone_id, @RequestBody DateRequest dateRequest) throws NotUserFoundException{
+	public ResponseEntity<?> getMetricasZone(@PathVariable int zone_id, @RequestBody DateRequest dateRequest) {
 		Set<Integer> groupsOfZone = new HashSet<>();
 		groupsOfZone = groupRepository.findAllbyZoneId(zone_id);
 		List<UserMetricas> metricasDeSensibilizadoresLider = new ArrayList<>();
@@ -193,7 +198,7 @@ public class WorkingDayController {
 	
 	@PostMapping("/workingDay/general")
 	@ResponseBody
-	public ResponseEntity<?> getMetricasGeneral(@RequestBody DateRequest dateRequest) throws NotUserFoundException{
+	public ResponseEntity<?> getMetricasGeneral(@RequestBody DateRequest dateRequest){
 		Set<Integer> allZones = new HashSet<>();
 		allZones = groupRepository.findAllZones();
 		List<UserMetricas> metricasDeSensibilizadoresLider = new ArrayList<>();
