@@ -22,9 +22,9 @@ public class GroupService {
 		return group;
 	}
 
-	public List<Group> getSupervisedBySupervisorId(long supervisor_id) {
-		return groupRepository.findBySupervisor(supervisor_id);
-	}
+//	public List<Group> getSupervisedBySupervisorId(int supervisor_id) {
+//		return groupRepository.findBySupervisor_id(supervisor_id);
+//	}
 
 	public Group getGroupByGroupNumber(int group_number) {
 		return groupRepository.findByGroupNumber(group_number);
@@ -34,8 +34,8 @@ public class GroupService {
 		return groupRepository.findUserGroup(supervisor_id);
 	}
 
-	public List<Group> getGroupsByZone(int zone_id) {
-		return groupRepository.findByZone(zone_id);
-	}
+//	public List<Group> getGroupsByZone(int zone_id) {
+//		return groupRepository.findByZone(zone_id);
+//	}
 	
 }

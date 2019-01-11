@@ -61,8 +61,8 @@ public class WorkingDayService {
 		return m;
 	}
 	
-	public WorkingDay getWorkingDay(int user_id, Date date){
-		   return workingDayRepository.findByWorkingDateAndUser(user_id, date);
+	public WorkingDay getWorkingDay(int user_id, DateRequest date){
+		   return workingDayRepository.findByWorkingDateAndUser(user_id, date.getTo());
 		}
 
 }

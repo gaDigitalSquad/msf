@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -218,7 +219,7 @@ public class WorkingDayController {
 	}
 	
 	@GetMapping("/workingDay/group/{lider_id}")
-	public ResponseEntity<?> getGroupWorkingDay(@PathVariable int lider_id, @RequestBody Date dateRequest){
+	public ResponseEntity<?> getGroupWorkingDay(@PathVariable int lider_id, @RequestBody DateRequest dateRequest){
 	   Optional<User> user = userRepository.findById(lider_id);
 	   if(!user.isPresent())
 	      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El lider solicitado no existe");
@@ -231,8 +232,14 @@ public class WorkingDayController {
 	      List<WorkingDay> workingDaysGroup = new ArrayList<>();
 	      for (User userToGet: sensibilizadores){
 	         WorkingDay userWorkDay = workingDayService.getWorkingDay(userToGet.getUser_id(), dateRequest);
-	         workingDaysGroup.add(userWorkDay);
+	         if(userWorkDay != null){
+				 workingDaysGroup.add(userWorkDay);
+			 }
 	      }
+	      System.out.println(CollectionUtils.isEmpty(workingDaysGroup));
+	      if(CollectionUtils.isEmpty(workingDaysGroup)){
+	      	return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No se ha cargado el workingDay de ese dia");
+		  }
 	      return ResponseEntity.status(HttpStatus.OK).body(workingDaysGroup);
 	   }
 	}

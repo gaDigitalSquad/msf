@@ -71,11 +71,11 @@ public class GroupController {
 	public Group getGroupByGroupNumber(@PathVariable int group_number) {
 		return groupService.getGroupByGroupNumber(group_number);
 	}
-	
-	@GetMapping("/groups/{zone_id}")
-	public List<Group> getGroupsByZone(@PathVariable int zone_id) {
-		 return groupService.getGroupsByZone(zone_id);
-	}
+//	
+//	@GetMapping("/groups/{zone_id}")
+//	public List<Group> getGroupsByZone(@PathVariable int zone_id) {
+//		 return groupService.getGroupsByZone(zone_id);
+//	}
 	
 //	@GetMapping("/group/{supervisor_id}")
 //	public List<Group> getSupervisedBySupervisorId(@PathVariable long supervisor_id) {
