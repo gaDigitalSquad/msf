@@ -150,7 +150,7 @@ public class WorkingDayController {
 		}
 	}
 	
-	@PostMapping("/workingDay/group/{group_number}")
+	@PostMapping("/metrics/group/{group_number}")
 	@ResponseBody
 	public ResponseEntity<?> getMetricasGroup(@PathVariable int group_number, @RequestBody DateRequest dateRequest) {
 		Group group = groupRepository.findByGroupNumber(group_number);
@@ -218,7 +218,7 @@ public class WorkingDayController {
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
 	}
 	
-	@GetMapping("/workingDay/group/{lider_id}")
+	@PostMapping("/workingDay/group/{lider_id}")
 	public ResponseEntity<?> getGroupWorkingDay(@PathVariable int lider_id, @RequestBody DateRequest dateRequest){
 	   Optional<User> user = userRepository.findById(lider_id);
 	   if(!user.isPresent())

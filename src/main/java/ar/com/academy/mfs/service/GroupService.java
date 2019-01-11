@@ -34,8 +34,8 @@ public class GroupService {
 		return groupRepository.findUserGroup(supervisor_id);
 	}
 
-//	public List<Group> getGroupsByZone(int zone_id) {
-//		return groupRepository.findByZone(zone_id);
-//	}
+	public List<Group> getGroupsByZone(int zone_id) {
+		return groupRepository.findByZone(zone_id);
+	}
 	
 }
