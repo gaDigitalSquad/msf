@@ -11,6 +11,7 @@ public class UserRequest {
 	private int phoneNumber;
 	private String documentType;
 	private int documentNumber;
+	private int zone_id;
 	
 	public UserRequest() {
 		
@@ -65,8 +66,10 @@ public class UserRequest {
 	public void setDocumentNumber(int documentNumber) {
 		this.documentNumber = documentNumber;
 	}
-	
-	
-	
-	
+	public int getZone_id() {
+		return zone_id;
+	}
+	public void setZone_id(int zone_id) {
+		this.zone_id = zone_id;
+	}
 }

@@ -4,17 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import ar.com.academy.mfs.model.UserState;
 
 @Entity
 @Table(name="user",schema="msf")
@@ -55,9 +48,13 @@ public class User implements Serializable {
 	private boolean active = true;
 	
 	@Column (name = "group_number")
-	private Integer group_number = null;
+	private Integer group_number = 0;
 	
-
+	@Column (name = "zone_id")
+	private int zone_id;
+	
+	@Column (name = "user_state_id")
+	private int user_state_id;
 	
 	public int getUser_id() {
 		return user_id;
@@ -71,7 +68,6 @@ public class User implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	
 	public int getRole_id() {
 		return role_id;
 	}
@@ -84,8 +80,6 @@ public class User implements Serializable {
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
-	
 	public String getDocumentType() {
 		return documentType;
 	}
@@ -104,7 +98,6 @@ public class User implements Serializable {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
 	public String getUsername() {
 		return username;
 	}
@@ -120,12 +113,23 @@ public class User implements Serializable {
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
-	
 	public Integer getGroup_number() {
 		return group_number;
 	}
 	public void setGroup_number(Integer group_number) {
 		this.group_number = group_number;
+	}
+	public int getZone_id() {
+		return zone_id;
+	}
+	public void setZone_id(int zone_id) {
+		this.zone_id = zone_id;
+	}
+	public int getUser_state_id() {
+		return user_state_id;
+	}
+	public void setUser_state_id(int user_state_id) {
+		this.user_state_id = user_state_id;
 	}
 	
 	@Override
@@ -138,7 +142,7 @@ public class User implements Serializable {
 	}
 	
 	public User(String username, String password, String firstname, String lastname, int role_id, int phoneNumber,
-			String documentType, int documentNumber) {
+			String documentType, int documentNumber, int zone_id) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -148,20 +152,7 @@ public class User implements Serializable {
 		this.phoneNumber = phoneNumber;
 		this.documentType = documentType;
 		this.documentNumber = documentNumber;
-	}
-//	public User(UserRequest ur) {
-//		super();
-//		this.username= ur.getUsername();
-//		this.firstname =ur.getFirstname();
-//		this.lastname = ur.getLastname();
-//		this.role = ur.getRole();
-//		this.phoneNumber = ur.getPhoneNumber();
-//		this.documentType = ur.getDocumentType();
-//		this.documentNumber = ur.getDocumentNumber();
-//		this.active = true;
-//		this.user_state_id = ur.getUser_state_id();
-//	}
-
-	
-	
+		this.zone_id = zone_id;
+		this.user_state_id = 1;
+	}	
 }

@@ -32,5 +32,8 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 
 	@Query(value = "select distinct on (group_number) group_id, supervisor_id, supervised_id, zone_id, from_date, to_date, group_number, turn from msf.group where zone_id = ?1", nativeQuery = true)
 	List<Group> findByZone(int zone_id);
+	
+	@Query(value = "select supervised_id from msf.group where group_number = ?1", nativeQuery = true)
+	List<Integer> findGroupSens(int group_number);
 
 }

@@ -2,16 +2,11 @@ package ar.com.academy.mfs.controller;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 
-import javax.mail.Message;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import java.util.Properties;
-
-import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -21,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +29,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ar.com.academy.mfs.model.User;
+import ar.com.academy.mfs.model.Zone;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
+import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.security.JWTAuthenticationFilter;
 import ar.com.academy.mfs.security.SecurityService;
 import ar.com.academy.mfs.service.UserService;
@@ -53,6 +51,8 @@ public class UserController {
 	@Autowired
 	private RoleRepository role_repository;
 	@Autowired
+	private ZoneRepository zoneRepository;
+	@Autowired
 	private JavaMailSender mailSender;
 	@Autowired
 	private MessageSource messages;
@@ -64,13 +64,18 @@ public class UserController {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
-	@PostMapping("/users") // para guardar nuevos usuarios 
+	// Creación de un usuario
+	
+	@PostMapping("/users") 
 	@ResponseBody ResponseEntity postUser(@Valid @RequestBody UserRequest userRequest) {
 		if(user_repository.findByUsername(userRequest.getUsername()) != null)
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists!");
 		
 		Role role = role_repository.findByRoleName(userRequest.getRole());
 		if(role == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid role");
+		
+		Zone zone = zoneRepository.findById(userRequest.getZone_id()).get();
+		if(zone == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Zona no válida");
 		
 		User user = new User(userRequest.getUsername(), 
 							userRequest.getPassword(), 
@@ -79,7 +84,8 @@ public class UserController {
 							role.getRoleId(), 
 							userRequest.getPhoneNumber(), 
 							userRequest.getDocumentType(), 
-							userRequest.getDocumentNumber());
+							userRequest.getDocumentNumber(),
+							userRequest.getZone_id());
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user_repository.save(user);
 		return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -122,15 +128,26 @@ public class UserController {
 		return user_service.getMySens(supervisor_id);
 	}
 	
-	@PutMapping("/users/{user_id}")
+	// Obtengo los sensibilizadores de un determinado grupo por número de grupo
+	
+	@GetMapping("/getGroupSens/{group_number}")
+	public List<User> getGroupSens(@PathVariable int group_number) {
+		return user_service.getGroupSens(group_number);
+	}
+	// Actualizar usuario sin tener que pasarle la contraseña
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@PutMapping("/update-user/{user_id}")
 	@ResponseBody ResponseEntity<?> putUser(@PathVariable int user_id, @RequestBody UserRequest userRequest) {
 		User user = user_repository.findById(user_id).get();
 		if(updateUser(userRequest, user)) return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
 	}
 	
-	@PatchMapping("/users/{user_id}")
-	@ResponseBody ResponseEntity<?> patchUser(@PathVariable int user_id, @RequestBody UserRequest userRequest) {
+
+	
+	@PatchMapping("/update-user/{user_id}")
+	@ResponseBody ResponseEntity<?> patchUser(@Valid @PathVariable int user_id, @RequestBody UserRequest userRequest) {
 		User user = user_repository.findById(user_id).get();
 		if(updateUser(userRequest, user)) return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
@@ -139,13 +156,14 @@ public class UserController {
 	private boolean updateUser(@RequestBody UserRequest userRequest, User user) {
 		if(user != null) {
 			if(userRequest.getUsername() != null) user.setUsername(userRequest.getUsername());
-			if(userRequest.getPassword() != null) user.setPassword(userRequest.getPassword());
+//			if(userRequest.getPassword() != null) user.setPassword(userRequest.getPassword());
 			if(userRequest.getFirstname() != null) user.setFirstname(userRequest.getFirstname());
 			if(userRequest.getLastname() != null) user.setLastname(userRequest.getLastname());
 			if(userRequest.getRole() != null) user.setRole_id(role_repository.findByRoleName(userRequest.getRole()).getRoleId());
 			if(userRequest.getPhoneNumber() > 0) user.setPhoneNumber(userRequest.getPhoneNumber());
 			if(userRequest.getDocumentType() != null) user.setDocumentType(userRequest.getDocumentType());
 			if(userRequest.getDocumentNumber() > 0) user.setDocumentNumber(userRequest.getDocumentNumber());
+			if(userRequest.getZone_id() > 0) user.setZone_id(userRequest.getZone_id());
 			user_repository.save(user);
 			return true;
 		}

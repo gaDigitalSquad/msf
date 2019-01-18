@@ -54,7 +54,10 @@ public class WorkingDay {
 	private boolean completed;
 	
 	@Column(name = "hours_worked")
-	private int hours_worked; 
+	private int hours_worked;
+	
+	@Column(name = "group_number")
+	private int group_number;
 	
 	public WorkingDay() {
 	}
@@ -161,5 +164,13 @@ public class WorkingDay {
 
 	public void setHours_worked(int hours_worked) {
 		this.hours_worked = hours_worked;
+	}
+
+	public int getGroup_number() {
+		return group_number;
+	}
+
+	public void setGroup_number(int group_number) {
+		this.group_number = group_number;
 	}
 }

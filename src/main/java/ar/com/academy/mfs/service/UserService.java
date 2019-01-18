@@ -168,7 +168,6 @@ public class UserService {
 	public List<User> getMySens(int supervisor_id) {
 		List<User> mySens = new ArrayList<User>();
 		List<Integer> sensId = groupRepository.findMySens(supervisor_id);
-		System.out.println("sensId: " + sensId);
 		for (int i = 0; i < sensId.size(); i++) {
 			User u = userRepository.findById(sensId.get(i)).get();
 			mySens.add(u);
@@ -184,6 +183,16 @@ public class UserService {
 	public void changeUserPassword(User user, String password) {
 	    user.setPassword(bCryptPasswordEncoder.encode(password));
 	    userRepository.save(user);
+	}
+
+	public List<User> getGroupSens(int group_number) {
+		List<User> mySens = new ArrayList<User>();
+		List<Integer> sensId = groupRepository.findGroupSens(group_number);
+		for (int i = 0; i < sensId.size(); i++) {
+			User u = userRepository.findById(sensId.get(i)).get();
+			mySens.add(u);
+		}
+		return mySens;
 	}
 
 }
