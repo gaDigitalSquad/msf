@@ -98,7 +98,9 @@ public class UserController {
 	
 	@GetMapping("/users/{username}")
 	public User getUser(@PathVariable String username) {
-		return user_service.findByUsername(username);
+		User u = user_service.findByUsername(username);
+		System.out.println(u.isCompleted());
+		return u;
 	}
 	
 	@PostMapping("/signup") //devolver el token, cuando crea un nuevo usuario

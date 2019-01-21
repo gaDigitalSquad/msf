@@ -56,6 +56,9 @@ public class User implements Serializable {
 	@Column (name = "user_state_id")
 	private int user_state_id;
 	
+	@Column (name = "completed")
+	private boolean completed = false;
+	
 	public int getUser_id() {
 		return user_id;
 	}
@@ -131,6 +134,12 @@ public class User implements Serializable {
 	public void setUser_state_id(int user_state_id) {
 		this.user_state_id = user_state_id;
 	}
+	public boolean isCompleted() {
+		return completed;
+	}
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
 	
 	@Override
 	public String toString() {
@@ -154,5 +163,6 @@ public class User implements Serializable {
 		this.documentNumber = documentNumber;
 		this.zone_id = zone_id;
 		this.user_state_id = 1;
+		this.completed = false;
 	}	
 }

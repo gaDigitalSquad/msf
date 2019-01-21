@@ -84,11 +84,10 @@ public class FormController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
 	}
 	
-	@GetMapping("/form/{dni}")
+	@GetMapping("/get-form/{dni}")
 	public Form getFormByDni(@PathVariable int dni) {
-		Form formToReturn = formService.getFormByDni(dni);
-		//return new ResponseEntity<Form>(formToReturn, HttpStatus.ACCEPTED);
-		return formToReturn;
+		return formService.getFormByDni(dni);
+	
 	}
 	
 	@PutMapping("/form/{dni}")
