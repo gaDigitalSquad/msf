@@ -146,7 +146,7 @@ public class UserService {
 		List<User> leadersWithoutGroup = new ArrayList<User>();
 		List<User> users = userRepository.findAll();
 		for (int i = 0; i < users.size(); i++) {
-			if (users.get(i).getGroup_number() == null && users.get(i).getRole_id() == 3) {
+			if (users.get(i).getGroup_number() == 0 && users.get(i).getRole_id() == 3) {
 				leadersWithoutGroup.add(users.get(i));
 			}
 		}
@@ -158,7 +158,7 @@ public class UserService {
 		List<User> sensWithoutGroup = new ArrayList<User>();
 		List<User> users = userRepository.findAll();
 		for (int i = 0; i < users.size(); i++) {
-			if (users.get(i).getGroup_number() == null && users.get(i).getRole_id() == 2) {
+			if (users.get(i).getGroup_number() == 0 && users.get(i).getRole_id() == 2) {
 				sensWithoutGroup.add(users.get(i));
 			}
 		}

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.academy.mfs.model.Group;
+import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 
@@ -36,6 +37,14 @@ public class GroupService {
 
 	public List<Group> getGroupsByZone(int zone_id) {
 		return groupRepository.findByZone(zone_id);
+	}
+
+	public List<Group> getGroupsByZoneAndTurn(int zone_id, String turn) {
+		return groupRepository.findByZoneAndTurn(zone_id, turn);
+	}
+
+	public int getGroupLeader(int group_number) {
+		return groupRepository.findLeaderByGroupNumber(group_number);
 	}
 	
 }

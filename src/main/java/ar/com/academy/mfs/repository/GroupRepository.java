@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import ar.com.academy.mfs.model.Group;
+import ar.com.academy.mfs.model.User;
 
 public interface GroupRepository extends JpaRepository<Group, Integer> {
 	
@@ -35,5 +36,11 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 	
 	@Query(value = "select supervised_id from msf.group where group_number = ?1", nativeQuery = true)
 	List<Integer> findGroupSens(int group_number);
-
+	
+	@Query(value = "select distinct on (group_number) group_id, supervisor_id, supervised_id, zone_id, from_date, to_date, group_number, turn from msf.group where zone_id = ?1 and turn = ?2", nativeQuery = true)
+	List<Group> findByZoneAndTurn(int zone_id, String turn);
+	
+	@Query(value = "select supervisor_id from msf.group where group_number = ?1 limit 1", nativeQuery = true)
+	int findLeaderByGroupNumber(int group_number);
+	
 }

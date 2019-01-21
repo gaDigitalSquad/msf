@@ -49,19 +49,22 @@ public class Group implements Serializable {
 		
 	}
 	
-	public Group(int zone_id, int supervisor_id, int supervised_id) {
-		super();
-		this.zone_id = zone_id;
-		this.supervisor_id = supervisor_id;
-		this.supervised_id = supervised_id;
-	}
+//	public Group(int zone_id, int supervisor_id, int supervised_id, int turn) {
+//		super();
+//		this.zone_id = zone_id;
+//		this.supervisor_id = supervisor_id;
+//		this.supervised_id = supervised_id;
+//		this.turn = turn;
+//		this.group_number = 0;
+//	}
 	
-	public Group(int zone_id, int supervisor_id, int supervised_id, int group_number) {
+	public Group(int zone_id, int supervisor_id, int supervised_id, int group_number, String turn) {
 		super();
 		this.zone_id = zone_id;
 		this.supervisor_id = supervisor_id;
 		this.supervised_id = supervised_id;
 		this.group_number = group_number;
+		this.turn = turn;
 	}
 
 	public int getSupervisor() {

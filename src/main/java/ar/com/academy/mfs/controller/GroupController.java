@@ -45,9 +45,6 @@ public class GroupController {
 		Zone zone = zoneRepository.findById(groupRequest.getZone()).get();
 		if(zone == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid zone");
 		
-		Area area = areaRepository.findById(groupRequest.getArea()).get();
-		if(area == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid area");
-		
 		Integer numberGroup = groupRepository.findLastGroupNumber();
 		if (numberGroup == null) {
 			numberGroup = 1;
@@ -59,7 +56,11 @@ public class GroupController {
 		List<Integer> sens = groupRequest.getSens();
 		for (int i = 0; i < sens.size(); i++) {
 			User sensibilizador = userRepository.findById(sens.get(i)).get();
-			Group g = new Group(zone.getZoneId(), supervisor.getUser_id(), sensibilizador.getUser_id(), numberGroup);
+			Group g = new Group(zone.getZoneId(),
+								supervisor.getUser_id(),
+								sensibilizador.getUser_id(),
+								numberGroup,
+								groupRequest.getturn());
 			sensibilizador.setGroup_number(g.getGroup_number());
 			supervisor.setGroup_number(g.getGroup_number());
 			groupRepository.save(g);
@@ -67,18 +68,28 @@ public class GroupController {
 		return ResponseEntity.status(HttpStatus.OK).body("OK");
 	}
 	
+	// Obtener grupos por número de grupo
 	@GetMapping("/group/{group_number}")
 	public Group getGroupByGroupNumber(@PathVariable int group_number) {
 		return groupService.getGroupByGroupNumber(group_number);
 	}
 	
-	@GetMapping("/groups/{zone_id}")
+	// Obtener grupos por zona
+	@GetMapping("/group-by-zone/{zone_id}")
 	public List<Group> getGroupsByZone(@PathVariable int zone_id) {
 		 return groupService.getGroupsByZone(zone_id);
 	}
 	
-//	@GetMapping("/group/{supervisor_id}")
-//	public List<Group> getSupervisedBySupervisorId(@PathVariable long supervisor_id) {
-//		return groupService.getSupervisedBySupervisorId(supervisor_id);
-//	}
+	// Obtener grupos por zona y turn
+	@GetMapping("/get-group/{zone_id}/{turn}")
+	public List<Group> getGroupsByZoneAndTurn(@PathVariable String turn, @PathVariable int zone_id) {
+		 return groupService.getGroupsByZoneAndTurn(zone_id, turn);
+	}
+	
+	// Obtener el id del lider de un grupo
+	@GetMapping("get-leader/{group_number}")
+	public User getGroupLeader(@PathVariable int group_number) {
+		int lider = groupService.getGroupLeader(group_number);
+		return userRepository.findById(lider).get();
+	}
 }

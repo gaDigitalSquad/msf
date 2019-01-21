@@ -1,6 +1,5 @@
 package ar.com.academy.mfs.request;
 
-import java.sql.Date;
 import java.util.List;
 
 public class GroupRequest {
@@ -8,14 +7,14 @@ public class GroupRequest {
 	private int leader;
 	private List<Integer> sens;
 	private int zone;
-	private int area;
+	private String turn;
 
-	public int getArea() {
-		return area;
+	public String getturn() {
+		return turn;
 	}
 
-	public void setArea(int area) {
-		this.area = area;
+	public void setturn(String turn) {
+		this.turn = turn;
 	}
 
 	public int getZone() {
