@@ -166,12 +166,14 @@ public class UserService {
 	}
 	
 	public List<User> getMySens(int supervisor_id) {
+		User lider = userRepository.findById(supervisor_id).get();
 		List<User> mySens = new ArrayList<User>();
 		List<Integer> sensId = groupRepository.findMySens(supervisor_id);
 		for (int i = 0; i < sensId.size(); i++) {
 			User u = userRepository.findById(sensId.get(i)).get();
 			mySens.add(u);
 		}
+		mySens.add(lider);
 		return mySens;
 	}
 	
