@@ -45,44 +45,44 @@ public class FormController {
 	@Autowired
 	private CardTypeRepository cardTypeRepository;
 	
-	@PostMapping("/formBack")
-	public ResponseEntity<?> createForm(@RequestBody ArrayList<FormRequest> listOfForm) {
-		List<Form> formsSaved = new ArrayList<>();
-		for(FormRequest inputForm: listOfForm) {
-			//System.out.println("\n\n\nHasta el tipo de carta llega 1\n\n\n");
-			User user = userRepository.findByUsername(inputForm.getCompletedByUser());
-			if(user == null) 
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
-			//System.out.println("\n\n\nHasta el tipo de carta llega 2\n\n\n");
-			Zone zone = zoneRepository.findByZoneName(inputForm.getZone());
-			if(zone == null) 
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid zone");
-			//System.out.println("\n\n\nHasta el tipo de carta llega 3\n\n\n");
-			//CardType cardType = cardTypeRepository.findByCode(inputForm.getCardType());
-			//if(cardType == null) 
-				//return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
-			CardType cardType = cardTypeRepository.findByCardTypeId(inputForm.getCardType());
-			if(cardType == null) 
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
-			//System.out.println("\n\n\nHasta el tipo de carta llega 4\n\n\n");
-			Form form = formService.createForm(inputForm, user.getUser_id(), zone.getZoneId(), cardType.getCardTypeId());
-			formsSaved.add(form);
-		}
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
-	}
+//	@PostMapping("/formBack")
+//	public ResponseEntity<?> createForm(@RequestBody ArrayList<FormRequest> listOfForm) {
+//		List<Form> formsSaved = new ArrayList<>();
+//		for(FormRequest inputForm: listOfForm) {
+//			//System.out.println("\n\n\nHasta el tipo de carta llega 1\n\n\n");
+//			User user = userRepository.findByUsername(inputForm.getCompletedByUser());
+//			if(user == null) 
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
+//			//System.out.println("\n\n\nHasta el tipo de carta llega 2\n\n\n");
+//			Zone zone = zoneRepository.findByZoneName(inputForm.getZone());
+//			if(zone == null) 
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid zone");
+//			//System.out.println("\n\n\nHasta el tipo de carta llega 3\n\n\n");
+//			//CardType cardType = cardTypeRepository.findByCode(inputForm.getCardType());
+//			//if(cardType == null) 
+//				//return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
+//			CardType cardType = cardTypeRepository.findByCardTypeId(inputForm.getCardType());
+//			if(cardType == null) 
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
+//			//System.out.println("\n\n\nHasta el tipo de carta llega 4\n\n\n");
+//			Form form = formService.createForm(inputForm, user.getUser_id(), zone.getZoneId(), cardType.getCardTypeId());
+//			formsSaved.add(form);
+//		}
+//		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
+//	}
 	
-	@PostMapping("/form")
-	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm){
-		List<Form> formsSaved = new ArrayList<>();
-		for(FormRequestMobile inputForm: listOfForm) {
-			User user = userRepository.findByUsername(inputForm.getCompletedByUser());
-			if(user == null) 
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
-			Form form = formService.createForm(inputForm, user.getUser_id());
-			formsSaved.add(form);
-		}
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
-	}
+//	@PostMapping("/form")
+//	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm){
+//		List<Form> formsSaved = new ArrayList<>();
+//		for(FormRequestMobile inputForm: listOfForm) {
+//			User user = userRepository.findByUsername(inputForm.getCompletedByUser());
+//			if(user == null) 
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
+//			Form form = formService.createForm(inputForm, user.getUser_id());
+//			formsSaved.add(form);
+//		}
+//		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
+//	}
 	
 	/**
 	 * Obtener el formulario de un socio a tráves de su DNI
@@ -95,11 +95,11 @@ public class FormController {
 		return formService.getFormByDni(dni);
 	}
 	
-	@PutMapping("/form/{dni}")
-	public ResponseEntity<?> updateFormByDni(@PathVariable int dni, @RequestBody Form form){
-		Form formUpdated = formService.updateFormDni(dni, form);
-		return new ResponseEntity<Form>(formUpdated, HttpStatus.ACCEPTED);
-	}
+//	@PutMapping("/form/{dni}")
+//	public ResponseEntity<?> updateFormByDni(@PathVariable int dni, @RequestBody Form form){
+//		Form formUpdated = formService.updateFormDni(dni, form);
+//		return new ResponseEntity<Form>(formUpdated, HttpStatus.ACCEPTED);
+//	}
 	
 	@GetMapping("/DniVerification/{dni}")
 	public ResponseEntity<?> dniVerification(@PathVariable int dni) {
