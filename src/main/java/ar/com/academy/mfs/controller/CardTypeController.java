@@ -1,5 +1,7 @@
 package ar.com.academy.mfs.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,11 @@ public class CardTypeController {
 
 	@Autowired
 	CardTypeService cardTypeService;
+	
+	@GetMapping("/get-all-cards")
+	public List<CardType> getAllCards() {
+		return cardTypeService.getAllCards();
+	}
 	
 	@GetMapping("/card_type/{card_type_id}")
 	public CardType getCardTypeById(@PathVariable long card_type_id) {
@@ -28,6 +35,5 @@ public class CardTypeController {
 	public CardType getCardTypeByCode(@PathVariable String code) {
 		return cardTypeService.getCardTypeByCode(code);
 	}
-	
-	
+
 }

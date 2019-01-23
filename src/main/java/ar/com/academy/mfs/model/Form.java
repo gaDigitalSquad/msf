@@ -69,14 +69,9 @@ public class Form implements Serializable{
 	
 	@Column(name = "dni")
 	private int dni;
-	
 
-	@Column(name = "telephone_number")
-	private String telephone_number;
-	
-
-	@Column(name = "mobile_number")
-	private String mobile_number;
+	@Column(name = "phone_number")
+	private String phone_number;
 	
 	@Column(name = "email")
 	private String email;
@@ -114,8 +109,8 @@ public class Form implements Serializable{
 	
 	public Form(long completed_by_user_id, long zone_id, String member_type, String firstname, String lastname,
 			Date birthdate, String address_street, int address_number, int address_floor, String address_apartment,
-			String postcode, String city, String province, String cuil_cuit, int dni, String telephone_number,
-			String mobile_number, String email, boolean did_you_know_msf, long card_type_id, String card_number,
+			String postcode, String city, String province, String cuil_cuit, int dni, String phone_number,
+			String email, boolean did_you_know_msf, long card_type_id, String card_number,
 			Date card_expiration_date, String cbu, float monthly_amount_contribution, Date form_date,
 			String observations, boolean completed) {
 		super();
@@ -134,8 +129,7 @@ public class Form implements Serializable{
 		this.province = province;
 		this.cuil_cuit = cuil_cuit;
 		this.dni = dni;
-		this.telephone_number = telephone_number;
-		this.mobile_number = mobile_number;
+		this.phone_number = phone_number;
 		this.email = email;
 		this.did_you_know_msf = did_you_know_msf;
 		this.card_type_id = card_type_id;
@@ -147,27 +141,6 @@ public class Form implements Serializable{
 		this.observations = observations;
 		this.completed = completed;
 	}
-
-
-
-
-	public Form(int user_id, String firstname, String lastname, int dni, String mobileNumber, String email,
-			float monthlyAmountContribution) {
-		super();
-		this.completed_by_user_id = user_id;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.dni = dni;
-		this.mobile_number = mobileNumber;
-		this.email = email;
-		this.monthly_amount_contribution = monthlyAmountContribution;
-		this.cuil_cuit = "algo";
-		this.form_date = new Date(2018,01,01);
-		this.zone_id = 1;
-		this.card_type_id = 1;
-	}
-
-
 
 	public long getCompleted_by_user_id() {
 		return completed_by_user_id;
@@ -289,20 +262,12 @@ public class Form implements Serializable{
 		this.dni = dni;
 	}
 
-	public String getTelephone_number() {
-		return telephone_number;
+	public String getphone_number() {
+		return phone_number;
 	}
 
-	public void setTelephone_number(String telephone_number) {
-		this.telephone_number = telephone_number;
-	}
-
-	public String getMobile_number() {
-		return mobile_number;
-	}
-
-	public void setMobile_number(String mobile_number) {
-		this.mobile_number = mobile_number;
+	public void setphone_number(String phone_number) {
+		this.phone_number = phone_number;
 	}
 
 	public String getEmail() {
@@ -388,12 +353,4 @@ public class Form implements Serializable{
 	public long getForm_id() {
 		return form_id;
 	}
-
-	
-
-
-	
-	
-	
-	
 }

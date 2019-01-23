@@ -12,12 +12,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="card_type",schema="msf")
 public class CardType implements Serializable{
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -7235472775439078110L;
-
 	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -26,7 +22,6 @@ public class CardType implements Serializable{
 	
 	@Column(name = "description")
 	private String description;
-	
 	
 	@Column(name = "code")
 	private String code;
@@ -60,8 +55,5 @@ public class CardType implements Serializable{
 	public long getCardTypeId() {
 		return cardTypeId;
 	}
-
-
-	
 	
 }

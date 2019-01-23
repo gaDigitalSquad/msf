@@ -14,17 +14,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
-    
-    @Bean
-    public WebMvcConfig corsConfigurer() {
-        return new WebMvcConfig() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("POST", "GET", "PUT", "DELETE");
-            }
-        };
-    }
 
 }

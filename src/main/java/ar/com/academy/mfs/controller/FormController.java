@@ -84,10 +84,15 @@ public class FormController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
 	}
 	
+	/**
+	 * Obtener el formulario de un socio a tráves de su DNI
+	 * @Input int dni
+	 * @Return Form formulario
+	 */
+	
 	@GetMapping("/get-form/{dni}")
 	public Form getFormByDni(@PathVariable int dni) {
 		return formService.getFormByDni(dni);
-	
 	}
 	
 	@PutMapping("/form/{dni}")

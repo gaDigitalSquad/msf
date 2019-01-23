@@ -1,5 +1,7 @@
 package ar.com.academy.mfs.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,10 @@ public class CardTypeService {
 	
 	public CardType getCardTypeByDescription(String description) {
 		return cardTypeRepository.findByDescription(description);
+	}
+
+	public List<CardType> getAllCards() {
+		return cardTypeRepository.findAll();
 	}
 	
 	

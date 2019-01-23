@@ -103,7 +103,7 @@ public class UserController {
 		return u;
 	}
 	
-	@PostMapping("/signup") //devolver el token, cuando crea un nuevo usuario
+	@PostMapping("/signup") // devolver el token, cuando crea un nuevo usuario
 	public String signUp(@RequestBody User signUpUser) {
 	  if (this.user_service.usernameExists(signUpUser.getUsername())) {
 	    return "EXISTS";
@@ -136,9 +136,10 @@ public class UserController {
 	public List<User> getGroupSens(@PathVariable int group_number) {
 		return user_service.getGroupSens(group_number);
 	}
-	// Actualizar usuario sin tener que pasarle la contraseña
 	
-	@CrossOrigin(origins = "http://localhost:4200")
+	// Actualizar usuario
+	
+	@CrossOrigin(origins = "*")
 	@PutMapping("/update-user/{user_id}")
 	@ResponseBody ResponseEntity<?> putUser(@PathVariable int user_id, @RequestBody UserRequest userRequest) {
 		User user = user_repository.findById(user_id).get();
@@ -146,7 +147,6 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
 	}
 	
-
 	
 	@PatchMapping("/update-user/{user_id}")
 	@ResponseBody ResponseEntity<?> patchUser(@Valid @PathVariable int user_id, @RequestBody UserRequest userRequest) {
