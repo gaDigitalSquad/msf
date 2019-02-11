@@ -154,6 +154,7 @@ public class Form implements Serializable{
 		this.email = email;
 		this.completed = false;
 		this.zone_id = zone_id;
+		this.card_type_id = 0;
 	}
 
 
