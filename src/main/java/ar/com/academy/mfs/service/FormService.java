@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.academy.mfs.model.Form;
+import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.repository.CardTypeRepository;
 import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.UserRepository;
@@ -69,12 +70,15 @@ public class FormService {
 	}
 
 	public Form createForm(FormRequestMobile inputForm) {
+		User user = userRepository.findById(inputForm.getCompletedByUser()).get();
 		Form formToSave = new Form(inputForm.getCompletedByUser(), 
 				inputForm.getFirstname(), 
 				inputForm.getLastname(), 
 				inputForm.getDni(), 
 				inputForm.getEmail(), 
-				inputForm.getMonthlyAmountContribution());
+				inputForm.getMonthlyAmountContribution(),
+				user.getZone_id()
+				);
 		Form formSaved = formRepository.save(formToSave);
 		return formSaved;
 	}
