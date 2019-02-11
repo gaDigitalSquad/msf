@@ -164,12 +164,13 @@ public class WorkingDayController {
 		for (User userToSave : sensibilizadores) {
 			UserMetricas userMetrica = new UserMetricas(userToSave,
 					workingDayService.getMetricasUsuario(userToSave.getUser_id(), dateRequest));
+			metricasDeSensibilizadoresLider.add(userMetrica);
 		}
-		Optional<User> lider = userRepository.findById(group.getSupervisor());
-		User liderSaved = lider.get();
-		UserMetricas userMetrica = new UserMetricas(liderSaved,
-				workingDayService.getMetricasUsuario(group.getSupervisor(), dateRequest));
-		metricasDeSensibilizadoresLider.add(userMetrica);
+//		Optional<User> lider = userRepository.findById(group.getSupervisor());
+//		User liderSaved = lider.get();
+//		UserMetricas userMetrica = new UserMetricas(liderSaved,
+//				workingDayService.getMetricasUsuario(group.getSupervisor(), dateRequest));
+//		metricasDeSensibilizadoresLider.add(userMetrica);
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
 	}
 
