@@ -2,49 +2,49 @@ package ar.com.academy.mfs.response;
 
 public class Metricas {
 
-	private float cantidadSocios;
-	private float monto;
-	private float horasTrabajadas;
-	private float sociosHora;
-	private float montoPromedio;
+	private float amount_of_new_partners;
+	private float amount;
+	private float hours_worked;
+	private float partner_hours;
+	private float averageAmount;
 	
-	public Metricas(float cantidadSocios, float monto, float horasTrabajadas, float sociosHora) {
+	public Metricas(float amount_of_new_partners, float amount, float hours_worked, float partner_hours) {
 		super();
-		this.cantidadSocios = cantidadSocios;
-		this.monto = monto;
-		this.horasTrabajadas = horasTrabajadas;
-		this.sociosHora = sociosHora;
-		this.montoPromedio = monto/horasTrabajadas;
+		this.amount_of_new_partners = amount_of_new_partners;
+		this.amount = amount;
+		this.hours_worked = hours_worked;
+		this.partner_hours = partner_hours;
+		this.averageAmount = amount/hours_worked;
 	}
-	public float getCantidadSocios() {
-		return cantidadSocios;
+	public float getamount_of_new_partners() {
+		return amount_of_new_partners;
 	}
-	public void setCantidadSocios(float cantidadSocios) {
-		this.cantidadSocios = cantidadSocios;
+	public void setamount_of_new_partners(float amount_of_new_partners) {
+		this.amount_of_new_partners = amount_of_new_partners;
 	}
-	public float getMonto() {
-		return monto;
+	public float getamount() {
+		return amount;
 	}
-	public void setMonto(float monto) {
-		this.monto = monto;
+	public void setamount(float amount) {
+		this.amount = amount;
 	}
-	public float getHorasTrabajadas() {
-		return horasTrabajadas;
+	public float gethours_worked() {
+		return hours_worked;
 	}
-	public void setHorasTrabajadas(float horasTrabajadas) {
-		this.horasTrabajadas = horasTrabajadas;
+	public void sethours_worked(float hours_worked) {
+		this.hours_worked = hours_worked;
 	}
 	public float getSociosHora() {
-		return sociosHora;
+		return partner_hours;
 	}
-	public void setSociosHora(float sociosHora) {
-		this.sociosHora = sociosHora;
+	public void setSociosHora(float partner_hours) {
+		this.partner_hours = partner_hours;
 	}
-	public float getMontopromedio() {
-		return montoPromedio;
+	public float getaverageAmount() {
+		return averageAmount;
 	}
-	public void setMontopromedio(float montopromedio) {
-		this.montoPromedio = montopromedio;
+	public void setaverageAmount(float averageAmount) {
+		this.averageAmount = averageAmount;
 	}
 	
 }
