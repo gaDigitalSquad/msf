@@ -2,7 +2,9 @@ package ar.com.academy.mfs.controller;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.Zone;
+import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
@@ -37,6 +40,7 @@ import ar.com.academy.mfs.security.JWTAuthenticationFilter;
 import ar.com.academy.mfs.security.SecurityService;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
+import ar.com.academy.mfs.model.Form;
 import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.request.UserRequest;
 import ar.com.academy.mfs.response.GenericResponse;
@@ -246,4 +250,5 @@ public class UserController {
 		user_service.changeUserPassword(user, newPassword);
 	    return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
 	}
+
 }

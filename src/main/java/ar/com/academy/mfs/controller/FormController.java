@@ -105,9 +105,9 @@ public class FormController {
 	public ResponseEntity<?> dniVerification(@PathVariable int dni) {
 		Optional<Form> form = formRepository.findByDni(dni);
 		if(form.isPresent())
-			return ResponseEntity.status(HttpStatus.OK).body("El dni no existe");
+			return ResponseEntity.status(HttpStatus.OK).body("El dni ya existe");
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El dni ya existe");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El dni no existe");
 	}
-
+	
 }
