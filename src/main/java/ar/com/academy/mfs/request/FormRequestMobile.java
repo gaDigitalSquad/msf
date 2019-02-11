@@ -2,7 +2,7 @@ package ar.com.academy.mfs.request;
 
 public class FormRequestMobile {
 
-	private String completedByUser;
+	private int completedByUser;
 	private String firstname;
 	private String lastname;
 	private int dni;
@@ -10,7 +10,7 @@ public class FormRequestMobile {
 	private String email;
 	private float monthlyAmountContribution;
 	
-	public FormRequestMobile(String completedByUser, String firstname, String lastname, int dni,
+	public FormRequestMobile(int completedByUser, String firstname, String lastname, int dni,
 			String mobileNumber, String email, float monthlyAmountContribution) {
 		super();
 		this.completedByUser = completedByUser;
@@ -27,10 +27,10 @@ public class FormRequestMobile {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String getCompletedByUser() {
+	public int getCompletedByUser() {
 		return completedByUser;
 	}
-	public void setCompletedByUser(String completedByUser) {
+	public void setCompletedByUser(int completedByUser) {
 		this.completedByUser = completedByUser;
 	}
 	public String getFirstname() {

@@ -141,6 +141,21 @@ public class Form implements Serializable{
 		this.observations = observations;
 		this.completed = completed;
 	}
+	
+	// Creación de Form para mobile
+	
+	public Form(int completedByUser, String firstname, String lastname, int dni, String email,
+			float monthlyAmountContribution) {
+		super();
+		this.completed_by_user_id = completedByUser;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.dni = dni;
+		this.email = email;
+		this.completed = false;
+	}
+
+
 
 	public long getCompleted_by_user_id() {
 		return completed_by_user_id;

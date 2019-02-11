@@ -71,18 +71,15 @@ public class FormController {
 //		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
 //	}
 	
-//	@PostMapping("/form")
-//	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm){
-//		List<Form> formsSaved = new ArrayList<>();
-//		for(FormRequestMobile inputForm: listOfForm) {
-//			User user = userRepository.findByUsername(inputForm.getCompletedByUser());
-//			if(user == null) 
-//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
-//			Form form = formService.createForm(inputForm, user.getUser_id());
-//			formsSaved.add(form);
-//		}
-//		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
-//	}
+	@PostMapping("/form")
+	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm){
+		List<Form> formsSaved = new ArrayList<>();
+		for(FormRequestMobile inputForm: listOfForm) {
+			Form form = formService.createForm(inputForm);
+			formsSaved.add(form);
+		}
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
+	}
 	
 	/**
 	 * Obtener el formulario de un socio a tráves de su DNI

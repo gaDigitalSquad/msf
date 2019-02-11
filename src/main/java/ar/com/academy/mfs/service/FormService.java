@@ -68,6 +68,17 @@ public class FormService {
 		return form.get();
 	}
 
+	public Form createForm(FormRequestMobile inputForm) {
+		Form formToSave = new Form(inputForm.getCompletedByUser(), 
+				inputForm.getFirstname(), 
+				inputForm.getLastname(), 
+				inputForm.getDni(), 
+				inputForm.getEmail(), 
+				inputForm.getMonthlyAmountContribution());
+		Form formSaved = formRepository.save(formToSave);
+		return formSaved;
+	}
+
 //	public Form updateFormDni(int dni, Form form) {
 //		Optional<Form> formToUpdate = formRepository.findByDni(dni);
 //		Form formActual = formToUpdate.get();
