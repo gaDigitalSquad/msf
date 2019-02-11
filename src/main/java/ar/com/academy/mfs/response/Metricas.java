@@ -34,10 +34,10 @@ public class Metricas {
 	public void sethours_worked(float hours_worked) {
 		this.hours_worked = hours_worked;
 	}
-	public float getSociosHora() {
+	public float getpartner_hours() {
 		return partner_hours;
 	}
-	public void setSociosHora(float partner_hours) {
+	public void setpartner_hours(float partner_hours) {
 		this.partner_hours = partner_hours;
 	}
 	public float getaverageAmount() {

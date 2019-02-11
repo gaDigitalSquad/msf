@@ -5,7 +5,7 @@ import ar.com.academy.mfs.model.User;
 public class UserMetricas {
 		
 	private User user;
-	private Metricas metricas;
+	private Metricas metrics;
 	
 	public UserMetricas() {
 		super();
@@ -15,7 +15,7 @@ public class UserMetricas {
 	public UserMetricas(User user, Metricas metricas) {
 		super();
 		this.user = user;
-		this.metricas = metricas;
+		this.metrics = metricas;
 	}
 
 	public User getUser() {
@@ -27,11 +27,11 @@ public class UserMetricas {
 	}
 
 	public Metricas getMetricas() {
-		return metricas;
+		return metrics;
 	}
 
 	public void setMetricas(Metricas metricas) {
-		this.metricas = metricas;
+		this.metrics = metricas;
 	}
 	
 	
