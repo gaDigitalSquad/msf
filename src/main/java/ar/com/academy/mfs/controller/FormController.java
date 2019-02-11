@@ -104,7 +104,7 @@ public class FormController {
 	@GetMapping("/DniVerification/{dni}")
 	public ResponseEntity<?> dniVerification(@PathVariable int dni) {
 		Optional<Form> form = formRepository.findByDni(dni);
-		if(form.isPresent())
+		if(!form.isPresent())
 			return ResponseEntity.status(HttpStatus.OK).body("El dni no existe");
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El dni ya existe");
