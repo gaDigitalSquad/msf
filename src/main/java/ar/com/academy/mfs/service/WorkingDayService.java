@@ -1,16 +1,9 @@
 package ar.com.academy.mfs.service;
 
-import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.WorkingDay;
 import ar.com.academy.mfs.repository.UserRepository;
@@ -64,5 +57,33 @@ public class WorkingDayService {
 	public WorkingDay getWorkingDay(int user_id, DateRequest date){
 		   return workingDayRepository.findByWorkingDateAndUser(user_id, date.getTo());
 		}
+
+	public WorkingDay createWorkingDay(WorkingDayRequest inputWorkingDay) {
+		// Falta verificación de id de usuarios
+		
+		// Obtengo la zona
+		User lider = userRepository.findById(inputWorkingDay.getSupervisor()).get();
+		int zone = lider.getZone_id();
+		
+		// Cálculo de horas trabajadas
+		DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
+		long diff = inputWorkingDay.getTo_hour().getTime() - inputWorkingDay.getFrom_hour().getTime();
+
+		int hoursWorked = (int) (diff / (60 * 60 * 1000));
+		
+		WorkingDay WorkingDayToSave = new WorkingDay(lider.getUser_id(),
+										inputWorkingDay.getUser(),
+										inputWorkingDay.isPresent(),
+										inputWorkingDay.getWorkingDate(),
+										inputWorkingDay.getFrom_hour(),
+										inputWorkingDay.getTo_hour(),
+										zone,
+										inputWorkingDay.getAmountOfNewPartners(),
+										inputWorkingDay.getTotalAmount(),
+										inputWorkingDay.getObservations(),
+										hoursWorked);
+		WorkingDay workingDaySaved = workingDayRepository.save(WorkingDayToSave);
+		return workingDaySaved;
+	}
 
 }

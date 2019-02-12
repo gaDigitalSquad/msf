@@ -18,6 +18,16 @@ public class Metricas {
 		this.averageAmount = amount/hours_worked;
 	}
 	
+	public Metricas(float amount_of_new_partners, float amount, float hours_worked, float partner_hours, int sens_id) {
+		super();
+		this.amount_of_new_partners = amount_of_new_partners;
+		this.amount = amount;
+		this.hours_worked = hours_worked;
+		this.partner_hours = partner_hours;
+		this.averageAmount = amount/hours_worked;
+		this.sens_id = sens_id;
+	}	
+	
 	public float getamount_of_new_partners() {
 		return amount_of_new_partners;
 	}

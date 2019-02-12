@@ -1,7 +1,6 @@
 package ar.com.academy.mfs.controller;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -76,8 +75,6 @@ public class WorkingDayController {
 		long diff = workingDayRequest.getTo_hour().getTime() - workingDayRequest.getFrom_hour().getTime();
 
 		int hoursWorked = (int) (diff / (60 * 60 * 1000));
-		// System.out.println("difference between hours: " +
-		// crunchifyFormatter.format(hoursWorked));
 
 		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(), user.getUser_id(),
 				workingDayRequest.isPresent(), workingDayRequest.getWorkingDate(), workingDayRequest.getFrom_hour(),
@@ -87,6 +84,16 @@ public class WorkingDayController {
 		workingDayRepository.save(workingDay);
 
 		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
+	}
+	
+	@PostMapping("/workingDays")
+	public ResponseEntity<?> createWorkingDays(@RequestBody ArrayList<WorkingDayRequest> listOfWorkingDays) {
+		List<WorkingDay> workingDaysSaved = new ArrayList<>();
+		for (WorkingDayRequest inputWorkingDay: listOfWorkingDays) {
+			WorkingDay wd = workingDayService.createWorkingDay(inputWorkingDay);
+			workingDaysSaved.add(wd);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(workingDaysSaved);
 	}
 
 	// Conseguir las métricas de un determinado usuario
@@ -166,11 +173,6 @@ public class WorkingDayController {
 					workingDayService.getMetricasUsuario(userToSave.getUser_id(), dateRequest));
 			metricasDeSensibilizadoresLider.add(userMetrica);
 		}
-//		Optional<User> lider = userRepository.findById(group.getSupervisor());
-//		User liderSaved = lider.get();
-//		UserMetricas userMetrica = new UserMetricas(liderSaved,
-//				workingDayService.getMetricasUsuario(group.getSupervisor(), dateRequest));
-//		metricasDeSensibilizadoresLider.add(userMetrica);
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
 	}
 
