@@ -70,14 +70,16 @@ public class FormService {
 	}
 
 	public Form createForm(FormRequestMobile inputForm) {
-		User user = userRepository.findById(inputForm.getCompletedByUser()).get();
-		Form formToSave = new Form(inputForm.getCompletedByUser(), 
+		User user = userRepository.findById(inputForm.getCompleted_by_user_id()).get();
+		Form formToSave = new Form(inputForm.getCompleted_by_user_id(), 
 				inputForm.getFirstname(), 
 				inputForm.getLastname(), 
 				inputForm.getDni(), 
-				inputForm.getEmail(), 
-				inputForm.getMonthlyAmountContribution(),
-				user.getZone_id()
+				inputForm.getEmail(),
+				inputForm.getMobile_number(),
+				inputForm.getMonthly_amount_contribution(),
+				user.getZone_id(),
+				inputForm.getForm_date()
 				);
 		Form formSaved = formRepository.save(formToSave);
 		return formSaved;

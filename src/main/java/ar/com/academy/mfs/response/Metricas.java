@@ -7,6 +7,7 @@ public class Metricas {
 	private float hours_worked;
 	private float partner_hours;
 	private float averageAmount;
+	private int sens_id;
 	
 	public Metricas(float amount_of_new_partners, float amount, float hours_worked, float partner_hours) {
 		super();
@@ -16,6 +17,7 @@ public class Metricas {
 		this.partner_hours = partner_hours;
 		this.averageAmount = amount/hours_worked;
 	}
+	
 	public float getamount_of_new_partners() {
 		return amount_of_new_partners;
 	}
@@ -45,6 +47,12 @@ public class Metricas {
 	}
 	public void setaverageAmount(float averageAmount) {
 		this.averageAmount = averageAmount;
+	}
+	public int getSens_id() {
+		return sens_id;
+	}
+	public void setSens_id(int sens_id) {
+		this.sens_id = sens_id;
 	}
 	
 }

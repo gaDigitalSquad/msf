@@ -70,8 +70,8 @@ public class Form implements Serializable{
 	@Column(name = "dni")
 	private int dni;
 
-	@Column(name = "phone_number")
-	private String phone_number;
+	@Column(name = "mobile_number")
+	private String mobile_number;
 	
 	@Column(name = "email")
 	private String email;
@@ -129,7 +129,7 @@ public class Form implements Serializable{
 		this.province = province;
 		this.cuil_cuit = cuil_cuit;
 		this.dni = dni;
-		this.phone_number = phone_number;
+		this.mobile_number = phone_number;
 		this.email = email;
 		this.did_you_know_msf = did_you_know_msf;
 		this.card_type_id = card_type_id;
@@ -144,17 +144,20 @@ public class Form implements Serializable{
 	
 	// Creación de Form para mobile
 	
-	public Form(int completedByUser, String firstname, String lastname, int dni, String email,
-			float monthlyAmountContribution, int zone_id) {
+	public Form(int completedByUser, String firstname, String lastname, int dni, String email, String mobile_number,
+			float monthly_amount_contribution, int zone_id, Date form_date) {
 		super();
 		this.completed_by_user_id = completedByUser;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.dni = dni;
 		this.email = email;
+		this.mobile_number = mobile_number;
 		this.completed = false;
 		this.zone_id = zone_id;
 		this.card_type_id = 1;
+		this.monthly_amount_contribution = monthly_amount_contribution;
+		this.form_date = form_date;
 	}
 
 
@@ -279,12 +282,12 @@ public class Form implements Serializable{
 		this.dni = dni;
 	}
 
-	public String getphone_number() {
-		return phone_number;
+	public String getMobile_number() {
+		return mobile_number;
 	}
 
-	public void setphone_number(String phone_number) {
-		this.phone_number = phone_number;
+	public void setMobile_number(String mobile_number) {
+		this.mobile_number = mobile_number;
 	}
 
 	public String getEmail() {

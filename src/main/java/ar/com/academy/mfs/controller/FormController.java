@@ -78,7 +78,7 @@ public class FormController {
 			Form form = formService.createForm(inputForm);
 			formsSaved.add(form);
 		}
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
+		return ResponseEntity.status(HttpStatus.OK).body(formsSaved);
 	}
 	
 	/**
