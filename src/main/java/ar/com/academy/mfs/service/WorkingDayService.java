@@ -60,16 +60,18 @@ public class WorkingDayService {
 
 	public WorkingDay createWorkingDay(WorkingDayRequest inputWorkingDay) {
 		// Falta verificación de id de usuarios
-		
-		// Obtengo la zona
+	
 		User lider = userRepository.findById(inputWorkingDay.getSupervisor()).get();
 		int zone = lider.getZone_id();
 		
-		// Cálculo de horas trabajadas
-		DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
-		long diff = inputWorkingDay.getTo_hour().getTime() - inputWorkingDay.getFrom_hour().getTime();
-
-		int hoursWorked = (int) (diff / (60 * 60 * 1000));
+		int hoursWorked = 0;
+		
+		// Cálculo de horas trabajadas, solo si las horas son != null
+		if (inputWorkingDay.getTo_hour() != null && inputWorkingDay.getFrom_hour() != null) {
+			DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
+			long diff = inputWorkingDay.getTo_hour().getTime() - inputWorkingDay.getFrom_hour().getTime();
+			hoursWorked = (int) (diff / (60 * 60 * 1000));
+		}
 		
 		WorkingDay WorkingDayToSave = new WorkingDay(lider.getUser_id(),
 										inputWorkingDay.getUser(),

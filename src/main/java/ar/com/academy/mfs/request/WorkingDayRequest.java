@@ -6,8 +6,8 @@ import java.util.Date;
 
 public class WorkingDayRequest {
 
-	private int supervisor_id;
-	private int user_id;
+	private int supervisor;
+	private int user;
 	private boolean isPresent;
 	private Date workingDate;
 	private Time from_hour;
@@ -18,21 +18,21 @@ public class WorkingDayRequest {
 	private boolean completed;
 
 	public int getSupervisor() {
-		return supervisor_id;
+		return supervisor;
 	}
 
 	public void setSupervisor(int supervisor) {
-		this.supervisor_id = supervisor;
+		this.supervisor = supervisor;
 	}
 
 
 	public int getUser() {
-		return user_id;
+		return user;
 	}
 
 
 	public void setUser(int user) {
-		this.user_id = user;
+		this.user = user;
 	}
 
 

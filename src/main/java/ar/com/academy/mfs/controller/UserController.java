@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -101,6 +102,17 @@ public class UserController {
 		User u = user_service.findByUsername(username);
 		System.out.println(u.isCompleted());
 		return u;
+	}
+	
+	@DeleteMapping("/user/{username}")
+	public ResponseEntity<?> deleteUser(@PathVariable String username) {
+		User user = user_service.findByUsername(username);
+		if (user != null) {
+			user_repository.delete(user);
+			return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado con éxito.");
+		} else {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("No se ha podido eliminar el usuario.");
+		}
 	}
 	
 	@GetMapping("/leadersWithoutGroup")
