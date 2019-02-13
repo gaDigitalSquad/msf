@@ -2,10 +2,7 @@ package ar.com.academy.mfs.controller;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -32,7 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.Zone;
-import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
@@ -40,7 +36,7 @@ import ar.com.academy.mfs.security.JWTAuthenticationFilter;
 import ar.com.academy.mfs.security.SecurityService;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
-import ar.com.academy.mfs.model.Form;
+import ar.com.academy.mfs.request.PasswordRequest;
 import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.request.UserRequest;
 import ar.com.academy.mfs.response.GenericResponse;
@@ -105,16 +101,6 @@ public class UserController {
 		User u = user_service.findByUsername(username);
 		System.out.println(u.isCompleted());
 		return u;
-	}
-	
-	@PostMapping("/signup") // devolver el token, cuando crea un nuevo usuario
-	public String signUp(@RequestBody User signUpUser) {
-	  if (this.user_service.usernameExists(signUpUser.getUsername())) {
-	    return "EXISTS";
-	  } signUpUser.setPassword(bCryptPasswordEncoder.encode(signUpUser.getPassword()));
-	  this.user_service.save(signUpUser);
-	  JWTAuthenticationFilter jWTAuthenticationFilter= new JWTAuthenticationFilter() ;
-	  return jWTAuthenticationFilter.createToken(signUpUser.getUsername());
 	}
 	
 	@GetMapping("/leadersWithoutGroup")
@@ -186,13 +172,25 @@ public class UserController {
 		return user_repository.findByDocumentTypeAndDocumentNumber(documentType, documentNumber);
 	}
 	
-	@PostMapping("/changeManualPassword")
-	public String changePassword(@RequestBody String password) {
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		User user =  user_repository.findByUsername((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		user_service.changeUserPassword(user, password);
-		return "Password change succesful";
+	@PostMapping("/change-password/{user_id}")
+	@ResponseBody ResponseEntity<?> changePassword(@RequestBody PasswordRequest passwordRequest, @PathVariable int user_id) {
+		User user = user_repository.findById(user_id).get();
+		if (!bCryptPasswordEncoder.matches(passwordRequest.getActualPassword(), user.getPassword())) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("La contraseña actual es incorrecta.");
+		} else {
+			user_service.changeUserPassword(user, passwordRequest.getNewPassword());
+			return ResponseEntity.status(HttpStatus.OK).body("La contraseña fue modificada con éxito.");
+		}
 	}
+	
+//	@PostMapping("/changeManualPassword")
+//	public String changePassword(@RequestBody String password) {
+//		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//		User user =  user_repository.findByUsername((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//		user_service.changeUserPassword(user, password);
+//		return "Password change succesful";
+//	}
+	
 //	@RequestMapping(value = "/rol/{username}", method = RequestMethod.GET, produces = "application/json")
 //	@ResponseBody 
 //	public Map findRoleByUsername(@PathVariable String username) {

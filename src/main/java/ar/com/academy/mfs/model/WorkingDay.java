@@ -14,7 +14,6 @@ import javax.persistence.Table;
 @Table(name = "working_day", schema = "msf")
 public class WorkingDay {
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column( name = "working_day_id")
