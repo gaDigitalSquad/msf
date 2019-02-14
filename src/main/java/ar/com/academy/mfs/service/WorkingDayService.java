@@ -1,16 +1,22 @@
 package ar.com.academy.mfs.service;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ar.com.academy.mfs.model.Form;
+import ar.com.academy.mfs.model.Partner;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.WorkingDay;
+import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.WorkingDayRepository;
 import ar.com.academy.mfs.request.DateRequest;
 import ar.com.academy.mfs.request.WorkingDayRequest;
 import ar.com.academy.mfs.response.Metricas;
+import ar.com.academy.mfs.response.WorkingDayResponse;
 
 @Service("workingDayService")
 public class WorkingDayService {
@@ -19,6 +25,8 @@ public class WorkingDayService {
 	WorkingDayRepository workingDayRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	FormService formService;
 	
 	public Metricas getMetricasUsuario(int user_id, DateRequest dateRequest) {
 		
@@ -49,9 +57,8 @@ public class WorkingDayService {
 		   return workingDayRepository.findByWorkingDateAndUser(user_id, date.getTo());
 		}
 
-	public WorkingDay createWorkingDay(WorkingDayRequest inputWorkingDay) {
-		// Falta verificación de id de usuarios
-	
+	public WorkingDayResponse createWorkingDayResponse(WorkingDayRequest inputWorkingDay) {
+		
 		User lider = userRepository.findById(inputWorkingDay.getSupervisor()).get();
 		int zone = lider.getZone_id();
 		
@@ -77,7 +84,20 @@ public class WorkingDayService {
 										hoursWorked,
 										inputWorkingDay.isCompleted());
 		WorkingDay workingDaySaved = workingDayRepository.save(WorkingDayToSave);
-		return workingDaySaved;
+		
+		// Obtengo los formularios que hizo el sensibilizador en la fecha
+		List<Form> formularios = formService.getFormsByUser(inputWorkingDay.getUser(), inputWorkingDay.getWorkingDate()); 
+		
+		// Establezco la lista de socios que hizo en la fecha
+		List<Partner> partners = new ArrayList<Partner>();
+		
+		// De cada formulario, obtengo la información básica de cada socio
+		for (Form formulario: formularios) {
+			Partner socio = new Partner(formulario.getDni(), formulario.getFirstname(), formulario.getLastname(), formulario.getMonthly_amount_contribution());
+			partners.add(socio);
+		}
+		
+		return new WorkingDayResponse(workingDaySaved, partners);
 	}
 
 }

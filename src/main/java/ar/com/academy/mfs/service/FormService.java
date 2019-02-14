@@ -1,5 +1,6 @@
 package ar.com.academy.mfs.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +84,10 @@ public class FormService {
 				);
 		Form formSaved = formRepository.save(formToSave);
 		return formSaved;
+	}
+
+	public List<Form> getFormsByUser(int user, Date date) {
+		return formRepository.findByUserAndDate(user, date);
 	}
 
 //	public Form updateFormDni(int dni, Form form) {

@@ -65,10 +65,14 @@ public class UserController {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
-	// Creación de un usuario
+	/**
+	 * Creación de un usuario
+	 * @param userRequest
+	 * @return
+	 */
 	
 	@PostMapping("/users") 
-	@ResponseBody ResponseEntity postUser(@Valid @RequestBody UserRequest userRequest) {
+	@ResponseBody ResponseEntity<?> postUser(@Valid @RequestBody UserRequest userRequest) {
 		if(user_repository.findByUsername(userRequest.getUsername()) != null)
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists!");
 		
@@ -91,6 +95,11 @@ public class UserController {
 		user_repository.save(user);
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
+	
+	/**
+	 * Obtener todos los usuarios existentes
+	 * @return List<User>
+	 */
 	
 	@GetMapping("/users")
 	public List<User> getAllUsers() {

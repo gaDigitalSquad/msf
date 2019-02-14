@@ -24,6 +24,7 @@ import ar.com.academy.mfs.repository.CardTypeRepository;
 import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
+import ar.com.academy.mfs.request.DateRequest;
 import ar.com.academy.mfs.request.FormRequest;
 import ar.com.academy.mfs.request.FormRequestMobile;
 import ar.com.academy.mfs.service.FormService;
@@ -72,7 +73,7 @@ public class FormController {
 //	}
 	
 	@PostMapping("/form")
-	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm){
+	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm) {
 		List<Form> formsSaved = new ArrayList<>();
 		for(FormRequestMobile inputForm: listOfForm) {
 			Form form = formService.createForm(inputForm);

@@ -40,6 +40,7 @@ import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.request.DateRequest;
 import ar.com.academy.mfs.response.Metricas;
 import ar.com.academy.mfs.response.UserMetricas;
+import ar.com.academy.mfs.response.WorkingDayResponse;
 
 @RestController
 public class WorkingDayController {
@@ -89,17 +90,17 @@ public class WorkingDayController {
 	/**
 	 * Método para guardar un set de working days
 	 * @param listOfWorkingDays
-	 * @return workinkDaysSaved
+	 * @return workinkDaysResponse
 	 */
 	
 	@PostMapping("/workingDays")
 	public ResponseEntity<?> createWorkingDays(@RequestBody ArrayList<WorkingDayRequest> listOfWorkingDays) {
-		List<WorkingDay> workingDaysSaved = new ArrayList<>();
+		List<WorkingDayResponse> workingDaysResponse = new ArrayList<>();
 		for (WorkingDayRequest inputWorkingDay: listOfWorkingDays) {
-			WorkingDay wd = workingDayService.createWorkingDay(inputWorkingDay);
-			workingDaysSaved.add(wd);
+			WorkingDayResponse wd = workingDayService.createWorkingDayResponse(inputWorkingDay);
+			workingDaysResponse.add(wd);
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(workingDaysSaved);
+		return ResponseEntity.status(HttpStatus.OK).body(workingDaysResponse);
 	}
 
 	// Conseguir las métricas de un determinado usuario
