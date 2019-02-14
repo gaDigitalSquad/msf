@@ -8,7 +8,7 @@ public class WorkingDayRequest {
 
 	private int supervisor;
 	private int user;
-	private boolean isPresent;
+	private boolean present;
 	private Date workingDate;
 	private Time from_hour;
 	private Time to_hour;
@@ -37,12 +37,12 @@ public class WorkingDayRequest {
 
 
 	public boolean isPresent() {
-		return isPresent;
+		return present;
 	}
 
 
-	public void setPresent(boolean isPresent) {
-		this.isPresent = isPresent;
+	public void setPresent(boolean present) {
+		this.present = present;
 	}
 
 

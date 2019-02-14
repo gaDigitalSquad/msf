@@ -25,8 +25,8 @@ public class WorkingDay {
 	@Column(name = "user_id")
 	private int user;
 	
-	@Column(name = "is_present")
-	private boolean isPresent;
+	@Column(name = "present")
+	private boolean present;
 	
 	@Column(name = "working_date")
 	private Date workingDate;
@@ -50,7 +50,7 @@ public class WorkingDay {
 	private String observations;
 	
 	@Column(name = "completed")
-	private boolean completed;
+	private boolean isCompleted;
 	
 	@Column(name = "hours_worked")
 	private int hours_worked;
@@ -61,12 +61,12 @@ public class WorkingDay {
 	public WorkingDay() {
 	}
 	
-	public WorkingDay(int supervisor, int user, boolean isPresent, Date workingDate, Time from_hour, Time to_hour,
-			int zone, int amountOfNewPartners, float totalAmount, String observations, int hours_worked) {
+	public WorkingDay(int supervisor, int user, boolean present, Date workingDate, Time from_hour, Time to_hour,
+			int zone, int amountOfNewPartners, float totalAmount, String observations, int hours_worked, boolean isCompleted) {
 		super();
 		this.supervisor = supervisor;
 		this.user = user;
-		this.isPresent = isPresent;
+		this.present = present;
 		this.workingDate = workingDate;
 		this.from_hour = from_hour;
 		this.to_hour = to_hour;
@@ -74,7 +74,7 @@ public class WorkingDay {
 		this.amountOfNewPartners = amountOfNewPartners;
 		this.totalAmount = totalAmount;
 		this.observations = observations;
-		this.completed = true;
+		this.isCompleted = isCompleted;
 		this.hours_worked = hours_worked;
 	}
 	
@@ -99,10 +99,10 @@ public class WorkingDay {
 	}
 
 	public boolean isPresent() {
-		return isPresent;
+		return present;
 	}
-	public void setPresent(boolean isPresent) {
-		this.isPresent = isPresent;
+	public void setPresent(boolean present) {
+		this.present = present;
 	}
 	public Date getWorkingDate() {
 		return workingDate;
@@ -151,10 +151,10 @@ public class WorkingDay {
 		this.to_hour = to_hour;
 	}
 	public boolean isCompleted() {
-		return completed;
+		return isCompleted;
 	}
-	public void setCompleted(boolean completed) {
-		this.completed = completed;
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 
 	public int getHours_worked() {

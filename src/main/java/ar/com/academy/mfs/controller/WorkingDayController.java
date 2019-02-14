@@ -79,12 +79,18 @@ public class WorkingDayController {
 		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(), user.getUser_id(),
 				workingDayRequest.isPresent(), workingDayRequest.getWorkingDate(), workingDayRequest.getFrom_hour(),
 				workingDayRequest.getTo_hour(), zone.getZoneId(), workingDayRequest.getAmountOfNewPartners(),
-				(float) workingDayRequest.getTotalAmount(), workingDayRequest.getObservations(), hoursWorked);
+				(float) workingDayRequest.getTotalAmount(), workingDayRequest.getObservations(), hoursWorked, workingDayRequest.isCompleted());
 
 		workingDayRepository.save(workingDay);
 
 		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
 	}
+	
+	/**
+	 * Método para guardar un set de working days
+	 * @param listOfWorkingDays
+	 * @return workinkDaysSaved
+	 */
 	
 	@PostMapping("/workingDays")
 	public ResponseEntity<?> createWorkingDays(@RequestBody ArrayList<WorkingDayRequest> listOfWorkingDays) {
