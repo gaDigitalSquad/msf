@@ -245,7 +245,6 @@ public class WorkingDayController {
 		else {
 			User lider = user.get();
 			List<User> sensibilizadores = userService.getMySens(lider.getUser_id());
-			sensibilizadores.add(lider);
 			List<WorkingDay> workingDaysGroup = new ArrayList<>();
 			for (User userToGet : sensibilizadores) {
 				WorkingDay userWorkDay = workingDayService.getWorkingDay(userToGet.getUser_id(), dateRequest);
@@ -253,7 +252,6 @@ public class WorkingDayController {
 					workingDaysGroup.add(userWorkDay);
 				}
 			}
-			System.out.println(CollectionUtils.isEmpty(workingDaysGroup));
 			if (CollectionUtils.isEmpty(workingDaysGroup)) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No se ha cargado el workingDay de ese dia");
 			}

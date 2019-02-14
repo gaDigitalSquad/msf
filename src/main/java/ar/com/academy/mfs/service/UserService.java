@@ -177,6 +177,16 @@ public class UserService {
 		return mySens;
 	}
 	
+	public List<User> getMySensWithoutLider(int supervisor_id) {
+		List<User> mySens = new ArrayList<User>();
+		List<Integer> sensId = groupRepository.findMySens(supervisor_id);
+		for (int i = 0; i < sensId.size(); i++) {
+			User u = userRepository.findById(sensId.get(i)).get();
+			mySens.add(u);
+		}
+		return mySens;
+	}
+	
 	public void createPasswordResetTokenForUser(int user_id, String token) {
 	    PasswordResetToken myToken = new PasswordResetToken(token, user_id);
 	    passwordTokenRepository.save(myToken);
