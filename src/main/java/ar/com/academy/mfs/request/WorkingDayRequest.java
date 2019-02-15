@@ -1,7 +1,7 @@
 package ar.com.academy.mfs.request;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 
 public class WorkingDayRequest {

@@ -1,5 +1,6 @@
 package ar.com.academy.mfs.service;
 
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.academy.mfs.model.Form;
+import ar.com.academy.mfs.model.Group;
 import ar.com.academy.mfs.model.Partner;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.WorkingDay;
@@ -27,6 +29,8 @@ public class WorkingDayService {
 	UserRepository userRepository;
 	@Autowired
 	FormService formService;
+	@Autowired
+	GroupService groupService;
 	
 	public Metricas getMetricasUsuario(int user_id, DateRequest dateRequest) {
 		
@@ -64,13 +68,14 @@ public class WorkingDayService {
 		
 		int hoursWorked = 0;
 		
-		// Cálculo de horas trabajadas, solo si las horas son != null
+		/* Cálculo de horas trabajadas, solo si las horas son != null */
 		if (inputWorkingDay.getTo_hour() != null && inputWorkingDay.getFrom_hour() != null) {
 			DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
 			long diff = inputWorkingDay.getTo_hour().getTime() - inputWorkingDay.getFrom_hour().getTime();
 			hoursWorked = (int) (diff / (60 * 60 * 1000));
 		}
 		
+		Group group = groupService.findGroup(inputWorkingDay.getSupervisor());
 		WorkingDay WorkingDayToSave = new WorkingDay(lider.getUser_id(),
 										inputWorkingDay.getUser(),
 										inputWorkingDay.isPresent(),
@@ -82,7 +87,8 @@ public class WorkingDayService {
 										inputWorkingDay.getTotalAmount(),
 										inputWorkingDay.getObservations(),
 										hoursWorked,
-										inputWorkingDay.isCompleted());
+										inputWorkingDay.isCompleted(),
+										group.getGroup_number());
 		WorkingDay workingDaySaved = workingDayRepository.save(WorkingDayToSave);
 		
 		// Obtengo los formularios que hizo el sensibilizador en la fecha
@@ -98,6 +104,13 @@ public class WorkingDayService {
 		}
 		
 		return new WorkingDayResponse(workingDaySaved, partners);
+	}
+
+	public boolean existWorkingDay(int sens_id, Date fecha) {
+		if (workingDayRepository.findByWorkingDateAndUser(sens_id, fecha) != null) {
+			return true;
+		}
+		return false;
 	}
 
 }

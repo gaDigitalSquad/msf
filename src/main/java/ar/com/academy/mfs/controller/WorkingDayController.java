@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.com.academy.mfs.model.WorkingDay;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.request.WorkingDayRequest;
+import ar.com.academy.mfs.service.GroupService;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.service.WorkingDayService;
 import ar.com.academy.mfs.model.Area;
@@ -56,13 +57,25 @@ public class WorkingDayController {
 	@Autowired
 	private UserService userService;
 	@Autowired
+	private GroupService groupService;
+	@Autowired
 	private WorkingDayService workingDayService;
 
 	@PostMapping("/workingDay")
 	@ResponseBody
 	ResponseEntity<?> postWorkingDay(@Valid @RequestBody WorkingDayRequest workingDayRequest) {
+		/* Sumar un día al working day date */
+		Date newDate = new Date (workingDayRequest.getWorkingDate().getTime() + 24*60*60*1000);
+		System.out.println(newDate);
+
+		/* Verificación de usuario y fecha */
+		int sens_id = workingDayRequest.getUser();
+		if (workingDayService.existWorkingDay(sens_id, newDate)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+					body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + newDate);
+		}
 		User supervisor = userRepository.findById(workingDayRequest.getSupervisor()).get();
-		User user = userRepository.findById(workingDayRequest.getUser()).get();
+		User user = userRepository.findById(sens_id).get();
 		if (supervisor == null || user == null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Supervisor o Usuario no valido");
 
@@ -71,32 +84,56 @@ public class WorkingDayController {
 		Zone zone = zoneRepository.findById(group.getZone_id()).get();
 		if (zone == null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Zona no valida");
-
+		
+		/* Cálculo de las horas trabajadas */
 		DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
 		long diff = workingDayRequest.getTo_hour().getTime() - workingDayRequest.getFrom_hour().getTime();
-
 		int hoursWorked = (int) (diff / (60 * 60 * 1000));
-
-		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(), user.getUser_id(),
-				workingDayRequest.isPresent(), workingDayRequest.getWorkingDate(), workingDayRequest.getFrom_hour(),
-				workingDayRequest.getTo_hour(), zone.getZoneId(), workingDayRequest.getAmountOfNewPartners(),
-				(float) workingDayRequest.getTotalAmount(), workingDayRequest.getObservations(), hoursWorked, workingDayRequest.isCompleted());
-
+		
+		
+		Group grupo = groupService.findGroup(workingDayRequest.getSupervisor());
+		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(),
+											   user.getUser_id(),
+											   workingDayRequest.isPresent(),
+											   newDate,
+											   workingDayRequest.getFrom_hour(),
+											   workingDayRequest.getTo_hour(),
+											   zone.getZoneId(),
+											   workingDayRequest.getAmountOfNewPartners(),
+											   (float) workingDayRequest.getTotalAmount(),
+											   workingDayRequest.getObservations(),
+											   hoursWorked,
+											   workingDayRequest.isCompleted(),
+											   grupo.getGroup_number());
+		
 		workingDayRepository.save(workingDay);
-
+		System.out.println(workingDay.getWorkingDate());
 		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
 	}
-	
+
 	/**
 	 * Método para guardar un set de working days
+	 * 
 	 * @param listOfWorkingDays
 	 * @return workinkDaysResponse
 	 */
-	
+
 	@PostMapping("/workingDays")
 	public ResponseEntity<?> createWorkingDays(@RequestBody ArrayList<WorkingDayRequest> listOfWorkingDays) {
 		List<WorkingDayResponse> workingDaysResponse = new ArrayList<>();
-		for (WorkingDayRequest inputWorkingDay: listOfWorkingDays) {
+		for (WorkingDayRequest inputWorkingDay : listOfWorkingDays) {
+			/* Sumar un día al working day date */
+			Date newDate = new Date (inputWorkingDay.getWorkingDate().getTime() + 24*60*60*1000);
+			
+			/* Verificación de usuario y fecha */
+			int sens_id = inputWorkingDay.getUser();
+			if (workingDayService.existWorkingDay(sens_id,newDate)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+						body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + newDate);
+			}
+			
+			/* Creación del working day */
+			inputWorkingDay.setWorkingDate(newDate);
 			WorkingDayResponse wd = workingDayService.createWorkingDayResponse(inputWorkingDay);
 			workingDaysResponse.add(wd);
 		}
@@ -235,6 +272,8 @@ public class WorkingDayController {
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
 	}
 
+	// Devolver el WorkingDayResponse
+
 	@PostMapping("/workingDay/group/{lider_id}")
 	public ResponseEntity<?> getGroupWorkingDay(@PathVariable int lider_id, @RequestBody DateRequest dateRequest) {
 		Optional<User> user = userRepository.findById(lider_id);
@@ -273,7 +312,7 @@ public class WorkingDayController {
 		// Establezco el rango de fecha, se asume que la campaña es anual
 		Date start = Date.valueOf(year + "-01-01");
 		Date end = Date.valueOf(year + "-12-31");
-		
+
 		System.out.println(year + "-01-01");
 
 		List<WorkingDay> workingDays = workingDayRepository.findByWorkingDateBetweenAndUser(user.getUser_id(), start,
@@ -408,7 +447,7 @@ public class WorkingDayController {
 		// Establezco el rango de fecha, se asume que la campaña es anual
 		Date start = Date.valueOf(year + "-01-01");
 		Date end = Date.valueOf(year + "-12-31");
-		
+
 		System.out.println(year + "-01-01");
 
 		// Primero, obtengo todos los working day del grupo
@@ -545,7 +584,7 @@ public class WorkingDayController {
 		// Establezco el rango de fecha, se asume que la campaña es anual
 		Date start = Date.valueOf(year + "-01-01");
 		Date end = Date.valueOf(year + "-12-31");
-		
+
 		System.out.println(year + "-01-01");
 
 		// Primero, obtengo todos los working day de la zona

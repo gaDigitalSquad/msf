@@ -1,7 +1,7 @@
 package ar.com.academy.mfs.model;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,7 +62,8 @@ public class WorkingDay {
 	}
 	
 	public WorkingDay(int supervisor, int user, boolean present, Date workingDate, Time from_hour, Time to_hour,
-			int zone, int amountOfNewPartners, float totalAmount, String observations, int hours_worked, boolean isCompleted) {
+			int zone, int amountOfNewPartners, float totalAmount, String observations, int hours_worked, boolean isCompleted,
+			int group_number) {
 		super();
 		this.supervisor = supervisor;
 		this.user = user;
@@ -76,6 +77,7 @@ public class WorkingDay {
 		this.observations = observations;
 		this.isCompleted = isCompleted;
 		this.hours_worked = hours_worked;
+		this.group_number = group_number;
 	}
 	
 	public int getSupervisor() {

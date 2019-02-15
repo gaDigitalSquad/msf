@@ -31,6 +31,11 @@ public class GroupService {
 		return groupRepository.findByGroupNumber(group_number);
 	}
 	
+	/**
+	 * Dado el supervisor_id se obtiene el grupo del que es líder
+	 * @param supervisor_id
+	 * @return
+	 */
 	public Group findGroup(int supervisor_id) {
 		return groupRepository.findUserGroup(supervisor_id);
 	}
