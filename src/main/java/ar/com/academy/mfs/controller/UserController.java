@@ -106,6 +106,16 @@ public class UserController {
 		return user_service.getAllUsers();
 	}
 	
+	/**
+	 * Saber si un dni ya se encuentra registrado
+	 * @param dni
+	 * @return boolean
+	 */
+	@GetMapping("/users/check-dni/{dni}")
+	public boolean dniCheck(@PathVariable int dni) {
+		return true;
+	}
+	
 	@GetMapping("/users/{username}")
 	public User getUser(@PathVariable String username) {
 		User u = user_service.findByUsername(username);

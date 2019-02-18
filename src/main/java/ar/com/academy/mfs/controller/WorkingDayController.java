@@ -72,9 +72,9 @@ public class WorkingDayController {
 
 		/* Verificación de usuario y fecha */
 		int sens_id = workingDayRequest.getUser();
-		if (workingDayService.existWorkingDay(sens_id, newDate)) {
+		if (workingDayService.existWorkingDay(sens_id, workingDayRequest.getWorkingDate())) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-					body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + newDate);
+					body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + workingDayRequest.getWorkingDate());
 		}
 		User supervisor = userRepository.findById(workingDayRequest.getSupervisor()).get();
 		User user = userRepository.findById(sens_id).get();
@@ -96,7 +96,7 @@ public class WorkingDayController {
 		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(),
 											   user.getUser_id(),
 											   workingDayRequest.isIs_present(),
-											   newDate,
+											   workingDayRequest.getWorkingDate(),
 											   workingDayRequest.getFrom_hour(),
 											   workingDayRequest.getTo_hour(),
 											   zone.getZoneId(),
@@ -123,17 +123,17 @@ public class WorkingDayController {
 		List<WorkingDayResponse> workingDaysResponse = new ArrayList<>();
 		for (WorkingDayRequest inputWorkingDay : listOfWorkingDays) {
 			/* Sumar un día al working day date */
-			Date newDate = new Date (inputWorkingDay.getWorkingDate().getTime() + 24*60*60*1000);
-			
+//			Date newDate = new Date (inputWorkingDay.getWorkingDate().getTime() + 24*60*60*1000);
+//			
 			/* Verificación de usuario y fecha */
 			int sens_id = inputWorkingDay.getUser();
-			if (workingDayService.existWorkingDay(sens_id,newDate)) {
+			if (workingDayService.existWorkingDay(sens_id, inputWorkingDay.getWorkingDate())) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-						body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + newDate);
+						body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + inputWorkingDay.getWorkingDate());
 			}
 			
 			/* Creación del working day */
-			inputWorkingDay.setWorkingDate(newDate);
+			inputWorkingDay.setWorkingDate(inputWorkingDay.getWorkingDate());
 			WorkingDayResponse wd = workingDayService.createWorkingDayResponse(inputWorkingDay);
 			workingDaysResponse.add(wd);
 		}
