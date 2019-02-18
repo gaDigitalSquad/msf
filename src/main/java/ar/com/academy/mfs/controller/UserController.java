@@ -109,11 +109,11 @@ public class UserController {
 	/**
 	 * Saber si un dni ya se encuentra registrado
 	 * @param dni
-	 * @return boolean
+	 * @return true si está disponible, false de lo contrario
 	 */
 	@GetMapping("/users/check-dni/{dni}")
-	public boolean dniCheck(@PathVariable int dni) {
-		return true;
+	public boolean isDniAvailable(@PathVariable int dni) {
+		return user_service.checkDni(dni);
 	}
 	
 	@GetMapping("/users/{username}")

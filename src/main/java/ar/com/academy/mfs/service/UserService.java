@@ -207,4 +207,13 @@ public class UserService {
 		return mySens;
 	}
 
+	public boolean checkDni(int dni) {
+		User u = userRepository.findByDocument(dni);
+		if (u == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

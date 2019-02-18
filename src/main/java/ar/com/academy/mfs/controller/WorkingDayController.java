@@ -124,7 +124,7 @@ public class WorkingDayController {
 		for (WorkingDayRequest inputWorkingDay : listOfWorkingDays) {
 			/* Sumar un día al working day date */
 //			Date newDate = new Date (inputWorkingDay.getWorkingDate().getTime() + 24*60*60*1000);
-//			
+	
 			/* Verificación de usuario y fecha */
 			int sens_id = inputWorkingDay.getUser();
 			if (workingDayService.existWorkingDay(sens_id, inputWorkingDay.getWorkingDate())) {
@@ -133,7 +133,7 @@ public class WorkingDayController {
 			}
 			
 			/* Creación del working day */
-			inputWorkingDay.setWorkingDate(inputWorkingDay.getWorkingDate());
+			// inputWorkingDay.setWorkingDate(inputWorkingDay.getWorkingDate());
 			WorkingDayResponse wd = workingDayService.createWorkingDayResponse(inputWorkingDay);
 			workingDaysResponse.add(wd);
 		}

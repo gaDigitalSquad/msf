@@ -25,8 +25,8 @@ public class WorkingDay {
 	@Column(name = "user_id")
 	private int user;
 	
-	@Column(name = "present")
-	private boolean present;
+	@Column(name = "is_present")
+	private boolean is_present;
 	
 	@Column(name = "working_date")
 	private Date workingDate;
@@ -67,7 +67,7 @@ public class WorkingDay {
 		super();
 		this.supervisor = supervisor;
 		this.user = user;
-		this.present = present;
+		this.is_present = present;
 		this.workingDate = workingDate;
 		this.from_hour = from_hour;
 		this.to_hour = to_hour;
@@ -99,13 +99,15 @@ public class WorkingDay {
 	public void setWorkingDayId(int workingDayId) {
 		this.workingDayId = workingDayId;
 	}
+	
+	public boolean isIs_present() {
+		return is_present;
+	}
 
-	public boolean isPresent() {
-		return present;
+	public void setIs_present(boolean is_present) {
+		this.is_present = is_present;
 	}
-	public void setPresent(boolean present) {
-		this.present = present;
-	}
+
 	public Date getWorkingDate() {
 		return workingDate;
 	}
