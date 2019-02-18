@@ -30,11 +30,9 @@ import ar.com.academy.mfs.request.WorkingDayRequest;
 import ar.com.academy.mfs.service.GroupService;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.service.WorkingDayService;
-import ar.com.academy.mfs.model.Area;
 import ar.com.academy.mfs.model.Group;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.Zone;
-import ar.com.academy.mfs.repository.AreaRepository;
 import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.WorkingDayRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
@@ -60,13 +58,17 @@ public class WorkingDayController {
 	private GroupService groupService;
 	@Autowired
 	private WorkingDayService workingDayService;
-
+	
+	/**
+	 * Almacenar un solo working day
+	 * @param workingDayRequest
+	 * @return workingDayResponse
+	 */
 	@PostMapping("/workingDay")
 	@ResponseBody
 	ResponseEntity<?> postWorkingDay(@Valid @RequestBody WorkingDayRequest workingDayRequest) {
 		/* Sumar un día al working day date */
 		Date newDate = new Date (workingDayRequest.getWorkingDate().getTime() + 24*60*60*1000);
-		System.out.println(newDate);
 
 		/* Verificación de usuario y fecha */
 		int sens_id = workingDayRequest.getUser();
@@ -90,11 +92,10 @@ public class WorkingDayController {
 		long diff = workingDayRequest.getTo_hour().getTime() - workingDayRequest.getFrom_hour().getTime();
 		int hoursWorked = (int) (diff / (60 * 60 * 1000));
 		
-		
 		Group grupo = groupService.findGroup(workingDayRequest.getSupervisor());
 		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(),
 											   user.getUser_id(),
-											   workingDayRequest.isPresent(),
+											   workingDayRequest.isIs_present(),
 											   newDate,
 											   workingDayRequest.getFrom_hour(),
 											   workingDayRequest.getTo_hour(),
@@ -105,15 +106,14 @@ public class WorkingDayController {
 											   hoursWorked,
 											   workingDayRequest.isCompleted(),
 											   grupo.getGroup_number());
-		
 		workingDayRepository.save(workingDay);
-		System.out.println(workingDay.getWorkingDate());
+		
+		/* TODO Que lo que se regrese sea un workingDayResponse */
 		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
 	}
 
 	/**
 	 * Método para guardar un set de working days
-	 * 
 	 * @param listOfWorkingDays
 	 * @return workinkDaysResponse
 	 */
@@ -140,7 +140,12 @@ public class WorkingDayController {
 		return ResponseEntity.status(HttpStatus.OK).body(workingDaysResponse);
 	}
 
-	// Conseguir las métricas de un determinado usuario
+	/**
+	 * Obtener las métricas de un determinado usuario en una determinada fecha
+	 * @param user_id
+	 * @param date
+	 * @return
+	 */
 
 	@GetMapping("/workingDay/{user_id}")
 	@ResponseBody
@@ -149,8 +154,12 @@ public class WorkingDayController {
 		return ResponseEntity.status(HttpStatus.OK).body(day);
 	}
 
-	// Con el ID del usuario vamos a buscar todos los socios que consiguio en cierto
-	// periodo de tiempo
+	/**
+	 * Obtener las métricas de un determinado usuario en un rango de fechas
+	 * @param user_id
+	 * @param dateRequest
+	 * @return
+	 */
 	@PostMapping("/workingDay/{user_id}")
 	@ResponseBody
 	ResponseEntity<?> getMetricasUsuario(@PathVariable int user_id, @RequestBody DateRequest dateRequest) {
@@ -179,7 +188,14 @@ public class WorkingDayController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(m);
 	}
-
+	
+	/**
+	 * Obtener las métricas de los sensibilizadores pertenecientes a un líder
+	 * en un rango de fechas
+	 * @param user_id
+	 * @param dateRequest
+	 * @return
+	 */
 	@PostMapping("/workingDay/lider/{user_id}")
 	@ResponseBody
 	public ResponseEntity<?> getMetricasDeMisSensibilizadores(@PathVariable int user_id,

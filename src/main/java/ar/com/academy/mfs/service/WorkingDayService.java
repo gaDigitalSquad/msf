@@ -36,7 +36,6 @@ public class WorkingDayService {
 		
 		User user = userRepository.findById(user_id).get();
 		
-		
 		List<WorkingDay> workingDays = workingDayRepository.findByWorkingDateBetweenAndUser(user.getUser_id(), dateRequest.getFrom(), dateRequest.getTo());
 		
 		float socios = 0;
@@ -78,7 +77,7 @@ public class WorkingDayService {
 		Group group = groupService.findGroup(inputWorkingDay.getSupervisor());
 		WorkingDay WorkingDayToSave = new WorkingDay(lider.getUser_id(),
 										inputWorkingDay.getUser(),
-										inputWorkingDay.isPresent(),
+										inputWorkingDay.isIs_present(),
 										inputWorkingDay.getWorkingDate(),
 										inputWorkingDay.getFrom_hour(),
 										inputWorkingDay.getTo_hour(),
