@@ -111,9 +111,14 @@ public class UserController {
 	 * @param dni
 	 * @return true si está disponible, false de lo contrario
 	 */
-	@GetMapping("/users/check-dni/{dni}")
-	public boolean isDniAvailable(@PathVariable int dni) {
-		return user_service.checkDni(dni);
+	@PostMapping("/users/check-document")
+	public ResponseEntity<?> isDocumentAvailable(@RequestBody DocumentTypeAndNumberRequest document) {
+		boolean res = user_service.isDocumentAvailable(document);
+		if (res == true) {
+			return ResponseEntity.status(HttpStatus.OK).body("El documento está disponible");
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El documento ya se encuentra registrado");
+		}
 	}
 	
 	@GetMapping("/users/{username}")

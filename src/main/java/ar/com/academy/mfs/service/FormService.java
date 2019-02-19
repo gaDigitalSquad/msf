@@ -13,6 +13,7 @@ import ar.com.academy.mfs.repository.CardTypeRepository;
 import ar.com.academy.mfs.repository.FormRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
+import ar.com.academy.mfs.request.DateRequest;
 import ar.com.academy.mfs.request.FormRequest;
 import ar.com.academy.mfs.request.FormRequestMobile;
 
@@ -88,6 +89,10 @@ public class FormService {
 
 	public List<Form> getFormsByUser(int user, Date date) {
 		return formRepository.findByUserAndDate(user, date);
+	}
+
+	public List<Form> getFormByDate(DateRequest fecha) {
+		return formRepository.findByFormDate(fecha.getTo());
 	}
 
 //	public Form updateFormDni(int dni, Form form) {

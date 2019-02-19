@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ar.com.academy.mfs.model.Form;
+import ar.com.academy.mfs.request.DateRequest;
 
 @Repository
 public interface FormRepository extends JpaRepository<Form, Integer> {
@@ -19,4 +20,7 @@ public interface FormRepository extends JpaRepository<Form, Integer> {
 	
 	@Query(value = "select * from msf.form where completed_by_user_id =?1 and form_date = ?2", nativeQuery = true)
 	List<Form> findByUserAndDate(int user, Date date);
+	
+	@Query(value = "select * from msf.form where form_date = ?1", nativeQuery = true)
+	List<Form> findByFormDate(Date date);
 }

@@ -93,11 +93,19 @@ public class FormController {
 		return formService.getFormByDni(dni);
 	}
 	
-//	@PutMapping("/form/{dni}")
-//	public ResponseEntity<?> updateFormByDni(@PathVariable int dni, @RequestBody Form form){
-//		Form formUpdated = formService.updateFormDni(dni, form);
-//		return new ResponseEntity<Form>(formUpdated, HttpStatus.ACCEPTED);
-//	}
+	/**
+	 * Obtener los formularios de un día
+	 * @param fecha
+	 * @return List<Form>
+	 */
+	@PostMapping("/get-forms-by-date")
+	public ResponseEntity<?> getFormsByDate(@RequestBody DateRequest fecha) {
+		List<Form> formularios = formService.getFormByDate(fecha);
+		if (formularios.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existen formularios para la fecha " + fecha.getTo());
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(formularios);
+	}
 	
 	@GetMapping("/DniVerification/{dni}")
 	public ResponseEntity<?> dniVerification(@PathVariable int dni) {

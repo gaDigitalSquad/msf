@@ -16,6 +16,7 @@ import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.PasswordResetTokenRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
+import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
 import ar.com.academy.mfs.request.UserRequest;
 
 @Service("userService")
@@ -214,6 +215,15 @@ public class UserService {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean isDocumentAvailable(DocumentTypeAndNumberRequest document) {
+		// TODO Auto-generated method stub
+		User u = userRepository.findByDocumentTypeAndDocumentNumber(document.getDocumentType(), document.getDocumentNumber());
+		if (u == null)
+			return true;
+		else 
+			return false;
 	}
 
 }
