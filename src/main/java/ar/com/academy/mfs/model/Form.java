@@ -86,7 +86,7 @@ public class Form implements Serializable{
 	private String card_number;
 	
 	@Column(name = "card_expiration_date")
-	private Date card_expiration_date;
+	private String card_expiration_date;
 	
 	@Column(name = "cbu")
 	private String cbu;
@@ -111,7 +111,7 @@ public class Form implements Serializable{
 			Date birthdate, String address_street, int address_number, int address_floor, String address_apartment,
 			String postcode, String city, String province, String cuil_cuit, int dni, String phone_number,
 			String email, boolean did_you_know_msf, long card_type_id, String card_number,
-			Date card_expiration_date, String cbu, float monthly_amount_contribution, Date form_date,
+			String card_expiration_date, String cbu, float monthly_amount_contribution, Date form_date,
 			String observations, boolean completed) {
 		super();
 		this.completed_by_user_id = completed_by_user_id;
@@ -322,11 +322,11 @@ public class Form implements Serializable{
 		this.card_number = card_number;
 	}
 
-	public Date getCard_expiration_date() {
+	public String getCard_expiration_date() {
 		return card_expiration_date;
 	}
 
-	public void setCard_expiration_date(Date card_expiration_date) {
+	public void setCard_expiration_date(String card_expiration_date) {
 		this.card_expiration_date = card_expiration_date;
 	}
 

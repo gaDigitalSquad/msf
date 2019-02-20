@@ -2,8 +2,6 @@ package ar.com.academy.mfs.request;
 
 import java.sql.Date;
 
-import javax.validation.constraints.NotNull;
-
 public class FormRequest {
 	
 	private String completedByUser;
@@ -27,7 +25,7 @@ public class FormRequest {
 	private boolean didYouKnowMsf;
 	private int cardType;
 	private String cardNumber;
-	private Date cardExpirationDate;
+	private String cardExpirationDate;
 	private String cbu;
 	private float monthlyAmountContribution;
 	private Date formDate;
@@ -202,11 +200,11 @@ public class FormRequest {
 		this.cardNumber = cardNumber;
 	}
 
-	public Date getCardExpirationDate() {
+	public String getCardExpirationDate() {
 		return cardExpirationDate;
 	}
 
-	public void setCardExpirationDate(Date cardExpirationDate) {
+	public void setCardExpirationDate(String cardExpirationDate) {
 		this.cardExpirationDate = cardExpirationDate;
 	}
 

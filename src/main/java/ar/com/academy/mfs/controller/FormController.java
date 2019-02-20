@@ -8,12 +8,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.academy.mfs.model.CardType;
@@ -46,31 +48,52 @@ public class FormController {
 	@Autowired
 	private CardTypeRepository cardTypeRepository;
 	
-//	@PostMapping("/formBack")
-//	public ResponseEntity<?> createForm(@RequestBody ArrayList<FormRequest> listOfForm) {
-//		List<Form> formsSaved = new ArrayList<>();
-//		for(FormRequest inputForm: listOfForm) {
-//			//System.out.println("\n\n\nHasta el tipo de carta llega 1\n\n\n");
-//			User user = userRepository.findByUsername(inputForm.getCompletedByUser());
-//			if(user == null) 
-//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
-//			//System.out.println("\n\n\nHasta el tipo de carta llega 2\n\n\n");
-//			Zone zone = zoneRepository.findByZoneName(inputForm.getZone());
-//			if(zone == null) 
-//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid zone");
-//			//System.out.println("\n\n\nHasta el tipo de carta llega 3\n\n\n");
-//			//CardType cardType = cardTypeRepository.findByCode(inputForm.getCardType());
-//			//if(cardType == null) 
-//				//return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
-//			CardType cardType = cardTypeRepository.findByCardTypeId(inputForm.getCardType());
-//			if(cardType == null) 
-//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid card type");
-//			//System.out.println("\n\n\nHasta el tipo de carta llega 4\n\n\n");
-//			Form form = formService.createForm(inputForm, user.getUser_id(), zone.getZoneId(), cardType.getCardTypeId());
-//			formsSaved.add(form);
-//		}
-//		return ResponseEntity.status(HttpStatus.ACCEPTED).body(formsSaved);
-//	}
+	/**
+	 * Completar un formulario proveniente de la app mobile
+	 * @param form
+	 * @return
+	 */
+	@CrossOrigin(origins = "*")
+	@PutMapping("/save-form")
+	@ResponseBody public ResponseEntity<?> saveForm(@RequestBody FormRequest form) {
+		/* Primero, encontramos el formulario a actualizar, lo buscamos por dni del socio
+		 * ya que este no se puede repetir */
+		Form formToUpdate = formService.getFormByDni(form.getDni());
+		if (formToUpdate != null) {
+			formToUpdate.setFirstname(form.getFirstname());
+			formToUpdate.setLastname(form.getLastname());
+			formToUpdate.setBirthdate(form.getBirthdate());
+			formToUpdate.setAddress_apartment(form.getAddressApartment());
+			formToUpdate.setAddress_floor(form.getAddressFloor());
+			formToUpdate.setAddress_number(form.getAddressNumber());
+			formToUpdate.setAddress_street(form.getAddressStreet());
+			formToUpdate.setCard_expiration_date(form.getCardExpirationDate());
+			formToUpdate.setCard_number(form.getCardNumber());
+			formToUpdate.setCard_type_id(form.getCardType());
+			formToUpdate.setCbu(form.getCbu());
+			formToUpdate.setCity(form.getCity());
+			formToUpdate.setCompleted(true);
+			formToUpdate.setCuil_cuit(form.getCuil_cuit());
+			formToUpdate.setDid_you_know_msf(form.isDidYouKnowMsf());
+			formToUpdate.setDni(form.getDni());
+			formToUpdate.setEmail(form.getEmail());
+			formToUpdate.setMobile_number(form.getMobileNumber());
+			formToUpdate.setMonthly_amount_contribution(form.getMonthlyAmountContribution());
+			formToUpdate.setObservations(form.getObservations());
+			formToUpdate.setPostcode(form.getPostcode());
+			formToUpdate.setProvince(form.getProvince());
+			formRepository.save(formToUpdate);
+			return ResponseEntity.status(HttpStatus.OK).body(formToUpdate);
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe formulario para el dni: " + form.getDni());
+		}
+	}
+	
+	/**
+	 * Almacenar los arrays de forms provenientes de la app mobile
+	 * @param listOfForm
+	 * @return
+	 */
 	
 	@PostMapping("/form")
 	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm) {

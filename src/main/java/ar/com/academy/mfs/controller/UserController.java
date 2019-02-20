@@ -184,7 +184,6 @@ public class UserController {
 	private boolean updateUser(@RequestBody UserRequest userRequest, User user) {
 		if(user != null) {
 			if(userRequest.getUsername() != null) user.setUsername(userRequest.getUsername());
-//			if(userRequest.getPassword() != null) user.setPassword(userRequest.getPassword());
 			if(userRequest.getFirstname() != null) user.setFirstname(userRequest.getFirstname());
 			if(userRequest.getLastname() != null) user.setLastname(userRequest.getLastname());
 			if(userRequest.getRole() != null) user.setRole_id(role_repository.findByRoleName(userRequest.getRole()).getRoleId());

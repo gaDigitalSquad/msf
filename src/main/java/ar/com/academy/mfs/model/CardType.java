@@ -18,7 +18,7 @@ public class CardType implements Serializable{
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name = "card_type_id")
-	private long cardTypeId;
+	private int cardTypeId;
 	
 	@Column(name = "description")
 	private String description;
@@ -52,7 +52,7 @@ public class CardType implements Serializable{
 		this.code = code;
 	}
 
-	public long getCardTypeId() {
+	public int getCardTypeId() {
 		return cardTypeId;
 	}
 	
