@@ -163,19 +163,9 @@ public class UserController {
 		return user_service.getGroupSens(group_number);
 	}
 	
-	// Actualizar usuario
-	
 	@CrossOrigin(origins = "*")
 	@PutMapping("/update-user/{user_id}")
 	@ResponseBody ResponseEntity<?> putUser(@PathVariable int user_id, @RequestBody UserRequest userRequest) {
-		User user = user_repository.findById(user_id).get();
-		if(updateUser(userRequest, user)) return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
-	}
-	
-	
-	@PatchMapping("/update-user/{user_id}")
-	@ResponseBody ResponseEntity<?> patchUser(@Valid @PathVariable int user_id, @RequestBody UserRequest userRequest) {
 		User user = user_repository.findById(user_id).get();
 		if(updateUser(userRequest, user)) return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
@@ -195,6 +185,17 @@ public class UserController {
 			return true;
 		}
 		return false;
+	}
+	
+	@DeleteMapping("/delete-user/{user_id}")
+	@ResponseBody ResponseEntity<?> deleteUser(@PathVariable int user_id) {
+		User user = user_repository.findById(user_id).get();
+		if (user == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe usuario con id: " + user_id);
+		} else {
+			user_repository.delete(user);
+			return ResponseEntity.status(HttpStatus.OK).body(user);
+		}
 	}
 	
 	@PostMapping("/findUser")

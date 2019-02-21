@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,8 +55,8 @@ public class FormController {
 	 * @return
 	 */
 	@CrossOrigin(origins = "*")
-	@PutMapping("/save-form")
-	@ResponseBody public ResponseEntity<?> saveForm(@RequestBody FormRequest form) {
+	@PatchMapping("/save-form")
+	public ResponseEntity<?> saveForm(@RequestBody FormRequest form) {
 		/* Primero, encontramos el formulario a actualizar, lo buscamos por dni del socio
 		 * ya que este no se puede repetir */
 		Form formToUpdate = formService.getFormByDni(form.getDni());
