@@ -1,7 +1,10 @@
 package ar.com.academy.mfs.controller;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,12 +124,15 @@ public class FormController {
 	 * Obtener los formularios de un día
 	 * @param fecha
 	 * @return List<Form>
+	 * @throws ParseException 
 	 */
-	@PostMapping("/get-forms-by-date")
-	public ResponseEntity<?> getFormsByDate(@RequestBody DateRequest fecha) {
-		List<Form> formularios = formService.getFormByDate(fecha);
+	@GetMapping("/get-form-by-date/{fecha}")
+	public ResponseEntity<?> getFormsByDate(@PathVariable String fecha) throws ParseException {
+		Date nuevaFecha = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+		System.out.println(nuevaFecha);
+		List<Form> formularios = formService.getFormByDate(nuevaFecha);
 		if (formularios.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existen formularios para la fecha " + fecha.getTo());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existen formularios para la fecha " + nuevaFecha);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(formularios);
 	}

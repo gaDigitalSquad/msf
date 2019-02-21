@@ -91,8 +91,8 @@ public class FormService {
 		return formRepository.findByUserAndDate(user, date);
 	}
 
-	public List<Form> getFormByDate(DateRequest fecha) {
-		return formRepository.findByFormDate(fecha.getTo());
+	public List<Form> getFormByDate(Date fecha) {
+		return formRepository.findByFormDate(fecha);
 	}
 
 //	public Form updateFormDni(int dni, Form form) {

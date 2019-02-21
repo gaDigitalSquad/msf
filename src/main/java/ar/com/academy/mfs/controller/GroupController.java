@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,5 +93,13 @@ public class GroupController {
 	public User getGroupLeader(@PathVariable int group_number) {
 		int lider = groupService.getGroupLeader(group_number);
 		return userRepository.findById(lider).get();
+	}
+	
+	@PutMapping("update-group")
+	public ResponseEntity<?> updateGroup(@RequestBody GroupRequest groupRequest) {
+		Group groupToUpdate = groupService.findGroup(groupRequest.getGroupNumber());
+		if (groupToUpdate != null) {
+			
+		}
 	}
 }

@@ -5,9 +5,18 @@ import java.util.List;
 public class GroupRequest {
 
 	private int leader;
-	private List<Integer> sens;
+	private List<Integer> sens; // Lista con los id de los sensibilizadores
 	private int zone;
 	private String turn;
+	private int groupNumber;
+	
+	public int getGroupNumber() {
+		return groupNumber;
+	}
+
+	public void setGroupNumber(int groupNumber) {
+		this.groupNumber = groupNumber;
+	}
 
 	public String getturn() {
 		return turn;
