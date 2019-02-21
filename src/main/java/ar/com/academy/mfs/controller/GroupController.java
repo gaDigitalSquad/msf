@@ -95,11 +95,11 @@ public class GroupController {
 		return userRepository.findById(lider).get();
 	}
 	
-	@PutMapping("update-group")
-	public ResponseEntity<?> updateGroup(@RequestBody GroupRequest groupRequest) {
-		Group groupToUpdate = groupService.findGroup(groupRequest.getGroupNumber());
-		if (groupToUpdate != null) {
-			
-		}
-	}
+//	@PutMapping("update-group")
+//	public ResponseEntity<?> updateGroup(@RequestBody GroupRequest groupRequest) {
+//		Group groupToUpdate = groupService.findGroup(groupRequest.getGroupNumber());
+//		if (groupToUpdate != null) {
+//			
+//		}
+//	}
 }
