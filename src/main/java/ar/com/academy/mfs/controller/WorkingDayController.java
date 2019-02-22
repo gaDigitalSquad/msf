@@ -1,4 +1,4 @@
-package ar.com.academy.mfs.controller;
+ package ar.com.academy.mfs.controller;
 
 import java.sql.Date;
 import java.text.DecimalFormat;
@@ -27,10 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.com.academy.mfs.model.WorkingDay;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.request.WorkingDayRequest;
+import ar.com.academy.mfs.service.FormService;
 import ar.com.academy.mfs.service.GroupService;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.service.WorkingDayService;
+import ar.com.academy.mfs.model.Form;
 import ar.com.academy.mfs.model.Group;
+import ar.com.academy.mfs.model.Partner;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.Zone;
 import ar.com.academy.mfs.repository.GroupRepository;
@@ -58,6 +61,8 @@ public class WorkingDayController {
 	private GroupService groupService;
 	@Autowired
 	private WorkingDayService workingDayService;
+	@Autowired
+	private FormService formService;
 	
 	/**
 	 * Almacenar un solo working day
@@ -288,7 +293,12 @@ public class WorkingDayController {
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
 	}
 
-	// Devolver el WorkingDayResponse
+	/**
+	 * 
+	 * @param lider_id
+	 * @param dateRequest
+	 * @return workingDayResponse
+	 */
 
 	@PostMapping("/workingDay/group/{lider_id}")
 	public ResponseEntity<?> getGroupWorkingDay(@PathVariable int lider_id, @RequestBody DateRequest dateRequest) {
@@ -300,11 +310,24 @@ public class WorkingDayController {
 		else {
 			User lider = user.get();
 			List<User> sensibilizadores = userService.getMySens(lider.getUser_id());
-			List<WorkingDay> workingDaysGroup = new ArrayList<>();
+			List<WorkingDayResponse> workingDaysGroup = new ArrayList<>();
 			for (User userToGet : sensibilizadores) {
+				// Obtener workingDay de un determinado sensibilizador en un determinado día
 				WorkingDay userWorkDay = workingDayService.getWorkingDay(userToGet.getUser_id(), dateRequest);
 				if (userWorkDay != null) {
-					workingDaysGroup.add(userWorkDay);
+					// Obtengo los formularios que hizo el sensibilizador en la fecha
+					List<Form> formularios = formService.getFormsByUser(userWorkDay.getUser(), userWorkDay.getWorkingDate()); 
+					
+					// Establezco la lista de socios que hizo en la fecha
+					List<Partner> partners = new ArrayList<Partner>();
+					
+					// De cada formulario, obtengo la información básica de cada socio
+					for (Form formulario: formularios) {
+						Partner socio = new Partner(formulario.getDni(), formulario.getFirstname(), formulario.getLastname(), formulario.getMonthly_amount_contribution());
+						partners.add(socio);
+					}
+					WorkingDayResponse wdr = new WorkingDayResponse(userWorkDay, partners);
+					workingDaysGroup.add(wdr);
 				}
 			}
 			if (CollectionUtils.isEmpty(workingDaysGroup)) {

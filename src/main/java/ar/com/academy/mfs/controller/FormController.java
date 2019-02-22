@@ -57,8 +57,8 @@ public class FormController {
 	 * @param form
 	 * @return
 	 */
-	@CrossOrigin(origins = "*")
-	@PatchMapping("/save-form")
+
+	@PostMapping("/form-2")
 	public ResponseEntity<?> saveForm(@RequestBody FormRequest form) {
 		/* Primero, encontramos el formulario a actualizar, lo buscamos por dni del socio
 		 * ya que este no se puede repetir */

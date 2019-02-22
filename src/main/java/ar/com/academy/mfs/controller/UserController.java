@@ -199,6 +199,10 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe usuario con id: " + user_id);
 		} else {
 			user.setActive(false);
+			/* Si está en un grupo, se lo desvincula del mismo */
+			if (user.getGroup_number() != 0) {
+				
+			}
 			user_repository.save(user);
 			return ResponseEntity.status(HttpStatus.OK).body(user);
 		}
