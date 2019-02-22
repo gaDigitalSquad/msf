@@ -1,6 +1,5 @@
 package ar.com.academy.mfs.controller;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,29 +38,32 @@ import ar.com.academy.mfs.service.FormService;
 public class FormController {
 	@Autowired
 	private FormService formService;
-	
+
 	@Autowired
 	private FormRepository formRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private ZoneRepository zoneRepository;
-	
+
 	@Autowired
 	private CardTypeRepository cardTypeRepository;
-	
+
 	/**
 	 * Completar un formulario proveniente de la app mobile
+	 * 
 	 * @param form
 	 * @return
 	 */
 
 	@PostMapping("/form-2")
 	public ResponseEntity<?> saveForm(@RequestBody FormRequest form) {
-		/* Primero, encontramos el formulario a actualizar, lo buscamos por dni del socio
-		 * ya que este no se puede repetir */
+		/*
+		 * Primero, encontramos el formulario a actualizar, lo buscamos por dni del
+		 * socio ya que este no se puede repetir
+		 */
 		Form formToUpdate = formService.getFormByDni(form.getDni());
 		if (formToUpdate != null) {
 			formToUpdate.setFirstname(form.getFirstname());
@@ -89,42 +91,50 @@ public class FormController {
 			formRepository.save(formToUpdate);
 			return ResponseEntity.status(HttpStatus.OK).body(formToUpdate);
 		} else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe formulario para el dni: " + form.getDni());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("No existe formulario para el dni: " + form.getDni());
 		}
 	}
-	
+
 	/**
 	 * Almacenar los arrays de forms provenientes de la app mobile
+	 * 
 	 * @param listOfForm
 	 * @return
 	 */
-	
+
 	@PostMapping("/form")
 	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm) {
 		List<Form> formsSaved = new ArrayList<>();
-		for(FormRequestMobile inputForm: listOfForm) {
-			Form form = formService.createForm(inputForm);
-			formsSaved.add(form);
+		for (FormRequestMobile inputForm : listOfForm) {
+			// Verificamos que el dni no sea repetido
+			Form f = formService.getFormByDni(inputForm.getDni());
+			if (f != null) {
+				Form form = formService.createForm(inputForm);
+				formsSaved.add(form);
+			}
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(formsSaved);
 	}
-	
+
 	/**
 	 * Obtener el formulario de un socio a tráves de su DNI
+	 * 
 	 * @Input int dni
 	 * @Return Form formulario
 	 */
-	
+
 	@GetMapping("/get-form/{dni}")
 	public Form getFormByDni(@PathVariable int dni) {
 		return formService.getFormByDni(dni);
 	}
-	
+
 	/**
 	 * Obtener los formularios de un día
+	 * 
 	 * @param fecha
 	 * @return List<Form>
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@GetMapping("/get-form-by-date/{fecha}")
 	public ResponseEntity<?> getFormsByDate(@PathVariable String fecha) throws ParseException {
@@ -132,18 +142,19 @@ public class FormController {
 		System.out.println(nuevaFecha);
 		List<Form> formularios = formService.getFormByDate(nuevaFecha);
 		if (formularios.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existen formularios para la fecha " + nuevaFecha);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("No existen formularios para la fecha " + nuevaFecha);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(formularios);
 	}
-	
+
 	@GetMapping("/DniVerification/{dni}")
 	public ResponseEntity<?> dniVerification(@PathVariable int dni) {
 		Optional<Form> form = formRepository.findByDni(dni);
-		if(!form.isPresent())
+		if (!form.isPresent())
 			return ResponseEntity.status(HttpStatus.OK).body("El dni no existe");
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El dni ya existe");
 	}
-	
+
 }
