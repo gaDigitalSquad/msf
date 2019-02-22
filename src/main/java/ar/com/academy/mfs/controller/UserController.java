@@ -229,22 +229,11 @@ public class UserController {
 		}
 	}
 	
-//	@PostMapping("/changeManualPassword")
-//	public String changePassword(@RequestBody String password) {
-//		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//		User user =  user_repository.findByUsername((String)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//		user_service.changeUserPassword(user, password);
-//		return "Password change succesful";
-//	}
-	
-//	@RequestMapping(value = "/rol/{username}", method = RequestMethod.GET, produces = "application/json")
-//	@ResponseBody 
-//	public Map findRoleByUsername(@PathVariable String username) {
-//		User user = user_service.findByUsername(username);
-//		String role = user.getRole().getRoleName();
-//		return Collections.singletonMap("role", role);
-//	}
-	
+	@GetMapping("/reset-password/{email}")
+	public ResponseEntity<?> resetPassword(@PathVariable String email) {
+		User user = user_service.findUserByUsername(email);
+		
+	}
 	
 	@PostMapping("/user/resetPassword")
 	//@ResponseBody

@@ -107,12 +107,8 @@ public class FormController {
 	public ResponseEntity<?> createFormFromMobile(@RequestBody ArrayList<FormRequestMobile> listOfForm) {
 		List<Form> formsSaved = new ArrayList<>();
 		for (FormRequestMobile inputForm : listOfForm) {
-			// Verificamos que el dni no sea repetido
-			Form f = formService.getFormByDni(inputForm.getDni());
-			if (f != null) {
-				Form form = formService.createForm(inputForm);
-				formsSaved.add(form);
-			}
+			Form form = formService.createForm(inputForm);
+			formsSaved.add(form);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(formsSaved);
 	}
