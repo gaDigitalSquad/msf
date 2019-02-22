@@ -229,11 +229,11 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping("/reset-password/{email}")
-	public ResponseEntity<?> resetPassword(@PathVariable String email) {
-		User user = user_service.findUserByUsername(email);
-		
-	}
+//	@GetMapping("/reset-password/{email}")
+//	public ResponseEntity<?> resetPassword(@PathVariable String email) {
+//		User user = user_service.findUserByUsername(email);
+//		
+//	}
 	
 	@PostMapping("/user/resetPassword")
 	//@ResponseBody
