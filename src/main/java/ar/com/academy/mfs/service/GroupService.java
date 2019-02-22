@@ -1,12 +1,12 @@
 package ar.com.academy.mfs.service;
 
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.academy.mfs.model.Group;
-import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 
@@ -51,5 +51,33 @@ public class GroupService {
 	public int getGroupLeader(int group_number) {
 		return groupRepository.findLeaderByGroupNumber(group_number);
 	}
-	
+
+	public void updateLeader(Group groupToUpdate, int newLeader) {
+		List<Group> groups = groupRepository.getGroupsByLider(groupToUpdate.getSupervisor());
+		for (Group g: groups) {
+			g.setSupervisor(newLeader);
+			groupRepository.save(g);
+		}
+	}
+
+	public void addSensToGroup(int user_id, Group groupToUpdate) {
+		Group group = groupRepository.getSens(user_id);
+		if (group == null) { // agregamos al nuevo sensibilizador
+			Group g = new Group(groupToUpdate.getZone_id(),
+								groupToUpdate.getSupervisor(),
+								user_id,
+								groupToUpdate.getGroup_number(),
+								groupToUpdate.getTurn());
+			groupRepository.save(g);
+		} else return;
+	}
+
+	public void deleteSensFromGroup(int user_id) {
+		Group registro = groupRepository.getSensByGroupNumber(user_id);
+		if (registro != null) {
+			registro.setActive(false);
+			registro.setTo_date(new Date());
+			groupRepository.save(registro);
+		} else return;
+	}	
 }

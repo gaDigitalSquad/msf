@@ -187,13 +187,19 @@ public class UserController {
 		return false;
 	}
 	
+	/**
+	 * Es un borrado lógico
+	 * @param user_id
+	 * @return
+	 */
 	@DeleteMapping("/delete-user/{user_id}")
 	@ResponseBody ResponseEntity<?> deleteUser(@PathVariable int user_id) {
 		User user = user_repository.findById(user_id).get();
 		if (user == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe usuario con id: " + user_id);
 		} else {
-			user_repository.delete(user);
+			user.setActive(false);
+			user_repository.save(user);
 			return ResponseEntity.status(HttpStatus.OK).body(user);
 		}
 	}

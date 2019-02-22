@@ -199,13 +199,8 @@ public class UserService {
 	}
 
 	public List<User> getGroupSens(int group_number) {
-		List<User> mySens = new ArrayList<User>();
-		List<Integer> sensId = groupRepository.findGroupSens(group_number);
-		for (int i = 0; i < sensId.size(); i++) {
-			User u = userRepository.findById(sensId.get(i)).get();
-			mySens.add(u);
-		}
-		return mySens;
+		List<User> sens = userRepository.findSensFromGroup(group_number);
+		return sens;
 	}
 
 	public boolean checkDni(int dni) {
@@ -224,6 +219,18 @@ public class UserService {
 			return true;
 		else 
 			return false;
+	}
+
+	public void setUserWithoutGroup(int user_id) {
+		User u = userRepository.findById(user_id).get();
+		u.setGroup_number(0);
+		userRepository.save(u);
+	}
+
+	public void setGroupNumber(int user_id, int groupNumber) {
+		User u = userRepository.findById(user_id).get();
+		u.setGroup_number(groupNumber);
+		userRepository.save(u);
 	}
 
 }

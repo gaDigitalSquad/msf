@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.com.academy.mfs.model.Area;
 import ar.com.academy.mfs.model.Group;
 import ar.com.academy.mfs.service.GroupService;
+import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.Zone;
 import ar.com.academy.mfs.repository.AreaRepository;
@@ -24,11 +25,14 @@ import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.request.GroupRequest;
+import ar.com.academy.mfs.request.UpdateGroupRequest;
 
 @RestController
 public class GroupController {
 	@Autowired
 	GroupService groupService;
+	@Autowired
+	UserService userService;
 	@Autowired
 	GroupRepository groupRepository;
 	@Autowired
@@ -95,11 +99,28 @@ public class GroupController {
 		return userRepository.findById(lider).get();
 	}
 	
-//	@PutMapping("update-group")
-//	public ResponseEntity<?> updateGroup(@RequestBody GroupRequest groupRequest) {
-//		Group groupToUpdate = groupService.findGroup(groupRequest.getGroupNumber());
-//		if (groupToUpdate != null) {
-//			
-//		}
-//	}
+	@PostMapping("update-group")
+	public ResponseEntity<?> updateGroup(@RequestBody UpdateGroupRequest groupRequest) {
+		Group groupToUpdate = groupService.findGroup(groupRequest.getLeader());
+		if (groupToUpdate != null) {
+			if (groupRequest.getNewLeader() != 0) {
+				/* Se cambia de líder */
+				groupService.updateLeader(groupToUpdate ,groupRequest.getNewLeader());
+				
+				/* El líder viejo no tiene grupo asignado */
+				userService.setUserWithoutGroup(groupRequest.getLeader());
+			}
+			for (User u: groupRequest.getSens()) {
+				groupService.addSensToGroup(u.getUser_id(), groupToUpdate);
+				userService.setGroupNumber(u.getUser_id(), groupToUpdate.getGroup_number());
+			}
+			for (User u: groupRequest.getSensWithoutGroup() ) {
+				userService.setUserWithoutGroup(u.getUser_id());
+				groupService.deleteSensFromGroup(u.getUser_id());
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(groupToUpdate);
+		} else {			
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(groupToUpdate);
+		}
+	}
 }

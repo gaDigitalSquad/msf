@@ -44,6 +44,9 @@ public class Group implements Serializable {
 	
 	@Column(name = "turn")
 	private String turn;
+	
+	@Column(name = "active")
+	private boolean active;
 
 	public Group() {
 		
@@ -65,6 +68,8 @@ public class Group implements Serializable {
 		this.supervised_id = supervised_id;
 		this.group_number = group_number;
 		this.turn = turn;
+		this.from_date = new Date();
+		this.active = true;
 	}
 
 	public int getSupervisor() {
@@ -93,6 +98,14 @@ public class Group implements Serializable {
 
 	public Date getFrom_date() {
 		return from_date;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public void setFrom_date(Date from_date) {
