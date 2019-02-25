@@ -1,19 +1,19 @@
 package ar.com.academy.mfs.response;
 
-import java.sql.Time;
+import java.sql.Timestamp;
 
 public class DiasCargados {
 	
 	private String title;
-	private Time startTime;
-	private Time endTime;
+	private Timestamp startTime;
+	private Timestamp endTime;
 	private boolean allDay;
 	
-	public DiasCargados(String title, Time startTime, Time endTime, boolean allDay) {
+	public DiasCargados(String title, Timestamp timestamp, Timestamp timestamp2, boolean allDay) {
 		super();
 		this.title = title;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startTime = timestamp;
+		this.endTime = timestamp2;
 		this.allDay = allDay;
 	}
 	
@@ -23,16 +23,16 @@ public class DiasCargados {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public Time getStartTime() {
+	public Timestamp getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(Time startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
-	public Time getEndTime() {
+	public Timestamp getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(Time endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 	public boolean isAllDay() {

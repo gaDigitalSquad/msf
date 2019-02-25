@@ -1,7 +1,10 @@
  package ar.com.academy.mfs.controller;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -40,6 +43,7 @@ import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.WorkingDayRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.request.DateRequest;
+import ar.com.academy.mfs.response.DiasCargados;
 import ar.com.academy.mfs.response.Metricas;
 import ar.com.academy.mfs.response.UserMetricas;
 import ar.com.academy.mfs.response.WorkingDayResponse;
@@ -239,6 +243,32 @@ public class WorkingDayController {
 			metricasDeSensibilizadoresLider.add(userMetrica);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
+	}
+	
+	@GetMapping("/charged-days/{supervisor_id}/{date}")
+	public ResponseEntity<?> getDiasCargados(@PathVariable int supervisor_id, @PathVariable String date) {
+		List<DiasCargados> dc = new ArrayList<DiasCargados>();
+		String[] dates = date.split("-");
+		int month = Integer.parseInt(dates[0]);
+		int year = Integer.parseInt(dates[1]);
+		int day = 31;
+		
+		if (LocalDate.now().getMonthValue() == month) {			
+			day = LocalDate.now().getDayOfMonth();
+		}
+		
+		List<Date> diasCargados = workingDayRepository.findByDate(day, month, year, supervisor_id);
+		for (Date dia: diasCargados) {
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String fecha = sdf1.format(dia);
+			DiasCargados d = new DiasCargados("Día cargado",
+											  Timestamp.valueOf(fecha),
+											  Timestamp.valueOf(fecha),
+											  true);
+			dc.add(d);
+		}
+        
+		return ResponseEntity.status(HttpStatus.OK).body(dc);
 	}
 
 	@PostMapping("/workingDay/zone/{zone_id}")

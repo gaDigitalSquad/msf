@@ -1,6 +1,7 @@
 package ar.com.academy.mfs.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +59,12 @@ public class User implements Serializable {
 	
 	@Column (name = "completed")
 	private boolean completed = false;
+	
+	@Column (name = "from_date")
+	private Date from_date;
+	
+	@Column (name = "to_date")
+	private Date to_date;
 	
 	public int getUser_id() {
 		return user_id;
@@ -140,7 +147,18 @@ public class User implements Serializable {
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
-	
+	public Date getFrom_date() {
+		return from_date;
+	}
+	public void setFrom_date(Date from_date) {
+		this.from_date = from_date;
+	}
+	public Date getTo_date() {
+		return to_date;
+	}
+	public void setTo_date(Date to_date) {
+		this.to_date = to_date;
+	}
 	@Override
 	public String toString() {
 		return this.lastname+' '+this.firstname;
@@ -164,5 +182,6 @@ public class User implements Serializable {
 		this.zone_id = zone_id;
 		this.user_state_id = 1;
 		this.completed = false;
+		this.from_date = new Date();
 	}	
 }

@@ -29,4 +29,7 @@ public interface WorkingDayRepository extends JpaRepository<WorkingDay, Integer>
 	
 	@Query(value = "select * from msf.working_day where working_date between ?1 and ?2", nativeQuery = true)
 	List<WorkingDay> findBetweenDate(Date start, Date end);
+	
+	@Query(value ="select distinct working_date from msf.working_day where extract(day from working_date) <= ?1 and extract(month from working_date) = ?2 and extract(year from working_date) = ?3 and completed = true and supervisor_id = ?4", nativeQuery = true )
+	List<Date> findByDate(int day, int month, int year, int supervisor_id);
 }

@@ -1,14 +1,15 @@
 package ar.com.academy.mfs.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import ar.com.academy.mfs.model.Group;
 import ar.com.academy.mfs.model.PasswordResetToken;
-import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.model.User;
 
 import ar.com.academy.mfs.repository.GroupRepository;
@@ -17,7 +18,6 @@ import ar.com.academy.mfs.repository.PasswordResetTokenRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
-import ar.com.academy.mfs.request.UserRequest;
 
 @Service("userService")
 public class UserService {
@@ -25,6 +25,7 @@ public class UserService {
 	@Autowired
     private UserRepository userRepository;
 	
+	@SuppressWarnings("unused")
 	@Autowired
     private RoleRepository roleRepository;
 	
@@ -231,6 +232,18 @@ public class UserService {
 		User u = userRepository.findById(user_id).get();
 		u.setGroup_number(groupNumber);
 		userRepository.save(u);
+	}
+
+	public void deleteUser(User user) {
+		user.setTo_date(new Date());
+		user.setActive(false);
+		if (user.getRole_id() == 3) { // Si es líder
+			List<Group> groups = groupRepository.getGroupsByLider(user.getUser_id());
+			for (Group g: groups) {
+				g.setSupervisor(0); // El grupo queda sin líder
+			}
+		} 
+		userRepository.save(user);
 	}
 
 }
