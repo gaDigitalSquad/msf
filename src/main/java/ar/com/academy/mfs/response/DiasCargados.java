@@ -1,19 +1,20 @@
 package ar.com.academy.mfs.response;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class DiasCargados {
 	
 	private String title;
-	private Timestamp startTime;
-	private Timestamp endTime;
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
 	private boolean allDay;
 	
-	public DiasCargados(String title, Timestamp timestamp, Timestamp timestamp2, boolean allDay) {
+	public DiasCargados(String title, LocalDateTime localDateTime, LocalDateTime localDateTime2, boolean allDay) {
 		super();
 		this.title = title;
-		this.startTime = timestamp;
-		this.endTime = timestamp2;
+		this.startTime = localDateTime;
+		this.endTime = localDateTime2;
 		this.allDay = allDay;
 	}
 	
@@ -23,16 +24,16 @@ public class DiasCargados {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public Timestamp getStartTime() {
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(Timestamp startTime) {
+	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
-	public Timestamp getEndTime() {
+	public LocalDateTime getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(Timestamp endTime) {
+	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
 	public boolean isAllDay() {

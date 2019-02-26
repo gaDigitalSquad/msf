@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -262,8 +263,8 @@ public class WorkingDayController {
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 			String fecha = sdf1.format(dia);
 			DiasCargados d = new DiasCargados("Día cargado",
-											  Timestamp.valueOf(fecha + " 07:00:00"),
-											  Timestamp.valueOf(fecha + " 20:00:00"),
+											  Timestamp.valueOf(fecha + " 07:00:00").toLocalDateTime(),
+											  Timestamp.valueOf(fecha + " 20:00:00").toLocalDateTime(),
 											  true);
 			dc.add(d);
 		}
