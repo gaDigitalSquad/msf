@@ -48,55 +48,55 @@ public class UserController {
 	private MessageSource messages;
 	@Autowired
 	private SecurityService securityService;
-	
+
 	public UserController(UserRepository user_repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.user_repository = user_repository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
-	
+
 	/**
 	 * Creación de un usuario
+	 * 
 	 * @param userRequest
 	 * @return
 	 */
-	
-	@PostMapping("/users") 
-	@ResponseBody ResponseEntity<?> postUser(@Valid @RequestBody UserRequest userRequest) {
-		if(user_repository.findByUsername(userRequest.getUsername()) != null)
+
+	@PostMapping("/users")
+	@ResponseBody
+	ResponseEntity<?> postUser(@Valid @RequestBody UserRequest userRequest) {
+		if (user_repository.findByUsername(userRequest.getUsername()) != null)
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists!");
-		
+
 		Role role = role_repository.findByRoleName(userRequest.getRole());
-		if(role == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid role");
-		
+		if (role == null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid role");
+
 		Zone zone = zoneRepository.findById(userRequest.getZone_id()).get();
-		if(zone == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Zona no válida");
-		
-		User user = new User(userRequest.getUsername(), 
-							userRequest.getPassword(), 
-							userRequest.getFirstname(), 
-							userRequest.getLastname(), 
-							role.getRoleId(), 
-							userRequest.getPhoneNumber(), 
-							userRequest.getDocumentType(), 
-							userRequest.getDocumentNumber(),
-							userRequest.getZone_id());
+		if (zone == null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Zona no válida");
+
+		User user = new User(userRequest.getUsername(), userRequest.getPassword(), userRequest.getFirstname(),
+				userRequest.getLastname(), role.getRoleId(), userRequest.getPhoneNumber(),
+				userRequest.getDocumentType(), userRequest.getDocumentNumber(), userRequest.getZone_id());
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user_repository.save(user);
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
-	
+
 	/**
 	 * Obtener todos los usuarios existentes
+	 * 
 	 * @return List<User>
 	 */
-	
+
 	@GetMapping("/users")
 	public List<User> getAllUsers() {
 		return user_service.getAllUsers();
 	}
-	
+
 	/**
 	 * Saber si un dni ya se encuentra registrado
+	 * 
 	 * @param dni
 	 * @return true si está disponible, false de lo contrario
 	 */
@@ -109,14 +109,14 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El documento ya se encuentra registrado");
 		}
 	}
-	
+
 	@GetMapping("/users/{username}")
 	public User getUser(@PathVariable String username) {
 		User u = user_service.findByUsername(username);
 		System.out.println(u.isCompleted());
 		return u;
 	}
-	
+
 	@DeleteMapping("/user/{username}")
 	public ResponseEntity<?> deleteUser(@PathVariable String username) {
 		User user = user_service.findByUsername(username);
@@ -127,62 +127,81 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido eliminar el usuario.");
 		}
 	}
-	
+
 	@GetMapping("/leadersWithoutGroup")
 	public List<User> getLeadersWithoutGroup() {
 		return user_service.getLeadersWithoutGroup();
 	}
-	
+
 	@GetMapping("/sensWithoutGroup")
 	public List<User> getSensWithoutGroup() {
 		return user_service.getSensWithoutGroup();
 	}
-	
+
 	// Obtener los sensibilizadores de un determinado lider
-	
+
 	@GetMapping("/getMySens/{supervisor_id}")
 	public List<User> getMySens(@PathVariable int supervisor_id) {
 		return user_service.getMySens(supervisor_id);
 	}
-	
+
+	// Obtener los sensibilizadores de un determinado lider sín el líder
+
+	@GetMapping("/getMySensNoLider/{supervisor_id}")
+	public List<User> getMySensNoLider(@PathVariable int supervisor_id) {
+		return user_service.getMySensWithoutLider(supervisor_id);
+	}
+
 	// Obtengo los sensibilizadores de un determinado grupo por número de grupo
-	
+
 	@GetMapping("/getGroupSens/{group_number}")
 	public List<User> getGroupSens(@PathVariable int group_number) {
 		return user_service.getGroupSens(group_number);
 	}
-	
+
 	@CrossOrigin(origins = "*")
 	@PutMapping("/update-user/{user_id}")
-	@ResponseBody ResponseEntity<?> putUser(@PathVariable int user_id, @RequestBody UserRequest userRequest) {
+	@ResponseBody
+	ResponseEntity<?> putUser(@PathVariable int user_id, @RequestBody UserRequest userRequest) {
 		User user = user_repository.findById(user_id).get();
-		if(updateUser(userRequest, user)) return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
+		if (updateUser(userRequest, user))
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error");
 	}
-	
+
 	private boolean updateUser(@RequestBody UserRequest userRequest, User user) {
-		if(user != null) {
-			if(userRequest.getUsername() != null) user.setUsername(userRequest.getUsername());
-			if(userRequest.getFirstname() != null) user.setFirstname(userRequest.getFirstname());
-			if(userRequest.getLastname() != null) user.setLastname(userRequest.getLastname());
-			if(userRequest.getRole() != null) user.setRole_id(role_repository.findByRoleName(userRequest.getRole()).getRoleId());
-			if(userRequest.getPhoneNumber() > 0) user.setPhoneNumber(userRequest.getPhoneNumber());
-			if(userRequest.getDocumentType() != null) user.setDocumentType(userRequest.getDocumentType());
-			if(userRequest.getDocumentNumber() > 0) user.setDocumentNumber(userRequest.getDocumentNumber());
-			if(userRequest.getZone_id() > 0) user.setZone_id(userRequest.getZone_id());
+		if (user != null) {
+			if (userRequest.getUsername() != null)
+				user.setUsername(userRequest.getUsername());
+			if (userRequest.getFirstname() != null)
+				user.setFirstname(userRequest.getFirstname());
+			if (userRequest.getLastname() != null)
+				user.setLastname(userRequest.getLastname());
+			if (userRequest.getRole() != null)
+				user.setRole_id(role_repository.findByRoleName(userRequest.getRole()).getRoleId());
+			if (userRequest.getPhoneNumber() > 0)
+				user.setPhoneNumber(userRequest.getPhoneNumber());
+			if (userRequest.getDocumentType() != null)
+				user.setDocumentType(userRequest.getDocumentType());
+			if (userRequest.getDocumentNumber() > 0)
+				user.setDocumentNumber(userRequest.getDocumentNumber());
+			if (userRequest.getZone_id() > 0)
+				user.setZone_id(userRequest.getZone_id());
 			user_repository.save(user);
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Es un borrado lógico
+	 * 
 	 * @param user_id
 	 * @return
 	 */
 	@DeleteMapping("/delete-user/{user_id}")
-	@ResponseBody ResponseEntity<?> deleteUser(@PathVariable int user_id) {
+	@ResponseBody
+	ResponseEntity<?> deleteUser(@PathVariable int user_id) {
 		User user = user_repository.findById(user_id).get();
 		if (user == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe usuario con id: " + user_id);
@@ -190,25 +209,30 @@ public class UserController {
 			user.setActive(false);
 			/* Si está en un grupo, se lo desvincula del mismo */
 			if (user.getGroup_number() != 0) {
-				
+
 			}
 			user_repository.save(user);
 			return ResponseEntity.status(HttpStatus.OK).body(user);
 		}
 	}
-	
+
 	@PostMapping("/findUser")
-	@ResponseBody ResponseEntity<?> getUser(@RequestBody DocumentTypeAndNumberRequest documentTypeAndNumber) {
-		User user = findByDocumentTypeAndDocumentNumber(documentTypeAndNumber.getDocumentType(), documentTypeAndNumber.getDocumentNumber());
-		if (user == null ) return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario no encontrado");
+	@ResponseBody
+	ResponseEntity<?> getUser(@RequestBody DocumentTypeAndNumberRequest documentTypeAndNumber) {
+		User user = findByDocumentTypeAndDocumentNumber(documentTypeAndNumber.getDocumentType(),
+				documentTypeAndNumber.getDocumentNumber());
+		if (user == null)
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario no encontrado");
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
+
 	private User findByDocumentTypeAndDocumentNumber(String documentType, int documentNumber) {
 		return user_repository.findByDocumentTypeAndDocumentNumber(documentType, documentNumber);
 	}
-	
+
 	@PostMapping("/change-password/{user_id}")
-	@ResponseBody ResponseEntity<?> changePassword(@RequestBody PasswordRequest passwordRequest, @PathVariable int user_id) {
+	@ResponseBody
+	ResponseEntity<?> changePassword(@RequestBody PasswordRequest passwordRequest, @PathVariable int user_id) {
 		User user = user_repository.findById(user_id).get();
 		if (!bCryptPasswordEncoder.matches(passwordRequest.getActualPassword(), user.getPassword())) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("La contraseña actual es incorrecta.");
@@ -217,17 +241,17 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.OK).body("La contraseña fue modificada con éxito.");
 		}
 	}
-	
+
 	@GetMapping("/reset-password/{email}")
 	public void resetPassword(@PathVariable String email) {
 		// User user = user_service.findUserByUsername(email);
-		SimpleMailMessage message = new SimpleMailMessage(); 
-        message.setTo(email); 
-        message.setSubject("Recupero de contraseña"); 
-        message.setText("Para recuperar su contraseña, ingrese al siguiente link: ");
-        emailSender.send(message);
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(email);
+		message.setSubject("Recupero de contraseña");
+		message.setText("Para recuperar su contraseña, ingrese al siguiente link: ");
+		emailSender.send(message);
 	}
-	
+
 //	@PostMapping("/user/resetPassword")
 //	//@ResponseBody
 //	public String resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {

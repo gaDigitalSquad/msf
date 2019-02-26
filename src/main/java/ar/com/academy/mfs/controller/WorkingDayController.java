@@ -259,11 +259,11 @@ public class WorkingDayController {
 		
 		List<Date> diasCargados = workingDayRepository.findByDate(day, month, year, supervisor_id);
 		for (Date dia: diasCargados) {
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 			String fecha = sdf1.format(dia);
 			DiasCargados d = new DiasCargados("Día cargado",
-											  Timestamp.valueOf(fecha),
-											  Timestamp.valueOf(fecha),
+											  Timestamp.valueOf(fecha + " 07:00:00"),
+											  Timestamp.valueOf(fecha + " 20:00:00"),
 											  true);
 			dc.add(d);
 		}
