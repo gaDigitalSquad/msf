@@ -15,7 +15,7 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 	@Query(value = "select group_number from msf.group order by group_number desc limit 1", nativeQuery = true)
 	Integer findLastGroupNumber();
 
-	@Query(value = "select supervised_id from msf.group where supervisor_id = ?1", nativeQuery = true)
+	@Query(value = "select supervised_id from msf.group where supervisor_id = ?1 and active = true", nativeQuery = true)
 	List<Integer> findMySens(int supervisor_id);
 	
 	@Query(value = "select * from msf.group where group_number = ?1 limit 1", nativeQuery = true)
