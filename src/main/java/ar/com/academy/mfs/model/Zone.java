@@ -1,6 +1,8 @@
 package ar.com.academy.mfs.model;
 
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,16 +22,27 @@ public class Zone {
 	@Column( name = "zone_name" )
 	private String zoneName;
 	
-	@Column(name="target_id")
-	private int targetId;
+	@Column(name="target")
+	private float target;
+	
+	@Column(name = "amount")
+	private float amount;
+	
+	@Column(name = "from_date")
+	private Date fromDate;
+	
+	@Column(name = "to_date")
+	private Date toDate;
 	
 	public Zone() {
 	}
 
-	public Zone(String zoneName, int targetId) {
+	public Zone(String zoneName, float target, float amount) {
 		super();
 		this.zoneName = zoneName;
-		this.targetId = targetId;
+		this.target = target;
+		this.amount = amount;
+		this.fromDate = new Date();
 	}
 
 	public String getZoneName() {
@@ -45,12 +58,44 @@ public class Zone {
 		return zoneId;
 	}
 
-	public int getTargetId() {
-		return targetId;
+	public float getTarget() {
+		return target;
 	}
 
-	public void setTargetId(int targetId) {
-		this.targetId = targetId;
+	public void setTargetId(float target) {
+		this.target = target;
+	}
+
+	public float getAmount() {
+		return amount;
+	}
+
+	public void setAmount(float amount) {
+		this.amount = amount;
+	}
+
+	public Date getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public Date getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
+	public void setZoneId(int zoneId) {
+		this.zoneId = zoneId;
+	}
+
+	public void setTarget(float target) {
+		this.target = target;
 	}
 	
 }

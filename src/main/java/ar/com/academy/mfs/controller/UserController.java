@@ -101,12 +101,12 @@ public class UserController {
 	 * @return true si está disponible, false de lo contrario
 	 */
 	@PostMapping("/users/check-document")
-	public ResponseEntity<?> isDocumentAvailable(@RequestBody DocumentTypeAndNumberRequest document) {
+	public boolean isDocumentAvailable(@RequestBody DocumentTypeAndNumberRequest document) {
 		boolean res = user_service.isDocumentAvailable(document);
 		if (res == true) {
-			return ResponseEntity.status(HttpStatus.OK).body("El documento está disponible");
+			return true;
 		} else {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El documento ya se encuentra registrado");
+			return false;
 		}
 	}
 
