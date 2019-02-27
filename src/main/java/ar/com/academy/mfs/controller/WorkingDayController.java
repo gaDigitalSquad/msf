@@ -808,63 +808,63 @@ public class WorkingDayController {
 				sociosHoraNov = 0, sociosHoraDic = 0;
 
 		for (WorkingDay wk : workingDays) {
-			LocalDate date = wk.getWorkingDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			if (date.getMonthValue() == 1) {
+			int month = wk.getWorkingDate().toLocalDate().getMonthValue();
+			if (month == 1) {
 				sociosEnero = sociosEnero + wk.getAmountOfNewPartners();
 				montoEnero = montoEnero + wk.getTotalAmount();
 				horasEnero = horasEnero + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 2) {
+			if (month == 2) {
 				sociosFebrero = sociosFebrero + wk.getAmountOfNewPartners();
 				montoFebrero = montoFebrero + wk.getTotalAmount();
 				horasFebrero = horasFebrero + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 3) {
+			if (month == 3) {
 				sociosMarzo = sociosMarzo + wk.getAmountOfNewPartners();
 				montoMarzo = montoMarzo + wk.getTotalAmount();
 				horasMarzo = horasMarzo + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 4) {
+			if (month == 4) {
 				sociosAbril = sociosAbril + wk.getAmountOfNewPartners();
 				montoAbril = montoAbril + wk.getTotalAmount();
 				horasAbril = horasAbril + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 5) {
+			if (month == 5) {
 				sociosMayo = sociosMayo + wk.getAmountOfNewPartners();
 				montoMayo = montoMayo + wk.getTotalAmount();
 				horasMayo = horasMayo + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 6) {
+			if (month == 6) {
 				sociosJunio = sociosJunio + wk.getAmountOfNewPartners();
 				montoJunio = montoJunio + wk.getTotalAmount();
 				horasJunio = horasJunio + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 7) {
+			if (month == 7) {
 				sociosJulio = sociosJulio + wk.getAmountOfNewPartners();
 				montoJulio = montoJulio + wk.getTotalAmount();
 				horasJulio = horasJulio + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 8) {
+			if (month == 8) {
 				sociosAgosto = sociosAgosto + wk.getAmountOfNewPartners();
 				montoAgosto = montoAgosto + wk.getTotalAmount();
 				horasAgosto = horasAgosto + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 9) {
+			if (month == 9) {
 				sociosSep = sociosSep + wk.getAmountOfNewPartners();
 				montoSep = montoSep + wk.getTotalAmount();
 				horasSep = horasSep + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 10) {
+			if (month == 10) {
 				sociosOct = sociosOct + wk.getAmountOfNewPartners();
 				montoOct = montoOct + wk.getTotalAmount();
 				horasOct = horasOct + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 11) {
+			if (month == 11) {
 				sociosNov = sociosNov + wk.getAmountOfNewPartners();
 				montoNov = montoNov + wk.getTotalAmount();
 				horasNov = horasNov + wk.getHours_worked();
 			}
-			if (date.getMonthValue() == 12) {
+			if (month == 12) {
 				sociosDic = sociosDic + wk.getAmountOfNewPartners();
 				montoDic = montoDic + wk.getTotalAmount();
 				horasDic = horasDic + wk.getHours_worked();
