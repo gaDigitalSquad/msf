@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ar.com.academy.mfs.model.WorkingDay;
-import ar.com.academy.mfs.model.User;
 
 @Repository
 public interface WorkingDayRepository extends JpaRepository<WorkingDay, Integer>{
