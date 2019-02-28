@@ -1,7 +1,8 @@
 package ar.com.academy.mfs.model;
 
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class Zone {
 		this.zoneName = zoneName;
 		this.target = target;
 		this.amount = amount;
-		this.fromDate = new Date();
+		this.fromDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());;
 	}
 
 	public String getZoneName() {

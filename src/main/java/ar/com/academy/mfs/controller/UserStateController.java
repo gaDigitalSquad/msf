@@ -1,6 +1,6 @@
 package ar.com.academy.mfs.controller;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +32,16 @@ public class UserStateController {
 	UserService userService;
 	
 	// Crear licencia para un usuario
-	@PostMapping("/user_state")
-	public @ResponseBody ResponseEntity createUserState(@RequestBody UserStateRequest userStateRequest) {
+	@PostMapping("/license/{user_id}")
+	public ResponseEntity<?> createUserState(@RequestBody UserStateRequest userStateRequest, @PathVariable int user_id) {
+		User u = userService.getUserById(user_id);
 		UserState userState = new UserState(userStateRequest.getFromDate(),
 											userStateRequest.getToDate(), 
 											userStateRequest.getDescription());
 		userStateRepository.save(userState);
 		System.out.println(userState.getUserStateId());
-		User user = userService.getUserById(userStateRequest.getLicenseTo());
-		//user.setUser_state_id(userState.getUserStateId());
+		int id = userState.getUserStateId();
+		int r = userStateRepository.setUserStateId(u.getUser_id(), id);
 		return ResponseEntity.status(HttpStatus.OK).body(userState);	
 	}
 	

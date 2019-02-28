@@ -55,7 +55,7 @@ public class User implements Serializable {
 	private int zone_id;
 	
 	@Column (name = "user_state_id")
-	private int user_state_id;
+	private int userStateId;
 	
 	@Column (name = "completed")
 	private boolean completed = false;
@@ -135,11 +135,11 @@ public class User implements Serializable {
 	public void setZone_id(int zone_id) {
 		this.zone_id = zone_id;
 	}
-	public int getUser_state_id() {
-		return user_state_id;
+	public int getUserStateId() {
+		return userStateId;
 	}
-	public void setUser_state_id(int user_state_id) {
-		this.user_state_id = user_state_id;
+	public void setUserStateId(int userStateId) {
+		this.userStateId = userStateId;
 	}
 	public boolean isCompleted() {
 		return completed;
@@ -159,11 +159,7 @@ public class User implements Serializable {
 	public void setTo_date(Date to_date) {
 		this.to_date = to_date;
 	}
-	@Override
-	public String toString() {
-		return this.lastname+' '+this.firstname;
-	}
-	
+
 	public User() {
 		
 	}
@@ -180,7 +176,7 @@ public class User implements Serializable {
 		this.documentType = documentType;
 		this.documentNumber = documentNumber;
 		this.zone_id = zone_id;
-		this.user_state_id = 1;
+		this.userStateId = 1;
 		this.completed = false;
 		this.from_date = new Date();
 	}	
