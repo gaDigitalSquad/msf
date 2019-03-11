@@ -20,6 +20,5 @@ public interface UserStateRepository extends JpaRepository<UserState,Integer> {
 	@Modifying
 	@Query(value = "update msf.user set user_state_id = ?2 where user_id = ?1", nativeQuery = true)
 	int setUserStateId(int user_id, int id);
-	
 
 }

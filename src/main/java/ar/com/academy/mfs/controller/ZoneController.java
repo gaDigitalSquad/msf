@@ -46,12 +46,22 @@ public class ZoneController {
 		Zone z = zoneService.getZoneByZone_id(zr.getZone());
 		z.setAmount(zr.getAmount());
 		z.setTarget(zr.getTarget());
-		Date newDate = new Date (zr.getToDate().getTime() + 24*60*60*1000);
-		z.setToDate(newDate);
-		
-		// el fromDate sería la fecha de hoy?
+		Date newToDate = new Date (zr.getToDate().getTime() + 24*60*60*1000);
+		z.setToDate(newToDate);
+		Date newFromDate = new Date(zr.getFromDate().getTime() + 24*60*60*1000);
+		z.setFromDate(newFromDate);
+		if (z.getFromDate() == null) {
+			
+		}
 		
 		zoneRepository.save(z);
 		return ResponseEntity.status(HttpStatus.OK).body(z);
 	}
+	
+	@GetMapping("/zones-no-target")
+	public List<Zone> getZonesWithoutTarget() {
+		List<Zone> zones = zoneService.getZonesWithoutGroup();
+		return zones;
+	}
+	
 }
