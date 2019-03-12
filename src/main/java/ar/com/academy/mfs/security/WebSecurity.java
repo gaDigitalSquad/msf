@@ -70,11 +70,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		 * valores por defecto 3. Se desactiva el filtro CSRF 4. Se indica que el login
 		 * no requiere autenticación 5. Se indica que el resto de URLs esten securizadas
 		 */
-		httpSecurity
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().cors().and()
+		httpSecurity.cors().and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				
 				.csrf().disable()
 				.authorizeRequests()
-				.antMatchers(LOGIN_URL, "/reset-password/{email}", "/user/changePassword*", "/user/savePassword*")
+				.antMatchers(LOGIN_URL, "/reset-password/{email}")
 				.permitAll().anyRequest().authenticated().and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()));

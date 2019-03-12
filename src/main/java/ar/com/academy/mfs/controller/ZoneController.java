@@ -60,7 +60,7 @@ public class ZoneController {
 	
 	@GetMapping("/zones-no-target")
 	public List<Zone> getZonesWithoutTarget() {
-		List<Zone> zones = zoneService.getZonesWithoutGroup();
+		List<Zone> zones = zoneService.getZonesWithoutTarget();
 		return zones;
 	}
 	

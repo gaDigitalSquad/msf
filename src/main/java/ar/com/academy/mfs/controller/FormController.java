@@ -58,7 +58,7 @@ public class FormController {
 	 * @return
 	 */
 
-	@PostMapping("/form-2")
+	@PutMapping("/form-2")
 	public ResponseEntity<?> saveForm(@RequestBody FormRequest form) {
 		/*
 		 * Primero, encontramos el formulario a actualizar, lo buscamos por dni del

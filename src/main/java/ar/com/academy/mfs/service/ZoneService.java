@@ -27,7 +27,7 @@ public class ZoneService {
 		return zoneRepository.findByZoneId(zone_id);
 	}
 
-	public List<Zone> getZonesWithoutGroup() {
+	public List<Zone> getZonesWithoutTarget() {
 		return zoneRepository.findZonesWithoutTarget();
 	}
 

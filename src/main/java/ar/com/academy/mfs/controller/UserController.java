@@ -1,6 +1,7 @@
 package ar.com.academy.mfs.controller;
 
 import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +20,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.Zone;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
-import ar.com.academy.mfs.security.SecurityService;
-import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
 import ar.com.academy.mfs.request.PasswordRequest;
-import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.request.UserRequest;
+import ar.com.academy.mfs.security.SecurityService;
+import ar.com.academy.mfs.service.UserService;
 
 @RestController
 public class UserController {
@@ -44,10 +46,6 @@ public class UserController {
 	private ZoneRepository zoneRepository;
 	@Autowired
 	private JavaMailSender emailSender;
-	@Autowired
-	private MessageSource messages;
-	@Autowired
-	private SecurityService securityService;
 
 	public UserController(UserRepository user_repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.user_repository = user_repository;
@@ -101,12 +99,12 @@ public class UserController {
 	 * @return true si está disponible, false de lo contrario
 	 */
 	@PostMapping("/users/check-document")
-	public boolean isDocumentAvailable(@RequestBody DocumentTypeAndNumberRequest document) {
+	public ResponseEntity<?> isDocumentAvailable(@RequestBody DocumentTypeAndNumberRequest document) {
 		boolean res = user_service.isDocumentAvailable(document);
 		if (res == true) {
-			return true;
+			return ResponseEntity.status(HttpStatus.OK).body("No existe");
 		} else {
-			return false;
+			return ResponseEntity.status(HttpStatus.OK).body("OK");
 		}
 	}
 
@@ -216,14 +214,13 @@ public class UserController {
 		}
 	}
 
-	@PostMapping("/findUser")
+	@GetMapping("/exist-document/{documentType}/{documentNumber}")
 	@ResponseBody
-	ResponseEntity<?> getUser(@RequestBody DocumentTypeAndNumberRequest documentTypeAndNumber) {
-		User user = findByDocumentTypeAndDocumentNumber(documentTypeAndNumber.getDocumentType(),
-				documentTypeAndNumber.getDocumentNumber());
+	ResponseEntity<?> getUser(@PathVariable String documentType, @PathVariable int documentNumber) {
+		User user = findByDocumentTypeAndDocumentNumber(documentType, documentNumber);
 		if (user == null)
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario no encontrado");
-		return ResponseEntity.status(HttpStatus.OK).body(user);
+			return ResponseEntity.status(HttpStatus.OK).body("Disponible");
+		return ResponseEntity.status(HttpStatus.OK).body("No disponible");
 	}
 
 	private User findByDocumentTypeAndDocumentNumber(String documentType, int documentNumber) {
@@ -244,42 +241,34 @@ public class UserController {
 
 	@GetMapping("/reset-password/{email}")
 	public void resetPassword(@PathVariable String email) {
-		// User user = user_service.findUserByUsername(email);
+	try
+	{
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(email);
-		message.setSubject("Recupero de contraseña");
-		message.setText("Para recuperar su contraseña, ingrese al siguiente link: ");
+		message.setSubject("MSF - Reestablecer contraseña");
+		message.setText("Para reestablecer su contraseña ingrese al siguiente link: ");
 		emailSender.send(message);
+	}catch(
+	Exception e)
+	{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 
-//	@PostMapping("/user/resetPassword")
-//	//@ResponseBody
-//	public String resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) {
-//		User user = user_service.findUserByUsername(userEmail);
-//		if (user == null) {
-//		    return "user not found";
-//		}
-//		String token = UUID.randomUUID().toString();
-//		user_service.createPasswordResetTokenForUser(user.getUser_id(), token);
-//		mailSender.send(constructResetTokenEmail("http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath(), request.getLocale(), token, user));
-//		//return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
-//		return "mail mandado";
-//	}
-//	
-//	private SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user) {
-//		String url = contextPath + "/user/changePassword?id=" + user.getUser_id() + "&token=" + token;
-//	    String message = "Reset Password";
-//	    return constructEmail("Reset Password", message + " \r\n" + url, user);
-//	}
-//			 
-//	private SimpleMailMessage constructEmail(String subject, String body, User user) {
-//	    SimpleMailMessage email = new SimpleMailMessage();
-//	    email.setSubject(subject);
-//	    email.setText(body);
-//	    email.setTo(user.getUsername());
-//	    email.setFrom("teijiz.matias@gmail.com");
-//	    return email;
-//	}
-//	
+	@GetMapping("/exist-user/{email}")
+	public ResponseEntity<?> dniVerification(@PathVariable String email) {
+	User user = user_repository.findByUsername(email);
+	if (user != null)
+		return ResponseEntity.status(HttpStatus.OK).body("OK");
+	else
+		return ResponseEntity.status(HttpStatus.OK).body("No existe");
+	}
+	
+	@GetMapping("/find-user/{id}")
+	public ResponseEntity<?> findUserById(@PathVariable int id) {
+		User user = user_repository.findById(id).get();
+		return ResponseEntity.status(HttpStatus.OK).body(user);
+	}
 
 }
