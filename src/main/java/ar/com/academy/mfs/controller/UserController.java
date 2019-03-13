@@ -238,6 +238,14 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.OK).body("La contraseña fue modificada con éxito.");
 		}
 	}
+	
+	@PostMapping("/change-password-email/{email}")
+	@ResponseBody
+	ResponseEntity<?> changePasswordByEmail(@RequestBody PasswordRequest passwordRequest, @PathVariable String email) {
+		User user = user_repository.findByUsername(email);
+		user_service.changeUserPassword(user, passwordRequest.getNewPassword());
+		return ResponseEntity.status(HttpStatus.OK).body("La contraseña fue modificada con éxito.");
+	}
 
 	@GetMapping("/reset-password/{email}")
 	public void resetPassword(@PathVariable String email) {
@@ -246,7 +254,7 @@ public class UserController {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(email);
 		message.setSubject("MSF - Reestablecer contraseña");
-		message.setText("Para reestablecer su contraseña ingrese al siguiente link: ");
+		message.setText("Para reestablecer su contraseña ingrese al siguiente link: localhost:4200/reset-password");
 		emailSender.send(message);
 	}catch(
 	Exception e)

@@ -75,7 +75,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				
 				.csrf().disable()
 				.authorizeRequests()
-				.antMatchers(LOGIN_URL, "/reset-password/{email}")
+				.antMatchers(LOGIN_URL, "/reset-password/{email}", "/change-password-email/{email}")
 				.permitAll().anyRequest().authenticated().and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()));
