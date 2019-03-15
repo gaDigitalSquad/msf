@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,7 +29,6 @@ import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
 import ar.com.academy.mfs.request.PasswordRequest;
 import ar.com.academy.mfs.request.UserRequest;
-import ar.com.academy.mfs.security.SecurityService;
 import ar.com.academy.mfs.service.UserService;
 
 @RestController
@@ -213,7 +211,14 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.OK).body(user);
 		}
 	}
-
+	
+	@PostMapping("/findUser")
+	@ResponseBody ResponseEntity<?> getUser(@RequestBody DocumentTypeAndNumberRequest documentTypeAndNumber) {
+		User user = findByDocumentTypeAndDocumentNumber(documentTypeAndNumber.getDocumentType(), documentTypeAndNumber.getDocumentNumber());
+		if (user == null ) return ResponseEntity.status(HttpStatus.CONFLICT).body("Usuario no encontrado");
+		return ResponseEntity.status(HttpStatus.OK).body(user);
+	}
+	
 	@GetMapping("/exist-document/{documentType}/{documentNumber}")
 	@ResponseBody
 	ResponseEntity<?> getUser(@PathVariable String documentType, @PathVariable int documentNumber) {

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.academy.mfs.model.Group;
+import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.repository.GroupRepository;
+import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 
 @Service("groupService")
@@ -17,6 +19,8 @@ public class GroupService {
 	GroupRepository groupRepository;
 	@Autowired
 	ZoneRepository zoneRepository;
+	@Autowired
+	UserRepository userRepository;
 	
 	public Group createRegisterForGroup(Group inputGroup) {
 		Group group = groupRepository.save(inputGroup);
@@ -54,10 +58,14 @@ public class GroupService {
 
 	public void updateLeader(Group groupToUpdate, int newLeader) {
 		List<Group> groups = groupRepository.getGroupsByLider(groupToUpdate.getSupervisor());
+		int groupNumber = groups.get(0).getGroup_number();
 		for (Group g: groups) {
 			g.setSupervisor(newLeader);
 			groupRepository.save(g);
 		}
+		/* Se establece el group_number en la tabla user */
+		User user = userRepository.findById(newLeader).get();
+		user.setGroup_number(groupNumber);
 	}
 
 	public void addSensToGroup(int user_id, Group groupToUpdate) {

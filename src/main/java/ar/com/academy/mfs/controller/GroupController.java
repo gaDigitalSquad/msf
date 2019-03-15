@@ -86,7 +86,7 @@ public class GroupController {
 		 return groupService.getGroupsByZone(zone_id);
 	}
 	
-	/* Dada la zona y turno, se obtiene el grupo */
+	/* Dada la zona y turno, se obtienen los grupos */
 	@GetMapping("/get-group/{zone_id}/{turn}")
 	public List<Group> getGroupsByZoneAndTurn(@PathVariable String turn, @PathVariable int zone_id) {
 		 return groupService.getGroupsByZoneAndTurn(zone_id, turn);
