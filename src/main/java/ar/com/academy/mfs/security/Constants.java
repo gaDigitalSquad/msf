@@ -12,7 +12,8 @@ public class Constants {
 
 	public static final String ISSUER_INFO = "https://www.autentia.com/";
 	public static final String SUPER_SECRET_KEY = "1234";
-	public static final long TOKEN_EXPIRATION_TIME = 864_000_000; // 10 day
+	// public static final long TOKEN_EXPIRATION_TIME = 864_000_000; // 10 day
+	public static long TOKEN_EXPIRATION_TIME = 1000*60*60*24*10; // 10 days
 
 
 	

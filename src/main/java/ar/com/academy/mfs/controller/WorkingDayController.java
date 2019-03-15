@@ -1,4 +1,4 @@
- package ar.com.academy.mfs.controller;
+package ar.com.academy.mfs.controller;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -65,9 +65,10 @@ public class WorkingDayController {
 	private WorkingDayService workingDayService;
 	@Autowired
 	private FormService formService;
-	
+
 	/**
 	 * Almacenar un solo working day
+	 * 
 	 * @param workingDayRequest
 	 * @return workingDayResponse
 	 */
@@ -75,52 +76,48 @@ public class WorkingDayController {
 	@ResponseBody
 	ResponseEntity<?> postWorkingDay(@Valid @RequestBody WorkingDayRequest workingDayRequest) {
 		/* Sumar un día al working day date */
-		Date newDate = new Date (workingDayRequest.getWorkingDate().getTime() + 24*60*60*1000);
+		Date newDate = new Date(workingDayRequest.getWorkingDate().getTime() + 24 * 60 * 60 * 1000);
 
 		/* Verificación de usuario y fecha */
 		int sens_id = workingDayRequest.getUser();
 		if (workingDayService.existWorkingDay(sens_id, workingDayRequest.getWorkingDate())) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-					body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + workingDayRequest.getWorkingDate());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha "
+							+ workingDayRequest.getWorkingDate());
 		}
 		User supervisor = userRepository.findById(workingDayRequest.getSupervisor()).get();
 		User user = userRepository.findById(sens_id).get();
 		if (supervisor == null || user == null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Supervisor o Usuario no valido");
-
+		Zone zone = new Zone();
 		Group group = groupRepository.findUserGroup(supervisor.getUser_id());
-
-		Zone zone = zoneRepository.findById(group.getZone_id()).get();
-		if (zone == null)
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Zona no valida");
-		
+		if (group != null) {
+			zone = zoneRepository.findById(group.getZone_id()).get();
+			if (zone == null)
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Zona no valida");
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El grupo no existe.");
+		}
 		/* Cálculo de las horas trabajadas */
 		DecimalFormat crunchifyFormatter = new DecimalFormat("###,###");
 		long diff = workingDayRequest.getTo_hour().getTime() - workingDayRequest.getFrom_hour().getTime();
 		int hoursWorked = (int) (diff / (60 * 60 * 1000));
-		
+
 		Group grupo = groupService.findGroup(workingDayRequest.getSupervisor());
-		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(),
-											   user.getUser_id(),
-											   workingDayRequest.isIs_present(),
-											   workingDayRequest.getWorkingDate(),
-											   workingDayRequest.getFrom_hour(),
-											   workingDayRequest.getTo_hour(),
-											   zone.getZoneId(),
-											   workingDayRequest.getAmountOfNewPartners(),
-											   (float) workingDayRequest.getTotalAmount(),
-											   workingDayRequest.getObservations(),
-											   hoursWorked,
-											   workingDayRequest.isCompleted(),
-											   grupo.getGroup_number());
+		WorkingDay workingDay = new WorkingDay(supervisor.getUser_id(), user.getUser_id(),
+				workingDayRequest.isIs_present(), workingDayRequest.getWorkingDate(), workingDayRequest.getFrom_hour(),
+				workingDayRequest.getTo_hour(), zone.getZoneId(), workingDayRequest.getAmountOfNewPartners(),
+				(float) workingDayRequest.getTotalAmount(), workingDayRequest.getObservations(), hoursWorked,
+				workingDayRequest.isCompleted(), grupo.getGroup_number());
 		workingDayRepository.save(workingDay);
-		
+
 		/* TODO Que lo que se regrese sea un workingDayResponse */
 		return ResponseEntity.status(HttpStatus.OK).body(workingDay);
 	}
 
 	/**
 	 * Método para guardar un set de working days
+	 * 
 	 * @param listOfWorkingDays
 	 * @return workinkDaysResponse
 	 */
@@ -131,14 +128,15 @@ public class WorkingDayController {
 		for (WorkingDayRequest inputWorkingDay : listOfWorkingDays) {
 			/* Sumar un día al working day date */
 //			Date newDate = new Date (inputWorkingDay.getWorkingDate().getTime() + 24*60*60*1000);
-	
+
 			/* Verificación de usuario y fecha */
 			int sens_id = inputWorkingDay.getUser();
 			if (workingDayService.existWorkingDay(sens_id, inputWorkingDay.getWorkingDate())) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).
-						body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha " + inputWorkingDay.getWorkingDate());
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body("Ya se ha cargado un working day para el usuario con id " + sens_id + " para la fecha "
+								+ inputWorkingDay.getWorkingDate());
 			}
-			
+
 			/* Creación del working day */
 			// inputWorkingDay.setWorkingDate(inputWorkingDay.getWorkingDate());
 			WorkingDayResponse wd = workingDayService.createWorkingDayResponse(inputWorkingDay);
@@ -149,6 +147,7 @@ public class WorkingDayController {
 
 	/**
 	 * Obtener las métricas de un determinado usuario en una determinada fecha
+	 * 
 	 * @param user_id
 	 * @param date
 	 * @return
@@ -163,6 +162,7 @@ public class WorkingDayController {
 
 	/**
 	 * Obtener las métricas de un determinado usuario en un rango de fechas
+	 * 
 	 * @param user_id
 	 * @param dateRequest
 	 * @return
@@ -195,10 +195,11 @@ public class WorkingDayController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(m);
 	}
-	
+
 	/**
-	 * Obtener las métricas de los sensibilizadores pertenecientes a un líder
-	 * en un rango de fechas
+	 * Obtener las métricas de los sensibilizadores pertenecientes a un líder en un
+	 * rango de fechas
+	 * 
 	 * @param user_id
 	 * @param dateRequest
 	 * @return
@@ -242,7 +243,7 @@ public class WorkingDayController {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(metricasDeSensibilizadoresLider);
 	}
-	
+
 	@GetMapping("/charged-days/{supervisor_id}/{date}")
 	public ResponseEntity<?> getDiasCargados(@PathVariable int supervisor_id, @PathVariable String date) {
 		List<DiasCargados> dc = new ArrayList<DiasCargados>();
@@ -250,22 +251,20 @@ public class WorkingDayController {
 		int month = Integer.parseInt(dates[0]);
 		int year = Integer.parseInt(dates[1]);
 		int day = 31;
-		
-		if (LocalDate.now().getMonthValue() == month) {			
+
+		if (LocalDate.now().getMonthValue() == month) {
 			day = LocalDate.now().getDayOfMonth();
 		}
-		
+
 		List<Date> diasCargados = workingDayRepository.findByDate(day, month, year, supervisor_id);
-		for (Date dia: diasCargados) {
+		for (Date dia : diasCargados) {
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 			String fecha = sdf1.format(dia);
-			DiasCargados d = new DiasCargados("Día cargado",
-											  Timestamp.valueOf(fecha + " 07:00:00").toLocalDateTime(),
-											  Timestamp.valueOf(fecha + " 20:00:00").toLocalDateTime(),
-											  true);
+			DiasCargados d = new DiasCargados("Día cargado", Timestamp.valueOf(fecha + " 07:00:00").toLocalDateTime(),
+					Timestamp.valueOf(fecha + " 20:00:00").toLocalDateTime(), true);
 			dc.add(d);
 		}
-        
+
 		return ResponseEntity.status(HttpStatus.OK).body(dc);
 	}
 
@@ -344,14 +343,16 @@ public class WorkingDayController {
 				WorkingDay userWorkDay = workingDayService.getWorkingDay(userToGet.getUser_id(), dateRequest);
 				if (userWorkDay != null) {
 					// Obtengo los formularios que hizo el sensibilizador en la fecha
-					List<Form> formularios = formService.getFormsByUser(userWorkDay.getUser(), userWorkDay.getWorkingDate()); 
-					
+					List<Form> formularios = formService.getFormsByUser(userWorkDay.getUser(),
+							userWorkDay.getWorkingDate());
+
 					// Establezco la lista de socios que hizo en la fecha
 					List<Partner> partners = new ArrayList<Partner>();
-					
+
 					// De cada formulario, obtengo la información básica de cada socio
-					for (Form formulario: formularios) {
-						Partner socio = new Partner(formulario.getDni(), formulario.getFirstname(), formulario.getLastname(), formulario.getMonthly_amount_contribution());
+					for (Form formulario : formularios) {
+						Partner socio = new Partner(formulario.getDni(), formulario.getFirstname(),
+								formulario.getLastname(), formulario.getMonthly_amount_contribution());
 						partners.add(socio);
 					}
 					WorkingDayResponse wdr = new WorkingDayResponse(userWorkDay, partners);
