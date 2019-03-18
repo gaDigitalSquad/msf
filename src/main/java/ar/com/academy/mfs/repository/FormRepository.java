@@ -9,11 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ar.com.academy.mfs.model.Form;
-import ar.com.academy.mfs.request.DateRequest;
 
 @Repository
 public interface FormRepository extends JpaRepository<Form, Integer> {
 	Optional<Form> findByDni(int dni);
+	
+	@Query(value = "select * from msf.form where dni = ?1", nativeQuery = true)
+	Form findByDni2(int dni);
 	
 	@Query(value = "select * from msf.form where completed_by_user_id = ?1", nativeQuery = true)
 	Optional<List<Form>> findByCompleted_by_user_id(int user_id);

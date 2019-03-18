@@ -135,7 +135,7 @@ public class FormController {
 	
 	@GetMapping("/exist-partner/{dni}")
 	public ResponseEntity<?> existPartner(@PathVariable int dni) {
-	Form form = formRepository.findByDni(dni).get();
+	Form form = formRepository.findByDni2(dni);
 	if (form != null)
 		return ResponseEntity.status(HttpStatus.OK).body("Existe");
 	else
