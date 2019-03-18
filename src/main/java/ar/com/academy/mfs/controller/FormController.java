@@ -10,26 +10,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.com.academy.mfs.model.CardType;
 import ar.com.academy.mfs.model.Form;
-import ar.com.academy.mfs.model.User;
-import ar.com.academy.mfs.model.Zone;
-import ar.com.academy.mfs.repository.CardTypeRepository;
 import ar.com.academy.mfs.repository.FormRepository;
-import ar.com.academy.mfs.repository.UserRepository;
-import ar.com.academy.mfs.repository.ZoneRepository;
-import ar.com.academy.mfs.request.DateRequest;
 import ar.com.academy.mfs.request.FormRequest;
 import ar.com.academy.mfs.request.FormRequestMobile;
 import ar.com.academy.mfs.service.FormService;
@@ -41,15 +30,6 @@ public class FormController {
 
 	@Autowired
 	private FormRepository formRepository;
-
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private ZoneRepository zoneRepository;
-
-	@Autowired
-	private CardTypeRepository cardTypeRepository;
 
 	/**
 	 * Completar un formulario proveniente de la app mobile
@@ -151,6 +131,15 @@ public class FormController {
 			return ResponseEntity.status(HttpStatus.OK).body(dni);
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dni);
+	}
+	
+	@GetMapping("/exist-partner/{dni}")
+	public ResponseEntity<?> existPartner(@PathVariable int dni) {
+	Form form = formRepository.findByDni(dni).get();
+	if (form != null)
+		return ResponseEntity.status(HttpStatus.OK).body("Existe");
+	else
+		return ResponseEntity.status(HttpStatus.OK).body("No existe");
 	}
 
 }

@@ -259,7 +259,7 @@ public class UserController {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(email);
 		message.setSubject("MSF - Reestablecer contraseña");
-		message.setText("Para reestablecer su contraseña ingrese al siguiente link: localhost:4200/reset-password");
+		message.setText("Para reestablecer su contraseña ingrese al siguiente link: https://msf-frontend.herokuapp.com/reset-password");
 		emailSender.send(message);
 	}catch(
 	Exception e)
