@@ -46,10 +46,10 @@ public class GroupController {
 	@PostMapping("/group")
 	@ResponseBody ResponseEntity<?> postGroup(@Valid @RequestBody GroupRequest groupRequest) {
 		User supervisor = userRepository.findById(groupRequest.getLeader()).get();
-		if (supervisor == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid supervisor");
+		if (supervisor == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El líder seleccionado no existe");
 		
 		Zone zone = zoneRepository.findById(groupRequest.getZone()).get();
-		if(zone == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid zone");
+		if(zone == null) ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La zona seleccionada no es válida");
 		
 		Integer numberGroup = groupRepository.findLastGroupNumber();
 		if (numberGroup == null) {
@@ -71,7 +71,7 @@ public class GroupController {
 			supervisor.setGroup_number(g.getGroup_number());
 			groupRepository.save(g);
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("OK");
+		return ResponseEntity.status(HttpStatus.OK).body("Se ha creado el grupo");
 	}
 	
 	/* Dado el número de grupo, se obtiene el grupo */
