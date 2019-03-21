@@ -13,7 +13,7 @@ import ar.com.academy.mfs.model.UserState;
 public interface UserStateRepository extends JpaRepository<UserState,Integer> {
 		
 	
-	UserState findByUserStateId(long UserStateId);
+	UserState findByUserStateId(int UserStateId);
 	UserState findByStateId (long stateId);
 	
 	@Transactional

@@ -51,7 +51,7 @@ public class UserStateController {
 	}
 	
 	@GetMapping("/user_state/{user_state_id}")
-	public UserState getUserStateByUserStateId(@PathVariable long user_state_id) {
+	public UserState getUserStateByUserStateId(@PathVariable int user_state_id) {
 		return userStateService.findByUserStateId(user_state_id);
 	}
 	

@@ -1,6 +1,7 @@
 package ar.com.academy.mfs.controller;
 
 import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.com.academy.mfs.model.Area;
 import ar.com.academy.mfs.model.Group;
-import ar.com.academy.mfs.service.GroupService;
-import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.Zone;
 import ar.com.academy.mfs.repository.AreaRepository;
@@ -26,6 +23,10 @@ import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.request.GroupRequest;
 import ar.com.academy.mfs.request.UpdateGroupRequest;
+import ar.com.academy.mfs.response.UserGroupResponse;
+import ar.com.academy.mfs.service.GroupService;
+import ar.com.academy.mfs.service.UserService;
+import ar.com.academy.mfs.utils.EntityUtils;
 
 @RestController
 public class GroupController {
@@ -60,18 +61,26 @@ public class GroupController {
 		}
 		
 		List<Integer> sens = groupRequest.getSens();
-		for (int i = 0; i < sens.size(); i++) {
-			User sensibilizador = userRepository.findById(sens.get(i)).get();
-			Group g = new Group(zone.getZoneId(),
-								supervisor.getUser_id(),
-								sensibilizador.getUser_id(),
-								numberGroup,
-								groupRequest.getturn());
-			sensibilizador.setGroup_number(g.getGroup_number());
-			supervisor.setGroup_number(g.getGroup_number());
-			groupRepository.save(g);
+		
+		if(EntityUtils.checkDuplicateUsingAdd(sens)) {
+		
+			for (int i = 0; i < sens.size(); i++) {
+				User sensibilizador = userRepository.findById(sens.get(i)).get();
+				Group g = new Group(zone.getZoneId(),
+									supervisor.getUser_id(),
+									sensibilizador.getUser_id(),
+									numberGroup,
+									groupRequest.getturn());
+				sensibilizador.setGroup_number(g.getGroup_number());
+				supervisor.setGroup_number(g.getGroup_number());
+				groupRepository.save(g);
+			}
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("Se ha creado el grupo");
+		else
+		{
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No puede ingresar Sensibilizadores repetidos");
+		}
+			return ResponseEntity.status(HttpStatus.OK).body("Se ha creado el grupo");
 	}
 	
 	/* Dado el número de grupo, se obtiene el grupo */
@@ -123,4 +132,10 @@ public class GroupController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(groupToUpdate);
 		}
 	}
+	/* Dadel grupo , se obtienen todos los sensibilizadores */
+	@GetMapping("/users-by-group/{group_number}")
+	public List<UserGroupResponse> getusersByGroup(@PathVariable int group_number) {
+		 return groupService.getUserByGroup(group_number);
+	}
+	
 }

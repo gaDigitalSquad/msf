@@ -14,7 +14,7 @@ public class UserStateService {
 	@Autowired 
 	UserStateRepository userStateRepository;
 	
-	public UserState findByUserStateId(long UserStateId) {
+	public UserState findByUserStateId(int UserStateId) {
 		return userStateRepository.findByUserStateId(UserStateId);
 	}
 	

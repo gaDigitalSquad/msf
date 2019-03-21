@@ -1,16 +1,25 @@
 package ar.com.academy.mfs.service;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.academy.mfs.model.Group;
+import ar.com.academy.mfs.model.Role;
+import ar.com.academy.mfs.model.State;
 import ar.com.academy.mfs.model.User;
+import ar.com.academy.mfs.model.UserState;
 import ar.com.academy.mfs.repository.GroupRepository;
+import ar.com.academy.mfs.repository.RoleRepository;
+import ar.com.academy.mfs.repository.StateRepository;
 import ar.com.academy.mfs.repository.UserRepository;
+import ar.com.academy.mfs.repository.UserStateRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
+import ar.com.academy.mfs.response.UserGroupResponse;
 
 @Service("groupService")
 public class GroupService {
@@ -21,6 +30,12 @@ public class GroupService {
 	ZoneRepository zoneRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	RoleRepository roleRepository;
+	@Autowired
+	UserStateRepository userStateRepository;
+	@Autowired
+	StateRepository stateRepository;
 	
 	public Group createRegisterForGroup(Group inputGroup) {
 		Group group = groupRepository.save(inputGroup);
@@ -54,6 +69,32 @@ public class GroupService {
 
 	public int getGroupLeader(int group_number) {
 		return groupRepository.findLeaderByGroupNumber(group_number);
+	}
+	public List<UserGroupResponse> getUserByGroup (int group_number) 
+	{
+		List<UserGroupResponse> listUserGroupResponse = new ArrayList<UserGroupResponse>();
+		
+		groupRepository.findAllByGroup_number(group_number).stream().filter(p->p.isActive()).forEach(group->
+		{
+			
+			userRepository.findSensFromGroup(group.getGroup_number()).stream().forEach(m->
+			{
+				UserGroupResponse ugr = new UserGroupResponse();
+				ugr.setDocumentNumber(String.valueOf(m.getDocumentNumber()));
+				ugr.setFirstName(m.getFirstname());
+				ugr.setLastname(m.getLastname());
+				ugr.setFromDate(m.getFrom_date());
+				Role role = roleRepository.findById(m.getRole_id()).get();
+				ugr.setRole(role.getRoleName());
+				UserState us = userStateRepository.findByUserStateId(m.getUserStateId());
+				State state = stateRepository.findByStateId(Long.valueOf(us.getStateId()));
+				ugr.setState(state.getDescription());
+				listUserGroupResponse.add(ugr);
+
+			});	
+		});
+		return listUserGroupResponse;
+		
 	}
 
 	public void updateLeader(Group groupToUpdate, int newLeader) {
