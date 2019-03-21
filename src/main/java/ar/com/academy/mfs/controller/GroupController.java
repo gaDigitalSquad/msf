@@ -62,7 +62,7 @@ public class GroupController {
 		
 		List<Integer> sens = groupRequest.getSens();
 		
-		if(EntityUtils.checkDuplicateUsingAdd(sens)) {
+		if(!EntityUtils.checkDuplicateUsingAdd(sens)) {
 		
 			for (int i = 0; i < sens.size(); i++) {
 				User sensibilizador = userRepository.findById(sens.get(i)).get();
