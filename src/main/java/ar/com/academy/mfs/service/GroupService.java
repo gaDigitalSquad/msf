@@ -83,7 +83,7 @@ public class GroupService {
 				ugr.setDocumentNumber(String.valueOf(m.getDocumentNumber()));
 				ugr.setFirstName(m.getFirstname());
 				ugr.setLastname(m.getLastname());
-				ugr.setFromDate(m.getFrom_date());
+				ugr.setFromDate(group.getFrom_date());
 				Role role = roleRepository.findById(m.getRole_id()).get();
 				ugr.setRole(role.getRoleName());
 				UserState us = userStateRepository.findByUserStateId(m.getUserStateId());
