@@ -89,7 +89,9 @@ public class GroupService {
 				UserState us = userStateRepository.findByUserStateId(m.getUserStateId());
 				State state = stateRepository.findByStateId(Long.valueOf(us.getStateId()));
 				ugr.setState(state.getDescription());
-				listUserGroupResponse.add(ugr);
+				if(!listUserGroupResponse.stream().anyMatch(p -> p.getDocumentNumber().
+						equals(ugr.getDocumentNumber())))
+					listUserGroupResponse.add(ugr);
 
 			});	
 		});
