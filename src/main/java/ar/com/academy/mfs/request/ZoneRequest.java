@@ -6,6 +6,7 @@ public class ZoneRequest {
 	
 	private float amount;
 	private float target;
+	private float hours;
 	private Date fromDate;
 	private Date toDate;
 	private int zone;
@@ -40,7 +41,11 @@ public class ZoneRequest {
 	public void setZone(int zone) {
 		this.zone = zone;
 	}
-	
-	
+	public float getHours() {
+		return hours;
+	}
+	public void setHours(float hours) {
+		this.hours = hours;
+	}
 
 }

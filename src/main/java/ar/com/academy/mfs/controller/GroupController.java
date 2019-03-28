@@ -83,6 +83,11 @@ public class GroupController {
 			return ResponseEntity.status(HttpStatus.OK).body("Se ha creado el grupo");
 	}
 	
+	@GetMapping("/groups")
+	public List<Group> getGroups() {
+		return groupService.getGroups();
+	}
+	
 	/* Dado el número de grupo, se obtiene el grupo */
 	@GetMapping("/group/{group_number}")
 	public Group getGroupByGroupNumber(@PathVariable int group_number) {

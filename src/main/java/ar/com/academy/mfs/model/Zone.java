@@ -29,6 +29,9 @@ public class Zone {
 	@Column(name = "amount")
 	private float amount;
 	
+	@Column(name = "hours")
+	private float hours;
+	
 	@Column(name = "from_date")
 	private Date fromDate;
 	
@@ -38,65 +41,58 @@ public class Zone {
 	public Zone() {
 	}
 
-	public Zone(String zoneName, float target, float amount) {
+	public Zone(String zoneName, float target, float amount, float hours) {
 		super();
 		this.zoneName = zoneName;
 		this.target = target;
 		this.amount = amount;
+		this.hours = hours;
 		this.fromDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());;
 	}
-
+	
 	public String getZoneName() {
 		return zoneName;
 	}
-
 	public void setZoneName(String zoneName) {
 		this.zoneName = zoneName;
 	}
-
-
 	public int getZoneId() {
 		return zoneId;
 	}
-
 	public float getTarget() {
 		return target;
 	}
-
 	public void setTargetId(float target) {
 		this.target = target;
 	}
-
 	public float getAmount() {
 		return amount;
 	}
-
 	public void setAmount(float amount) {
 		this.amount = amount;
 	}
-
 	public Date getFromDate() {
 		return fromDate;
 	}
-
 	public void setFromDate(Date fromDate) {
 		this.fromDate = fromDate;
 	}
-
 	public Date getToDate() {
 		return toDate;
 	}
-
 	public void setToDate(Date toDate) {
 		this.toDate = toDate;
 	}
-
 	public void setZoneId(int zoneId) {
 		this.zoneId = zoneId;
 	}
-
 	public void setTarget(float target) {
 		this.target = target;
 	}
-	
+	public float getHours() {
+		return hours;
+	}
+	public void setHours(float hours) {
+		this.hours = hours;
+	}
 }

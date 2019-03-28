@@ -46,6 +46,7 @@ public class ZoneController {
 		Zone z = zoneService.getZoneByZone_id(zr.getZone());
 		z.setAmount(zr.getAmount());
 		z.setTarget(zr.getTarget());
+		z.setHours(zr.getHours());
 		Date newToDate = new Date (zr.getToDate().getTime() + 24*60*60*1000);
 		z.setToDate(newToDate);
 		zoneRepository.save(z);

@@ -130,5 +130,10 @@ public class GroupService {
 			registro.setTo_date(new Date());
 			groupRepository.save(registro);
 		} else return;
+	}
+
+	public List<Group> getGroups() {
+		// TODO Auto-generated method stub
+		return groupRepository.findActiveGroups();
 	}	
 }
