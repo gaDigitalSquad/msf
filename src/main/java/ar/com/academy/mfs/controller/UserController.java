@@ -219,6 +219,14 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 	
+	
+	@PostMapping("/findUserByLastname")
+	@ResponseBody ResponseEntity<?> getUserByLastname(@RequestBody UserRequest lastname) {
+		List<User> users = findByLastname(lastname.getLastname());
+		if ( users.isEmpty() ) return ResponseEntity.status(HttpStatus.CONFLICT).body("No se encontraron usuarios con " + lastname.getLastname());
+		return ResponseEntity.status(HttpStatus.OK).body(users);
+	}
+	
 	@GetMapping("/exist-document/{documentType}/{documentNumber}")
 	@ResponseBody
 	ResponseEntity<?> getUser(@PathVariable String documentType, @PathVariable int documentNumber) {
@@ -230,6 +238,10 @@ public class UserController {
 
 	private User findByDocumentTypeAndDocumentNumber(String documentType, int documentNumber) {
 		return user_repository.findByDocumentTypeAndDocumentNumber(documentType, documentNumber);
+	}
+	
+	private List<User> findByLastname(String lastname) {
+		return user_repository.findByLastnameContainingIgnoreCase(lastname);
 	}
 
 	@PostMapping("/change-password/{user_id}")
