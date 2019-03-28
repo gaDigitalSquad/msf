@@ -9,8 +9,11 @@ import ar.com.academy.mfs.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-	List<User> findByLastname(String lastname);
+	
+	List<User> findByLastnameContainingIgnoreCase(String lastname);
+	
 	User findByUsername(String username);
+	
 	User findByDocumentTypeAndDocumentNumber(String documentType, int documentNumber);
 	
 	@Query(value="select * from msf.user where document_number = ?1", nativeQuery = true)
