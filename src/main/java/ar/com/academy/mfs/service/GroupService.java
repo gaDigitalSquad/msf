@@ -24,6 +24,7 @@ import ar.com.academy.mfs.repository.UserStateRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.response.GroupResponse;
 import ar.com.academy.mfs.response.UserGroupResponse;
+import ar.com.academy.mfs.utils.EntityUtils;
 
 @Service("groupService")
 public class GroupService {
@@ -148,6 +149,6 @@ public class GroupService {
 			return gr;
 		}).collect(Collectors.toList());
 		
-		return gruposActivos.stream().filter(n -> gruposActivos.stream().filter(x -> x.getNumero() == n.getNumero()).count() == 1).collect(Collectors.toList());
+		return gruposActivos.stream().distinct().collect(Collectors.toList());
 	}
 }
