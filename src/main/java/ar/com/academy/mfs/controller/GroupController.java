@@ -84,8 +84,8 @@ public class GroupController {
 	}
 	
 	@GetMapping("/groups")
-	public List<Group> getGroups() {
-		return groupService.getGroups();
+	public ResponseEntity<?> getGroups() {
+		return ResponseEntity.status(HttpStatus.OK).body(groupService.getGroups());
 	}
 	
 	/* Dado el número de grupo, se obtiene el grupo */

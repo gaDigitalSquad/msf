@@ -1,6 +1,5 @@
 package ar.com.academy.mfs.service;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,17 +12,19 @@ import ar.com.academy.mfs.model.Role;
 import ar.com.academy.mfs.model.State;
 import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.UserState;
+import ar.com.academy.mfs.model.Zone;
 import ar.com.academy.mfs.repository.GroupRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.StateRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.repository.UserStateRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
+import ar.com.academy.mfs.response.GroupResponse;
 import ar.com.academy.mfs.response.UserGroupResponse;
 
 @Service("groupService")
 public class GroupService {
-	
+
 	@Autowired
 	GroupRepository groupRepository;
 	@Autowired
@@ -36,7 +37,7 @@ public class GroupService {
 	UserStateRepository userStateRepository;
 	@Autowired
 	StateRepository stateRepository;
-	
+
 	public Group createRegisterForGroup(Group inputGroup) {
 		Group group = groupRepository.save(inputGroup);
 		return group;
@@ -49,9 +50,10 @@ public class GroupService {
 	public Group getGroupByGroupNumber(int group_number) {
 		return groupRepository.findByGroupNumber(group_number);
 	}
-	
+
 	/**
 	 * Dado el supervisor_id se obtiene el grupo del que es líder
+	 * 
 	 * @param supervisor_id
 	 * @return
 	 */
@@ -70,15 +72,13 @@ public class GroupService {
 	public int getGroupLeader(int group_number) {
 		return groupRepository.findLeaderByGroupNumber(group_number);
 	}
-	public List<UserGroupResponse> getUserByGroup (int group_number) 
-	{
+
+	public List<UserGroupResponse> getUserByGroup(int group_number) {
 		List<UserGroupResponse> listUserGroupResponse = new ArrayList<UserGroupResponse>();
-		
-		groupRepository.findAllByGroup_number(group_number).stream().filter(p->p.isActive()).forEach(group->
-		{
-			
-			userRepository.findSensFromGroup(group.getGroup_number()).stream().forEach(m->
-			{
+
+		groupRepository.findAllByGroup_number(group_number).stream().filter(p -> p.isActive()).forEach(group -> {
+
+			userRepository.findSensFromGroup(group.getGroup_number()).stream().forEach(m -> {
 				UserGroupResponse ugr = new UserGroupResponse();
 				ugr.setDocumentNumber(String.valueOf(m.getDocumentNumber()));
 				ugr.setFirstName(m.getFirstname());
@@ -89,20 +89,20 @@ public class GroupService {
 				UserState us = userStateRepository.findByUserStateId(m.getUserStateId());
 				State state = stateRepository.findByStateId(Long.valueOf(us.getStateId()));
 				ugr.setState(state.getDescription());
-				if(!listUserGroupResponse.stream().anyMatch(p -> p.getDocumentNumber().
-						equals(ugr.getDocumentNumber())))
+				if (!listUserGroupResponse.stream()
+						.anyMatch(p -> p.getDocumentNumber().equals(ugr.getDocumentNumber())))
 					listUserGroupResponse.add(ugr);
 
-			});	
+			});
 		});
 		return listUserGroupResponse;
-		
+
 	}
 
 	public void updateLeader(Group groupToUpdate, int newLeader) {
 		List<Group> groups = groupRepository.getGroupsByLider(groupToUpdate.getSupervisor());
 		int groupNumber = groups.get(0).getGroup_number();
-		for (Group g: groups) {
+		for (Group g : groups) {
 			g.setSupervisor(newLeader);
 			groupRepository.save(g);
 		}
@@ -114,13 +114,11 @@ public class GroupService {
 	public void addSensToGroup(int user_id, Group groupToUpdate) {
 		Group group = groupRepository.getSens(user_id);
 		if (group == null) { // agregamos al nuevo sensibilizador
-			Group g = new Group(groupToUpdate.getZone_id(),
-								groupToUpdate.getSupervisor(),
-								user_id,
-								groupToUpdate.getGroup_number(),
-								groupToUpdate.getTurn());
+			Group g = new Group(groupToUpdate.getZone_id(), groupToUpdate.getSupervisor(), user_id,
+					groupToUpdate.getGroup_number(), groupToUpdate.getTurn());
 			groupRepository.save(g);
-		} else return;
+		} else
+			return;
 	}
 
 	public void deleteSensFromGroup(int user_id) {
@@ -129,11 +127,22 @@ public class GroupService {
 			registro.setActive(false);
 			registro.setTo_date(new Date());
 			groupRepository.save(registro);
-		} else return;
+		} else
+			return;
 	}
 
-	public List<Group> getGroups() {
-		// TODO Auto-generated method stub
-		return groupRepository.findActiveGroups();
-	}	
+	public List<GroupResponse> getGroups() {
+		List<GroupResponse> responses = new ArrayList<GroupResponse>();
+		List<Group> gruposActivos = groupRepository.findAllActiveGroups();
+		for (Group g: gruposActivos) {
+			Zone zona = zoneRepository.findById(g.getZone_id()).get();
+			User lider = userRepository.findById(g.getSupervisor()).get();
+			String nombreLider = lider.getFirstname() + " " + lider.getLastname();
+			responses.add(new GroupResponse(zona.getZoneName(),
+											g.getGroup_number(),
+											g.getTurn(),
+											nombreLider));
+		}
+		return responses;
+	}
 }
