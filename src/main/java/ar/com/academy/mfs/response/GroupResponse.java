@@ -38,10 +38,17 @@ public class GroupResponse {
 	public void setLider(String lider) {
 		this.lider = lider;
 	}
-	
 	@Override
-	public int hashCode() {
-	    return (int) zona.hashCode() * numero * turno.hashCode() * lider.hashCode();
-	}
+	 public boolean equals(Object other) {
+        if (other instanceof GroupResponse) {
+            return ((GroupResponse) other).numero == (getNumero());
+        } else {
+            return false;
+        }
+	 }
+	 @Override
+     public int hashCode() {
+         return getNumero();
+     }
 
 }
