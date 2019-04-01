@@ -1,5 +1,7 @@
 package ar.com.academy.mfs.response;
 
+import java.util.List;
+
 public class Metricas {
 
 	private float amount_of_new_partners;
@@ -8,6 +10,7 @@ public class Metricas {
 	private float partner_hours;
 	private float averageAmount;
 	private int sens_id;
+	private List<Float> targets;
 	
 	public Metricas(float amount_of_new_partners, float amount, float hours_worked, float partner_hours) {
 		super();
@@ -16,6 +19,16 @@ public class Metricas {
 		this.hours_worked = hours_worked;
 		this.partner_hours = partner_hours;
 		this.averageAmount = amount/hours_worked;
+	}
+	
+	public Metricas(float amount_of_new_partners, float amount, float hours_worked, float partner_hours, List<Float> targets) {
+		super();
+		this.amount_of_new_partners = amount_of_new_partners;
+		this.amount = amount;
+		this.hours_worked = hours_worked;
+		this.partner_hours = partner_hours;
+		this.averageAmount = amount/hours_worked;
+		this.targets = targets;
 	}
 	
 	public Metricas(float amount_of_new_partners, float amount, float hours_worked, float partner_hours, int sens_id) {
@@ -63,6 +76,12 @@ public class Metricas {
 	}
 	public void setSens_id(int sens_id) {
 		this.sens_id = sens_id;
+	}
+	public List<Float> getTargets() {
+		return targets;
+	}
+	public void setTargets(List<Float> targets) {
+		this.targets = targets;
 	}
 	
 }

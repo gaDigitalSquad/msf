@@ -373,6 +373,13 @@ public class WorkingDayController {
 		User user = userRepository.findById(user_id).get();
 		if (user == null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user");
+		
+		Zone zona = zoneRepository.findByZoneId(user.getZone_id());
+		List<Float> targets = new ArrayList<Float>();
+		targets.add((float) zona.getAmount());
+		targets.add(zona.getTarget() * zona.getHours());
+		targets.add(zona.getTarget());
+		targets.add(zona.getHours());
 
 		// Obtengo AÑO actual
 		int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -380,8 +387,6 @@ public class WorkingDayController {
 		// Establezco el rango de fecha, se asume que la campaña es anual
 		Date start = Date.valueOf(year + "-01-01");
 		Date end = Date.valueOf(year + "-12-31");
-
-		System.out.println(year + "-01-01");
 
 		List<WorkingDay> workingDays = workingDayRepository.findByWorkingDateBetweenAndUser(user.getUser_id(), start,
 				end);
@@ -398,7 +403,6 @@ public class WorkingDayController {
 				sociosHoraNov = 0, sociosHoraDic = 0;
 
 		for (WorkingDay wk : workingDays) {
-			System.out.println(wk.getWorkingDate().toString());
 			int month = wk.getWorkingDate().toLocalDate().getMonthValue();
 			if (month == 1) {
 				sociosEnero = sociosEnero + wk.getAmountOfNewPartners();
@@ -475,18 +479,18 @@ public class WorkingDayController {
 		sociosHoraNov = sociosNov / horasNov;
 		sociosHoraDic = sociosDic / horasDic;
 
-		Metricas enero = new Metricas(sociosEnero, montoEnero, horasEnero, sociosHoraEnero);
-		Metricas febrero = new Metricas(sociosFebrero, montoFebrero, horasFebrero, sociosHoraFebrero);
-		Metricas marzo = new Metricas(sociosMarzo, montoMarzo, horasMarzo, sociosHoraMarzo);
-		Metricas abril = new Metricas(sociosAbril, montoAbril, horasAbril, sociosHoraAbril);
-		Metricas mayo = new Metricas(sociosMayo, montoMayo, horasMayo, sociosHoraMayo);
-		Metricas junio = new Metricas(sociosJunio, montoJunio, horasJunio, sociosHoraJunio);
-		Metricas julio = new Metricas(sociosJulio, montoJulio, horasJulio, sociosHoraJulio);
-		Metricas agosto = new Metricas(sociosAgosto, montoAgosto, horasAgosto, sociosHoraAgosto);
-		Metricas septiembre = new Metricas(sociosSep, montoSep, horasSep, sociosHoraSep);
-		Metricas octubre = new Metricas(sociosOct, montoOct, horasOct, sociosHoraOct);
-		Metricas noviembre = new Metricas(sociosNov, montoOct, horasOct, sociosHoraNov);
-		Metricas diciembre = new Metricas(sociosDic, montoDic, horasDic, sociosHoraDic);
+		Metricas enero = new Metricas(sociosEnero, montoEnero, horasEnero, sociosHoraEnero, targets);
+		Metricas febrero = new Metricas(sociosFebrero, montoFebrero, horasFebrero, sociosHoraFebrero, targets);
+		Metricas marzo = new Metricas(sociosMarzo, montoMarzo, horasMarzo, sociosHoraMarzo, targets);
+		Metricas abril = new Metricas(sociosAbril, montoAbril, horasAbril, sociosHoraAbril, targets);
+		Metricas mayo = new Metricas(sociosMayo, montoMayo, horasMayo, sociosHoraMayo, targets);
+		Metricas junio = new Metricas(sociosJunio, montoJunio, horasJunio, sociosHoraJunio, targets);
+		Metricas julio = new Metricas(sociosJulio, montoJulio, horasJulio, sociosHoraJulio, targets);
+		Metricas agosto = new Metricas(sociosAgosto, montoAgosto, horasAgosto, sociosHoraAgosto, targets);
+		Metricas septiembre = new Metricas(sociosSep, montoSep, horasSep, sociosHoraSep, targets);
+		Metricas octubre = new Metricas(sociosOct, montoOct, horasOct, sociosHoraOct, targets);
+		Metricas noviembre = new Metricas(sociosNov, montoOct, horasOct, sociosHoraNov, targets);
+		Metricas diciembre = new Metricas(sociosDic, montoDic, horasDic, sociosHoraDic, targets);
 
 		metricas.add(enero);
 		metricas.add(febrero);
@@ -521,6 +525,14 @@ public class WorkingDayController {
 		// Primero, obtengo todos los working day del grupo
 
 		List<WorkingDay> workingDays = workingDayRepository.findByGroupNumberAndDate(group_number, start, end);
+		
+		Group grupo = groupRepository.findByGroupNumber(group_number);
+		Zone zona = zoneRepository.findByZoneId(grupo.getZone_id());
+		List<Float> targets = new ArrayList<Float>();
+		targets.add((float) zona.getAmount());
+		targets.add(zona.getTarget() * zona.getHours());
+		targets.add(zona.getTarget());
+		targets.add(zona.getHours());
 
 		// Declaro array donde voy a devolver las métricas
 		List<Metricas> metricas = new ArrayList<Metricas>();
@@ -614,18 +626,18 @@ public class WorkingDayController {
 		sociosHoraNov = sociosNov / horasNov;
 		sociosHoraDic = sociosDic / horasDic;
 
-		Metricas enero = new Metricas(sociosEnero, montoEnero, horasEnero, sociosHoraEnero);
-		Metricas febrero = new Metricas(sociosFebrero, montoFebrero, horasFebrero, sociosHoraFebrero);
-		Metricas marzo = new Metricas(sociosMarzo, montoMarzo, horasMarzo, sociosHoraMarzo);
-		Metricas abril = new Metricas(sociosAbril, montoAbril, horasAbril, sociosHoraAbril);
-		Metricas mayo = new Metricas(sociosMayo, montoMayo, horasMayo, sociosHoraMayo);
-		Metricas junio = new Metricas(sociosJunio, montoJunio, horasJunio, sociosHoraJunio);
-		Metricas julio = new Metricas(sociosJulio, montoJulio, horasJulio, sociosHoraJulio);
-		Metricas agosto = new Metricas(sociosAgosto, montoAgosto, horasAgosto, sociosHoraAgosto);
-		Metricas septiembre = new Metricas(sociosSep, montoSep, horasSep, sociosHoraSep);
-		Metricas octubre = new Metricas(sociosOct, montoOct, horasOct, sociosHoraOct);
-		Metricas noviembre = new Metricas(sociosNov, montoOct, horasOct, sociosHoraNov);
-		Metricas diciembre = new Metricas(sociosDic, montoDic, horasDic, sociosHoraDic);
+		Metricas enero = new Metricas(sociosEnero, montoEnero, horasEnero, sociosHoraEnero, targets);
+		Metricas febrero = new Metricas(sociosFebrero, montoFebrero, horasFebrero, sociosHoraFebrero, targets);
+		Metricas marzo = new Metricas(sociosMarzo, montoMarzo, horasMarzo, sociosHoraMarzo, targets);
+		Metricas abril = new Metricas(sociosAbril, montoAbril, horasAbril, sociosHoraAbril, targets);
+		Metricas mayo = new Metricas(sociosMayo, montoMayo, horasMayo, sociosHoraMayo, targets);
+		Metricas junio = new Metricas(sociosJunio, montoJunio, horasJunio, sociosHoraJunio, targets);
+		Metricas julio = new Metricas(sociosJulio, montoJulio, horasJulio, sociosHoraJulio, targets);
+		Metricas agosto = new Metricas(sociosAgosto, montoAgosto, horasAgosto, sociosHoraAgosto, targets);
+		Metricas septiembre = new Metricas(sociosSep, montoSep, horasSep, sociosHoraSep, targets);
+		Metricas octubre = new Metricas(sociosOct, montoOct, horasOct, sociosHoraOct, targets);
+		Metricas noviembre = new Metricas(sociosNov, montoOct, horasOct, sociosHoraNov, targets);
+		Metricas diciembre = new Metricas(sociosDic, montoDic, horasDic, sociosHoraDic, targets);
 
 		metricas.add(enero);
 		metricas.add(febrero);
@@ -658,6 +670,13 @@ public class WorkingDayController {
 		// Primero, obtengo todos los working day de la zona
 
 		List<WorkingDay> workingDays = workingDayRepository.findByZoneAndDate(zone_id, start, end);
+		
+		Zone zona = zoneRepository.findByZoneId(zone_id);
+		List<Float> targets = new ArrayList<Float>();
+		targets.add((float) zona.getAmount());
+		targets.add(zona.getTarget() * zona.getHours());
+		targets.add(zona.getTarget());
+		targets.add(zona.getHours());
 
 		// Declaro array donde voy a devolver las métricas
 		List<Metricas> metricas = new ArrayList<Metricas>();
@@ -751,18 +770,18 @@ public class WorkingDayController {
 		sociosHoraNov = sociosNov / horasNov;
 		sociosHoraDic = sociosDic / horasDic;
 
-		Metricas enero = new Metricas(sociosEnero, montoEnero, horasEnero, sociosHoraEnero);
-		Metricas febrero = new Metricas(sociosFebrero, montoFebrero, horasFebrero, sociosHoraFebrero);
-		Metricas marzo = new Metricas(sociosMarzo, montoMarzo, horasMarzo, sociosHoraMarzo);
-		Metricas abril = new Metricas(sociosAbril, montoAbril, horasAbril, sociosHoraAbril);
-		Metricas mayo = new Metricas(sociosMayo, montoMayo, horasMayo, sociosHoraMayo);
-		Metricas junio = new Metricas(sociosJunio, montoJunio, horasJunio, sociosHoraJunio);
-		Metricas julio = new Metricas(sociosJulio, montoJulio, horasJulio, sociosHoraJulio);
-		Metricas agosto = new Metricas(sociosAgosto, montoAgosto, horasAgosto, sociosHoraAgosto);
-		Metricas septiembre = new Metricas(sociosSep, montoSep, horasSep, sociosHoraSep);
-		Metricas octubre = new Metricas(sociosOct, montoOct, horasOct, sociosHoraOct);
-		Metricas noviembre = new Metricas(sociosNov, montoOct, horasOct, sociosHoraNov);
-		Metricas diciembre = new Metricas(sociosDic, montoDic, horasDic, sociosHoraDic);
+		Metricas enero = new Metricas(sociosEnero, montoEnero, horasEnero, sociosHoraEnero, targets);
+		Metricas febrero = new Metricas(sociosFebrero, montoFebrero, horasFebrero, sociosHoraFebrero, targets);
+		Metricas marzo = new Metricas(sociosMarzo, montoMarzo, horasMarzo, sociosHoraMarzo, targets);
+		Metricas abril = new Metricas(sociosAbril, montoAbril, horasAbril, sociosHoraAbril, targets);
+		Metricas mayo = new Metricas(sociosMayo, montoMayo, horasMayo, sociosHoraMayo, targets);
+		Metricas junio = new Metricas(sociosJunio, montoJunio, horasJunio, sociosHoraJunio, targets);
+		Metricas julio = new Metricas(sociosJulio, montoJulio, horasJulio, sociosHoraJulio, targets);
+		Metricas agosto = new Metricas(sociosAgosto, montoAgosto, horasAgosto, sociosHoraAgosto, targets);
+		Metricas septiembre = new Metricas(sociosSep, montoSep, horasSep, sociosHoraSep, targets);
+		Metricas octubre = new Metricas(sociosOct, montoOct, horasOct, sociosHoraOct, targets);
+		Metricas noviembre = new Metricas(sociosNov, montoOct, horasOct, sociosHoraNov, targets);
+		Metricas diciembre = new Metricas(sociosDic, montoDic, horasDic, sociosHoraDic, targets);
 
 		metricas.add(enero);
 		metricas.add(febrero);

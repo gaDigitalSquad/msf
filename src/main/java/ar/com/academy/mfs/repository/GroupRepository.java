@@ -22,7 +22,7 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 	@Query(value = "select supervised_id from msf.group where supervisor_id = ?1 and active = true", nativeQuery = true)
 	List<Integer> findMySens(int supervisor_id);
 	
-	@Query(value = "select * from msf.group where group_number = ?1 limit 1", nativeQuery = true)
+	@Query(value = "select * from msf.group where group_number = ?1 and active = true limit 1", nativeQuery = true)
 	Group findByGroupNumber(int group_number);
 
 	@Query(value = "select * from msf.group where supervisor_id = ?1 limit 1", nativeQuery = true)
