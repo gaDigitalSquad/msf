@@ -1,8 +1,11 @@
 package ar.com.academy.mfs.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,7 @@ import ar.com.academy.mfs.repository.UserStateRepository;
 import ar.com.academy.mfs.repository.ZoneRepository;
 import ar.com.academy.mfs.response.GroupResponse;
 import ar.com.academy.mfs.response.UserGroupResponse;
+import ar.com.academy.mfs.utils.EntityUtils;
 
 @Service("groupService")
 public class GroupService {
@@ -132,17 +136,19 @@ public class GroupService {
 	}
 
 	public List<GroupResponse> getGroups() {
-		List<GroupResponse> responses = new ArrayList<GroupResponse>();
-		List<Group> gruposActivos = groupRepository.findAllActiveGroups();
-		for (Group g: gruposActivos) {
-			Zone zona = zoneRepository.findById(g.getZone_id()).get();
-			User lider = userRepository.findById(g.getSupervisor()).get();
+		List<GroupResponse> gruposActivos = groupRepository.findAllActiveGroups().
+				stream().	
+				map(to -> {
+			Zone zona = zoneRepository.findById(to.getZone_id()).get();
+			User lider = userRepository.findById(to.getSupervisor()).get();
 			String nombreLider = lider.getFirstname() + " " + lider.getLastname();
-			responses.add(new GroupResponse(zona.getZoneName(),
-											g.getGroup_number(),
-											g.getTurn(),
-											nombreLider));
-		}
-		return responses;
+			GroupResponse gr = new GroupResponse(zona.getZoneName(),
+					to.getGroup_number(),
+					to.getTurn(),
+					nombreLider);
+			return gr;
+		}).collect(Collectors.toList());
+		
+		return gruposActivos.stream().distinct().collect(Collectors.toList());
 	}
 }
