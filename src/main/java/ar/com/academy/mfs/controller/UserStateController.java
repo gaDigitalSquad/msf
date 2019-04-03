@@ -17,6 +17,7 @@ import ar.com.academy.mfs.model.User;
 import ar.com.academy.mfs.model.UserState;
 import ar.com.academy.mfs.repository.UserStateRepository;
 import ar.com.academy.mfs.request.UserStateRequest;
+import ar.com.academy.mfs.response.ResumenLicencia;
 import ar.com.academy.mfs.service.UserService;
 import ar.com.academy.mfs.service.UserStateService;
 
@@ -54,5 +55,11 @@ public class UserStateController {
 	public UserState getUserStateByUserStateId(@PathVariable int user_state_id) {
 		return userStateService.findByUserStateId(user_state_id);
 	}
+	
+	@GetMapping("/user_state/getlicensesmetrics")
+	public List<ResumenLicencia> getLicenseMetrics() {
+		return userStateService.getmetricasLicencias();
+	}
+	
 	
 }

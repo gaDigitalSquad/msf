@@ -75,4 +75,8 @@ public class UserState implements Serializable {
 		return userStateId;
 	}
 	
+	public int getYearFrom()
+	{
+		return fromDate.toLocalDate().getYear();
+	}
 }

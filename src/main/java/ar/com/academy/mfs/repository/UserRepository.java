@@ -1,4 +1,5 @@
 package ar.com.academy.mfs.repository;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	@Query(value = "select * from msf.user where group_number = ?1 and user_id > 0", nativeQuery = true)
 	List<User> findSensFromGroup(int group_number);
+	
+
 }

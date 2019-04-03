@@ -11,13 +11,12 @@ import org.springframework.stereotype.Service;
 import ar.com.academy.mfs.model.Group;
 import ar.com.academy.mfs.model.PasswordResetToken;
 import ar.com.academy.mfs.model.User;
-
 import ar.com.academy.mfs.repository.GroupRepository;
-
 import ar.com.academy.mfs.repository.PasswordResetTokenRepository;
 import ar.com.academy.mfs.repository.RoleRepository;
 import ar.com.academy.mfs.repository.UserRepository;
 import ar.com.academy.mfs.request.DocumentTypeAndNumberRequest;
+import ar.com.academy.mfs.response.ResumenLicencia;
 
 @Service("userService")
 public class UserService {
@@ -246,4 +245,5 @@ public class UserService {
 		userRepository.save(user);
 	}
 
+	
 }

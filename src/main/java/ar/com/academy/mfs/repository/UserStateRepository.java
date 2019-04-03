@@ -1,5 +1,7 @@
 package ar.com.academy.mfs.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +23,9 @@ public interface UserStateRepository extends JpaRepository<UserState,Integer> {
 	@Query(value = "update msf.user set user_state_id = ?2 where user_id = ?1", nativeQuery = true)
 	int setUserStateId(int user_id, int id);
 
+	@Query(value = "select * from msf.user_state where (state_id >= 1  and state_id <= 5) "
+			+ "or state_id = 16 and date_part('year',from_date)= ?1", nativeQuery = true)
+	List<UserState> findbyLicenseInPeriod(int year);
+	
+	
 }
