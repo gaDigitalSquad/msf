@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,6 +82,15 @@ public class GroupController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No puede ingresar Sensibilizadores repetidos");
 		}
 			return ResponseEntity.status(HttpStatus.OK).body("Se ha creado el grupo");
+	}
+	
+	
+	@GetMapping("/groups/search")
+	public ResponseEntity<?> findGroups(
+			@RequestParam(value="zone", required=false) Integer zone,
+			@RequestParam(value="turn", required=false) String turn) {
+		
+		return ResponseEntity.status(HttpStatus.OK).body(groupService.findGroups( zone, turn ));
 	}
 	
 	@GetMapping("/groups")
