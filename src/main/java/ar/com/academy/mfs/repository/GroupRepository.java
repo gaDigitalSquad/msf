@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 import ar.com.academy.mfs.model.Group;
 
-public interface GroupRepository extends JpaRepository<Group, Integer> {
+public interface GroupRepository extends JpaRepository<Group, Integer>, JpaSpecificationExecutor<Group>, QueryByExampleExecutor<Group> {
 	
 	@Query(value = "select * from msf.group where group_number = ?1 and active = true", nativeQuery = true)
 	List<Group> findAllByGroup_number(int group_number);
