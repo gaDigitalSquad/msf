@@ -32,10 +32,10 @@ public class UserStateService {
 		List<ResumenLicencia> listResumenes = new ArrayList<>();
 		Map<Integer,Long > userStates =  userStateRepository.findbyLicenseInPeriod(LocalDate.now().getYear())
 				.stream()
-	    .collect(Collectors.groupingBy(UserState::getYearFrom, Collectors.counting()));
+	    .collect(Collectors.groupingBy(UserState::getMonthFrom, Collectors.counting()));
 		
 		userStates.forEach((u,x) -> {
-			listResumenes.add(new ResumenLicencia(u.toString(), x.intValue()));
+			listResumenes.add(new ResumenLicencia(String.valueOf(LocalDate.now().getYear()), x.intValue(),u.toString() ));
 		});
 		return listResumenes;
 		

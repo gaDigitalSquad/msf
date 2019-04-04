@@ -2,25 +2,33 @@ package ar.com.academy.mfs.response;
 
 public class ResumenLicencia {
 	
-	private String anio;
-	private int    cantidad;
-	
-
+	private String year;
+	private String month;
+	private int    quantity;
+	 
+		
 	public String getAnio() {
-		return anio;
+		return year;
 	}
 	public void setAnio(String anio) {
-		this.anio = anio;
+		this.year = anio;
 	}
 	public int getCantidad() {
-		return cantidad;
+		return quantity;
 	}
 	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
+		this.quantity = cantidad;
 	}	
-	public ResumenLicencia(String anio, int cantidad)
+	public ResumenLicencia(String anio, int cantidad, String mes)
 	{
-		this.anio 		= anio;
-		this.cantidad	= cantidad;
+		this.year 		= anio;
+		this.quantity	= cantidad;
+		this.month		= mes;
+	}
+	public String getMes() {
+		return month;
+	}
+	public void setMes(String mes) {
+		this.month = mes;
 	}
 }
