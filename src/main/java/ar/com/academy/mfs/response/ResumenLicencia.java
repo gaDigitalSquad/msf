@@ -3,7 +3,7 @@ package ar.com.academy.mfs.response;
 public class ResumenLicencia {
 	
 	private String year;
-	private String month;
+	private int    month;
 	private int    quantity;
 	 
 		
@@ -19,16 +19,16 @@ public class ResumenLicencia {
 	public void setCantidad(int cantidad) {
 		this.quantity = cantidad;
 	}	
-	public ResumenLicencia(String anio, int cantidad, String mes)
+	public ResumenLicencia(String anio, int cantidad, int mes)
 	{
 		this.year 		= anio;
 		this.quantity	= cantidad;
 		this.month		= mes;
 	}
-	public String getMes() {
+	public int getMes() {
 		return month;
 	}
-	public void setMes(String mes) {
+	public void setMes(int mes) {
 		this.month = mes;
 	}
 }

@@ -36,13 +36,15 @@ public class UserStateService {
 	    .collect(Collectors.groupingBy(UserState::getMonthFrom, Collectors.counting()));
 		
 		userStates.forEach((u,x) -> {
-			listResumenes.add(new ResumenLicencia(String.valueOf(LocalDate.now().getYear()), x.intValue(),u.toString() ));
+			listResumenes.add(new ResumenLicencia(String.valueOf(LocalDate.now().getYear()), x.intValue(),u));
 		});
 		return getMonthsCompleted(listResumenes);
 	}
 
 	private List<ResumenLicencia> getMonthsCompleted(List<ResumenLicencia> listResumenes) {
 		ArrayList<Integer> meses = new ArrayList<>(12) ;
+		List<ResumenLicencia> orderedRL = new ArrayList<>(); 
+		
 		meses.add(1);
 		meses.add(2);
 		meses.add(3);
@@ -56,14 +58,17 @@ public class UserStateService {
 		meses.add(11);
 		meses.add(12);
 		
+
+		
+		
 		for (int mes : meses )
 		{
-			if(!listResumenes.stream().anyMatch(p -> p.getMes().equals(String.valueOf(mes) )));
+			if(!(listResumenes.stream().anyMatch(p -> p.getMes() == mes)))
 			{
-				listResumenes.add(new ResumenLicencia(String.valueOf(LocalDate.now().getYear()),0,String.valueOf(mes)));
+				listResumenes.add(new ResumenLicencia(String.valueOf(LocalDate.now().getYear()),0,mes));
 			}
 		}
-	    listResumenes.sort(Comparator.comparing(ResumenLicencia::getAnio));
+	    listResumenes.sort(Comparator.comparing(ResumenLicencia::getMes));
 	    return listResumenes;
 	}
 	
